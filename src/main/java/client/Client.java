@@ -24,7 +24,7 @@ public class Client {
     // Can be moved later depending on how we want to fully implement this
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://connormulcahy.com");
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
     // End move
 
     private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
@@ -69,7 +69,7 @@ public class Client {
             System.out.println("Streams established");
 
             //Create a packet to send
-            Packet packet = new Packet("Testing");
+            Packet packet = new Packet("Testing", "host");
             toServer.writeObject(packet);
             System.out.println("wrote object...");
 
