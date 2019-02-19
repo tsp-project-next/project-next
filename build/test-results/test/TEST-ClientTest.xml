@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ClientTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-02-18T18:36:02" hostname="rover-221-100.rovernet.mtu.edu" time="0.527">
+<testsuite name="ClientTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-02-19T18:02:02" hostname="mcnair-197-254.resnet.mtu.edu" time="0.007">
   <properties/>
-  <testcase name="fakeTest" classname="ClientTest" time="0.527"/>
+  <testcase name="fakeTest" classname="ClientTest" time="0.007"/>
   <system-out><![CDATA[client created...
-Is socket connected: true
-Streams established
-wrote object...
-Successfully read object: This is a test
+No server connection found.
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

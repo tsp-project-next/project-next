@@ -21,30 +21,26 @@ public class Client {
     //Socket for establishing connection
     Socket socket;
 
-    // Can be moved later depending on how we want to fully implement this
+    // We need these initialized for lobby user or host. Do not alter
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
     private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
-    // End move
-
-    private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
-            .setClientId(clientId)
-            .setClientSecret(clientSecret)
-            .setRedirectUri(redirectUri)
-            .build();
-
-    private static final AuthorizationCodeUriRequest authorizationCodeUriRequest = spotifyApi.authorizationCodeUri()
-            .state("x4xkmn9pu3j6ukrs8n")
-            .scope("user-read-birthdate,user-read-email")
-            .show_dialog(true)
-            .build();
+    // End do not alter
 
     public static void main(String[] args)
     {
-        // Entry point
-        System.out.println("This is a successful run after gradle build...");
+        if (args[0].equalsIgnoreCase("client"))
+        {
+            LobbyUser user = new LobbyUser(clientId, clientSecret);
+        }
+        else if (args[0].equalsIgnoreCase("host"))
+        {
+            LobbyHost host = new LobbyHost(clientId, clientSecret, redirectUri);
+            //host.generateURI();
+        }
 
-        authorizationCodeUri_Sync();
+        System.out.println(args[0]);
+
         new Client();
     }
 
@@ -105,11 +101,4 @@ public class Client {
         return "test";
     }
 
-    // Can be moved later depending on how we want to implement this.
-    public static void authorizationCodeUri_Sync() {
-        final URI uri = authorizationCodeUriRequest.execute();
-
-        System.out.println("URI: " + uri.toString());
-    }
-    // End move
 }
