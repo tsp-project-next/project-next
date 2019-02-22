@@ -3,6 +3,7 @@ package client;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.SpotifyHttpManager;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
+import javafx.application.Application;
 
 import java.net.*;
 import java.io.IOException;
@@ -21,13 +22,9 @@ public class Client {
     //Object input stream from the server
     private ObjectInputStream fromServer;
 
-    // We need these initialized for lobby user or host. Do not alter
-    private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
-    private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
-    // End do not alter
 
-    public static void main(String[] args)
+
+    /*public static void main(String[] args)
     {
         if (args[0].equalsIgnoreCase("client"))
         {
@@ -44,8 +41,11 @@ public class Client {
         new Client();
 
         Client client = new Client();
+
+        Application.launch(args);
+
         client.closeStreams();
-    }
+    }*/
 
     public Client() {
         System.out.println("client created...");
@@ -64,7 +64,7 @@ public class Client {
         Packet received = sendPacket("Testing", "host");
     }
 
-    private boolean establishConnection(String host) {
+    public boolean establishConnection(String host) {
         try {
             socket = new Socket(host, 9000);
             System.out.println("Socket connected");
@@ -79,7 +79,7 @@ public class Client {
         return false;
     }
 
-    private boolean establishObjectStreams(Socket socket) {
+    public boolean establishObjectStreams(Socket socket) {
         try {
             //Output stream has to be created before input stream.
             //Create and object output stream to the server
@@ -95,7 +95,7 @@ public class Client {
         }
     }
 
-    private Packet sendPacket(String data, String cid) {
+    public Packet sendPacket(String data, String cid) {
         try {
             //Create a packet to send
             Packet packet = new Packet(data, cid);
@@ -121,7 +121,7 @@ public class Client {
         }
     }
 
-    private void closeStreams() {
+    public void closeStreams() {
         try {
             System.out.println("Attempting to close streams...");
             if(fromServer != null) fromServer.close();

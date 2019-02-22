@@ -16,7 +16,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'client.Client'
+        attributes 'Main-Class': 'User.UserInterface'
     }
     from {
         configurations.compile.collect {
