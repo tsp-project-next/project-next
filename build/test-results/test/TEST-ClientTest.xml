@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ClientTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-02-22T21:19:18" hostname="LAPTOP-PU2S8D4G" time="1.022">
+  <properties/>
+  <testcase name="fakeTest" classname="ClientTest" time="1.022"/>
+  <system-out><![CDATA[client created...
+No server connection found.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
