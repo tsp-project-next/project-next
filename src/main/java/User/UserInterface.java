@@ -41,23 +41,33 @@ public class UserInterface extends Application{
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Project Next"); //application is currently called Project Next
+        //application is currently called Project Next
+        primaryStage.setTitle("Project Next");
         primaryStage.show();
-        primaryStage.setFullScreen(true); //sets the window to fullscreen
+        primaryStage.setFullScreen(true);
+
+        //first page on loading is always landing page
         loadLandingPage(primaryStage);
     }
 
+    //displays landing page on the window
     private void loadLandingPage(Stage primaryStage) {
-        LandingPage landingPage = new LandingPage(); //creates the landing page
-        primaryStage.setScene(landingPage.getScene()); //sets the window to contain the landing page
+        LandingPage landingPage = new LandingPage();
+        primaryStage.setScene(landingPage.getScene());
         primaryStage.setFullScreen(true);
     }
 
-    private void loadHostPage(Stage primaryStage) {
-
+    //displays host page on the window
+    private void loadHostPage(Stage primaryStage, String code) {
+        HostPage hostPage = new HostPage();
+        primaryStage.setScene(hostPage.getScene());
+        primaryStage.setFullScreen(true);
     }
 
-    private void loadUserPage(Stage primaryStage) {
-
+    //displays user page on the window
+    private void loadUserPage(Stage primaryStage, String code) {
+        UserPage userPage = new UserPage();
+        primaryStage.setScene(userPage.getScene());
+        primaryStage.setFullScreen(true);
     }
 }
