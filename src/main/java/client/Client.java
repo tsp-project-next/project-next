@@ -5,6 +5,7 @@ import com.wrapper.spotify.SpotifyHttpManager;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 import javafx.application.Application;
 
+import java.io.EOFException;
 import java.net.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,31 +23,6 @@ public class Client {
     //Object input stream from the server
     private ObjectInputStream fromServer;
 
-
-
-    /*public static void main(String[] args)
-    {
-        if (args[0].equalsIgnoreCase("client"))
-        {
-            LobbyUser user = new LobbyUser(clientId, clientSecret);
-        }
-        else if (args[0].equalsIgnoreCase("host"))
-        {
-            LobbyHost host = new LobbyHost(clientId, clientSecret, redirectUri);
-            //host.generateURI();
-        }
-
-        System.out.println(args[0]);
-
-        new Client();
-
-        Client client = new Client();
-
-        Application.launch(args);
-
-        client.closeStreams();
-    }*/
-
     public Client() {
         System.out.println("client created...");
 
@@ -60,8 +36,11 @@ public class Client {
             return;
         }
 
+        //create a new thread to read in all new information from the server
+        new Thread(new HandleServer(socket, fromServer)).start();
+
         //Send a test packet to the server
-        Packet received = sendPacket("Testing", "host");
+        sendPacket("Testing", "host");
     }
 
     public boolean establishConnection(String host) {
@@ -95,29 +74,14 @@ public class Client {
         }
     }
 
-    public Packet sendPacket(String data, String cid) {
+    public void sendPacket(String data, String cid) {
         try {
             //Create a packet to send
             Packet packet = new Packet(data, cid);
             toServer.writeObject(packet);
             System.out.println("Object sent to server...");
-
-            try {
-                //wait for the object response from the server
-                Object obj = fromServer.readObject();
-                Packet received = (Packet) obj;
-                System.out.println("Successfully read object: " + received.getData());
-                return received;
-            } catch(ClassNotFoundException ex) {
-                ex.printStackTrace();
-            } catch(SocketException ex) {
-                System.out.println("Connection to server reset/lost");
-                ex.printStackTrace();
-            }
-            return null;
         } catch(IOException ex) {
             ex.printStackTrace();
-            return null;
         }
     }
 
@@ -133,9 +97,44 @@ public class Client {
         }
     }
 
-    public String fakeTest()
-    {
-        return "test";
+    //Use this method to switch through and handle different received packets
+    public void handleReceivedPacket(Packet packet) {
+        System.out.println("Received packet with data: " + packet.getData());
     }
 
+    class HandleServer implements Runnable {
+
+        //The connected socket
+        private Socket socket;
+        private ObjectInputStream fromServer;
+
+        public HandleServer(Socket socket, ObjectInputStream fromServer) {
+            this.socket = socket;
+            this.fromServer = fromServer;
+        }
+
+        @Override
+        public void run() {
+            try {
+                System.out.println("New thread created for socket: " + socket.getInetAddress().getHostName());
+
+                while(true){
+                    //Read from input
+                    Packet packetReceived = (Packet) fromServer.readObject();
+
+                    //Handle the packet read from the server
+                    handleReceivedPacket(packetReceived);
+                }
+            } catch(ClassNotFoundException ex) {
+                ex.printStackTrace();
+            } catch(SocketException ex) {
+                System.out.println("Connection reset/closed for client: " + socket.getInetAddress().getHostName());
+                return;
+            } catch(EOFException ex) {
+                // System.out.println("We're catching this in the final block....");
+            } catch(IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }
