@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ClientTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-02-27T00:52:50" hostname="DESKTOP-F6FEG4K" time="1.017">
+<testsuite name="ClientTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-02-27T17:19:59" hostname="mcnair-197-254.resnet.mtu.edu" time="0.017">
   <properties/>
-  <testcase name="fakeTest" classname="ClientTest" time="1.017"/>
+  <testcase name="fakeTest" classname="ClientTest" time="0.017"/>
   <system-out><![CDATA[client created...
 No server connection found.
 ]]></system-out>

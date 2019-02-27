@@ -1,11 +1,20 @@
 package client;
 
+import com.neovisionaries.i18n.CountryCode;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
+import com.wrapper.spotify.model_objects.specification.Paging;
+import com.wrapper.spotify.model_objects.specification.Track;
 import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
+import com.wrapper.spotify.requests.data.search.simplified.SearchTracksRequest;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class LobbyUser {
 
@@ -29,7 +38,7 @@ public class LobbyUser {
     }
 
     // Initialize as well as refresh our client access token in case we need to refresh.
-    private void refreshAccessToken() {
+    public void refreshAccessToken() {
         try {
             final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
 
@@ -40,5 +49,34 @@ public class LobbyUser {
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in LobbyUser Constructor: " + e.getMessage());
         }
+    }
+
+    // Returns the wrapper data structure for holding URI data with top 10 results
+    public Paging<Track> searchTracks(String toSearch)
+    {
+        final SearchTracksRequest searchTracksRequest = spotifyApi.searchTracks(toSearch)
+                .market(CountryCode.US)
+                .limit(10)
+                .build();
+
+        try {
+            final Future<Paging<Track>> pagingFuture = searchTracksRequest.executeAsync();
+
+            final Paging<Track> trackPaging = pagingFuture.get();
+
+            Track[] current = trackPaging.getItems();
+
+            System.out.println("Next track: " + current[0].getName());
+            URI uri = new URI(current[0].getUri());
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().browse(uri);
+            }
+
+            return trackPaging;
+        } catch (InterruptedException | ExecutionException | URISyntaxException | IOException e) {
+            System.out.println("searchTracks error: " + e.getCause().getMessage());
+        }
+
+        return null;
     }
 }
