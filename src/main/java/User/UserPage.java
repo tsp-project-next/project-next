@@ -25,10 +25,9 @@ public class UserPage  {
     private static Scene UserScene = null;
 
     // Makes and Adds all elements of the UserPage to the UserPage
-    public UserPage() {
+    public UserPage(String Code) {
 
 
-        String Code = "";
         String Song = "";
         String Artist = "";
         String Album = "";

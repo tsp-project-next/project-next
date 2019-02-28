@@ -20,16 +20,9 @@ public class UserInterface extends Application{
     private static Stage mainStage = null;
 
     public static void main(String[] args) {
-
-        //create a new client object, needs to be created regardless of host or client
-        Client client = new Client();
-
         if (args[0].equalsIgnoreCase("client"))
         {
             LobbyUser user = new LobbyUser(clientId, clientSecret);
-
-            // test searching for songs
-            user.searchTracks("atmosphere sound is vibration");
         }
         else if (args[0].equalsIgnoreCase("host"))
         {
@@ -38,6 +31,9 @@ public class UserInterface extends Application{
         }
 
         System.out.println("Input argument: " + args[0]);
+
+        //create a new client object
+        Client client = new Client();
 
         Application.launch(args);
 
@@ -66,14 +62,14 @@ public class UserInterface extends Application{
 
     //displays host page on the window
     public static void loadHostPage(String code) {
-        HostPage hostPage = new HostPage();
+        HostPage hostPage = new HostPage(code);
         mainStage.setScene(hostPage.getScene());
         mainStage.setFullScreen(true);
     }
 
     //displays user page on the window
     public static void loadUserPage(String code) {
-        UserPage userPage = new UserPage();
+        UserPage userPage = new UserPage(code);
         mainStage.setScene(userPage.getScene());
         mainStage.setFullScreen(true);
     }
