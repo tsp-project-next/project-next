@@ -66,7 +66,7 @@ public class LandingPage {
         join.setPrefSize(screenWidth / 8, screenHeight / 12);
 
         TextField joinCode = new TextField();
-        joinCode.resize(screenWidth / 8, screenHeight / 12);
+        joinCode.setMaxSize(screenWidth / 8, screenHeight / 12);
         VBox joinElements = new VBox();
         joinElements.setAlignment(Pos.TOP_CENTER);
         joinElements.getChildren().addAll(join, joinCode);
