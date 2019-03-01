@@ -35,7 +35,7 @@ public class HostPage {
 
         // Setting up the formatting for the main grid controller--------
         GridPane controller = new GridPane();
-        controller.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
+        controller.setStyle("-fx-background-color: rgb(26,83,46); -fx-background-radius: 10;");
         RowConstraints rowOne = new RowConstraints();
         rowOne.setVgrow(Priority.ALWAYS);
         ColumnConstraints colOne = new ColumnConstraints();
@@ -61,7 +61,7 @@ public class HostPage {
 
         VBox endHolder = new VBox();
         Button endSession = new Button("End Session");
-        endSession.setOnAction(event -> Platform.exit());
+        endSession.setOnAction(event -> UserInterface.loadLandingPage());
         endHolder.getChildren().add(endSession);
         endHolder.setAlignment(Pos.CENTER);
         controller.add(endHolder, 2, 2);
