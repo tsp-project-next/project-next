@@ -6,13 +6,22 @@ import static org.junit.Assert.*;
 
 public class ClientTest {
 
-    Client client;
+    Client client = new Client();
 
     @Test
-    public void fakeTest() {
-        client = new Client();
+    public void clientCreatedTest() {
+        assertTrue(client != null);
+    }
 
-        //assertEquals("test", client.fakeTest());
-        //fail("This should fail");
+    @Test
+    public void streamConnectionTest() {
+        org.junit.Assume.assumeTrue(client.isConnectionEstablished());
+        assertTrue(client.isStreamEstablished());
+    }
+
+    @Test
+    public void sendPacketTest() {
+        org.junit.Assume.assumeTrue(client.isConnectionEstablished());
+        assertTrue(client.sendPacket("test", "host"));
     }
 }

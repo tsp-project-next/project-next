@@ -74,14 +74,16 @@ public class Client {
         }
     }
 
-    public void sendPacket(String data, String cid) {
+    public boolean sendPacket(String data, String cid) {
         try {
             //Create a packet to send
             Packet packet = new Packet(data, cid);
             toServer.writeObject(packet);
             System.out.println("Object sent to server...");
+            return true;
         } catch(IOException ex) {
             ex.printStackTrace();
+            return false;
         }
     }
 
@@ -95,6 +97,16 @@ public class Client {
         } catch(IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public boolean isConnectionEstablished() {
+        if(socket != null) return true;
+        return false;
+    }
+
+    public boolean isStreamEstablished() {
+        if(toServer != null && fromServer != null) return true;
+        return false;
     }
 
     //Use this method to switch through and handle different received packets
