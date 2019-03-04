@@ -61,8 +61,8 @@ public class UserInterface extends Application{
     }
 
     //displays host page on the window
-    public static void loadHostPage(String code) {
-        HostPage hostPage = new HostPage(code);
+    public static void loadHostPage() {
+        HostPage hostPage = new HostPage(Utilities.codeGenerator());
         mainStage.setScene(hostPage.getScene());
         mainStage.setFullScreen(true);
     }

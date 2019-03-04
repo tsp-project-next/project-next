@@ -59,7 +59,7 @@ public class LandingPage {
         // Host button the connects to the host page
         Button host = new Button("Host");
         host.setPrefSize(screenWidth / 8, screenHeight / 12);
-        host.setOnAction(event -> UserInterface.loadHostPage("AAAA"));
+        host.setOnAction(event -> UserInterface.loadHostPage());
 
         // Join button that connects to the join page using the given code in the text field
         Button join = new Button("Join");
