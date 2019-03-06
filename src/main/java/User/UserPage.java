@@ -1,5 +1,8 @@
 package User;
 
+import client.LobbyUser;
+import com.wrapper.spotify.model_objects.specification.Paging;
+import com.wrapper.spotify.model_objects.specification.Track;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,15 +26,13 @@ import javafx.scene.control.ScrollPane;
 public class UserPage  {
 
     private static Scene UserScene = null;
+    private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
+    private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
 
     // Makes and Adds all elements of the UserPage to the UserPage
     public UserPage(String Code) {
 
-
-        String Song = "";
-        String Artist = "";
-        String Album = "";
-
+        LobbyUser user = new LobbyUser(clientId, clientSecret);
 
         // Makes a GridPane Called Root
         GridPane root = new GridPane();
@@ -82,38 +83,6 @@ public class UserPage  {
         queue.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
         root.add(queue,5, 2, 2, 1);
 
-        // Makes the header for the middle of the screen information for the current song
-        Text playing = new Text();
-        playing.setText("Playing ");
-        playing.setFill(Color.WHITE);
-        playing.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
-
-        // Makes the song title displayer
-        Text songTitle = new Text();
-        songTitle.setText("Song Title: " + Song);
-        songTitle.setFill(Color.WHITE);
-        songTitle.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
-
-        // Makes the artist displayer
-        Text artist = new Text();
-        artist.setText("Artist: " + Artist);
-        artist.setFill(Color.WHITE);
-        artist.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
-
-        // Makes the album displayer
-        Text album = new Text();
-        album.setText("Album: " + Album);
-        album.setFill(Color.WHITE);
-        album.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
-
-        // Sets the spacing between the displayer's
-        stack.setSpacing(40);
-
-        // Adds the diplayers to the middle of the screen
-        stack.getChildren().addAll(playing, songTitle, artist, album);
-        stack.setAlignment(Pos.TOP_LEFT);
-        root.add(stack, 3, 3, 2,2);
-
         // Makes and Adds the search bar to the header of the search box and displays the prompt text 'Searching....'
         TextField searchBar = new TextField();
         searchBar.setMaxSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
@@ -123,8 +92,7 @@ public class UserPage  {
         // Makes a ScrollPane called searchResults and adds it to the left of the screen with the list
         ScrollPane searchResults = new ScrollPane();
         ListView<String> listSearchResults = new ListView<>();
-        ObservableList<String> itemsSearchResults = FXCollections.observableArrayList(
-                "Single Ladies", "Halo", "Take a Bow", "Diamonds");
+        ObservableList<String> itemsSearchResults = FXCollections.observableArrayList("");
         listSearchResults.setItems(itemsSearchResults);
         searchResults.setContent(listSearchResults);
         searchResults.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -136,8 +104,7 @@ public class UserPage  {
         // Makes a ScrollPane called playQueue and adds it to the right of the screen with the list
         ScrollPane playQueue = new ScrollPane();
         ListView<String> listPlayQueue = new ListView<>();
-        ObservableList<String> itemsPlayQueue = FXCollections.observableArrayList(
-                "first", "second", "third", "fourth");
+        ObservableList<String> itemsPlayQueue = FXCollections.observableArrayList("");
         listPlayQueue.setItems(itemsPlayQueue);
         playQueue.setContent(listPlayQueue);
         playQueue.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -146,21 +113,78 @@ public class UserPage  {
         playQueue.setMaxWidth((1*Toolkit.getDefaultToolkit().getScreenSize().getWidth())/4);
         root.add(playQueue, 5,3,2,2);
 
-        // Makes and Adds the 'X' button to close the program to the top right of the screen
-        Button closeButton = new Button("X");
-        closeButton.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/30, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
-        closeButton.setOnAction(event -> Platform.exit());
-        root.add(closeButton, 6, 0);
+        String Song = "Song Title: ";
+        String Artist = "Artist: ";
+        String Album = "Album: ";
+
+        if (!(itemsPlayQueue.get(0).equals(""))) {
+
+            Song += itemsPlayQueue.get(0);
+            Artist += itemsPlayQueue.get(0);
+            Album += itemsPlayQueue.get(0);
+        }
+
+        // Makes the header for the middle of the screen information for the current song
+        Text playing = new Text();
+        playing.setText("Playing ");
+        playing.setFill(Color.WHITE);
+        playing.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
+
+        // Makes the song title displayer
+        Text songTitle = new Text();
+        songTitle.setText(Song);
+        songTitle.setFill(Color.WHITE);
+        songTitle.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
+
+        // Makes the artist displayer
+        Text artist = new Text();
+        artist.setText(Artist);
+        artist.setFill(Color.WHITE);
+        artist.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
+
+        // Makes the album displayer
+        Text album = new Text();
+        album.setText(Album);
+        album.setFill(Color.WHITE);
+        album.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
+
+        // Sets the spacing between the displayer's
+        stack.setSpacing(40);
+
+        // Adds the diplayers to the middle of the screen
+        stack.getChildren().addAll(playing, songTitle, artist, album);
+        stack.setAlignment(Pos.TOP_LEFT);
+        root.add(stack, 3, 3, 2,2);
 
         // Makes and Adds the 'Add' button centered and under the search displayer
         Button add = new Button("Add");
         add.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         add.setOnAction(event -> {
 
-            if(!(itemsPlayQueue.contains(listSearchResults.getSelectionModel().getSelectedItem()))) {
+            if (itemsPlayQueue.get(0).equals("")) {
 
-                itemsPlayQueue.add(listSearchResults.getSelectionModel().getSelectedItem());
+                itemsPlayQueue.clear();
             }
+
+
+            if (!(itemsPlayQueue.contains(listSearchResults.getSelectionModel().getSelectedItem()))) {
+
+                Paging<Track> tracks = user.searchTracks(searchBar.getText());
+
+                Track[] song = new Track[0];
+
+                for (int i = 0; i <= 9; i++) {
+
+                    song = tracks.getItems();
+                }
+
+                // This is for test in local queue
+                // Change this to add to Spotify queue
+                // song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()
+                itemsPlayQueue.add(listSearchResults.getSelectionModel().getSelectedItem());
+
+            }
+
         });
         root.add(add, 0,5, 2,1);
 
@@ -169,13 +193,34 @@ public class UserPage  {
         Button search = new Button("Search");
         search.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/15, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         search.setOnAction(event -> {
+            
+            itemsSearchResults.clear();
 
-            if(!(itemsSearchResults.contains(searchBar.getText()))) {
+            if (!(searchBar.getText().equals(""))) {
 
-                itemsSearchResults.add(searchBar.getText());
+                Paging<Track> tracks = user.searchTracks(searchBar.getText());
+
+                if (!(itemsSearchResults.contains(searchBar.getText()))) {
+
+                    for (int i = 0; i <= 9; i++) {
+                        Track[] song = tracks.getItems();
+
+                        itemsSearchResults.add(song[i].getName());
+                        
+                    }
+                }
+            }else {
+
+                itemsSearchResults.add("");
             }
         });
         root.add(search,1 ,2);
+
+        // Makes and Adds the 'X' button to close the program to the top right of the screen
+        Button closeButton = new Button("X");
+        closeButton.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/30, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
+        closeButton.setOnAction(event -> Platform.exit());
+        root.add(closeButton, 6, 0);
 
         // Makes and Adds the 'Leave' button centered and under the queue displayer
         Button leave = new Button("Leave");
