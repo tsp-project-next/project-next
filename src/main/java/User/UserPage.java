@@ -63,8 +63,8 @@ public class UserPage  {
         root.getColumnConstraints().addAll(col1, col1, col1, col1, col1 ,col1, col1);
         root.getRowConstraints().addAll(row1, row2, row1, row2, row2, row2, row1);
 
-        // Makes a Userscence set to fit to screen size with a background of darker green
-        UserScene = new Scene(root, Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight(),  Color.rgb(26,83,46));
+        //Changes the root of the stage's scene
+        UserInterface.getStage().getScene().setRoot(root);
 
         // Start text zones, font is for scaling font sizes
         int font = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()/40;
@@ -268,10 +268,5 @@ public class UserPage  {
         GridPane.setValignment(stack, VPos.CENTER);
 
         root.setGridLinesVisible(false);
-    }
-
-    //returns the scene to be used on the current window
-    public Scene getScene() {
-        return UserScene;
     }
 }

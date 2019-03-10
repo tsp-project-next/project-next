@@ -27,9 +27,8 @@ public class HostPage {
 
     public HostPage(String code) {
         this.code = code;
-        hostPage = new Scene(setup(code), 300, 200, Color.rgb(26, 83, 46));
+        UserInterface.getStage().getScene().setRoot(setup(code));
     }
-    public Scene getScene() { return hostPage; }
 
     private GridPane setup(String code) {
 

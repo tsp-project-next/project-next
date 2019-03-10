@@ -6,6 +6,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
@@ -67,11 +68,25 @@ public class LandingPage {
 
         TextField joinCode = new TextField();
         joinCode.setMaxSize(screenWidth / 8, screenHeight / 12);
+        joinCode.setPromptText("Enter Code Here");
         VBox joinElements = new VBox();
         joinElements.setAlignment(Pos.TOP_CENTER);
         joinElements.getChildren().addAll(join, joinCode);
 
-        join.setOnAction(event -> UserInterface.loadUserPage(joinCode.getText()));
+        Alert invalidCode = new Alert(Alert.AlertType.INFORMATION);
+        invalidCode.initOwner(UserInterface.getStage());
+        invalidCode.setContentText("Code must be 4 characters.");
+        invalidCode.setHeaderText("Invaid Code");
+        invalidCode.setTitle("Invaid Code");
+        //invalidCode.initOwner(UserInterface.getStage());
+
+        join.setOnAction(event -> {
+            if (joinCode.getText().length() == 4) {
+                UserInterface.loadUserPage(joinCode.getText());
+            } else {
+                invalidCode.show();
+            }
+        });
 
         Button exit = new Button("X");
         exit.setOnAction(event -> Platform.exit());
@@ -85,12 +100,6 @@ public class LandingPage {
         root.add(joinElements, 1, 2);
         root.add(exitFormat, 2, 0);
 
-
-        landingScene = new Scene(root, 300, 200, Color.rgb(26, 83, 46));
-    }
-
-    //returns the scene to be used on the current window
-    public Scene getScene() {
-        return landingScene;
+        UserInterface.getStage().getScene().setRoot(root);
     }
 }

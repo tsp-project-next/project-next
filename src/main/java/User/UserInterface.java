@@ -5,8 +5,12 @@ import client.LobbyHost;
 import client.LobbyUser;
 import com.wrapper.spotify.SpotifyHttpManager;
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.net.URI;
 
 public class UserInterface extends Application{
@@ -18,6 +22,7 @@ public class UserInterface extends Application{
     // End do not alter
 
     private static Stage mainStage = null;
+    private static Scene mainScene = null;
 
     public static void main(String[] args) {
         if (args[0].equalsIgnoreCase("client"))
@@ -47,30 +52,35 @@ public class UserInterface extends Application{
         //application is currently called Project Next
         mainStage.setTitle("Project Next");
         mainStage.show();
+        GridPane root = new GridPane();
+        mainStage.setScene(new Scene(root, Toolkit.getDefaultToolkit().getScreenSize().getWidth(),
+                Toolkit.getDefaultToolkit().getScreenSize().getHeight(), Color.rgb(26,83,46)));
         mainStage.setFullScreen(true);
-
         //first page on loading is always landing page
         loadLandingPage();
     }
 
     //displays landing page on the window
     public static void loadLandingPage() {
+        getStage().setFullScreen(true);
         LandingPage landingPage = new LandingPage();
-        mainStage.setScene(landingPage.getScene());
-        mainStage.setFullScreen(true);
+
+        //getStage().setScene(landingPage.getScene());
     }
 
     //displays host page on the window
     public static void loadHostPage() {
         HostPage hostPage = new HostPage(Utilities.codeGenerator());
-        mainStage.setScene(hostPage.getScene());
-        mainStage.setFullScreen(true);
+        //getStage().setScene(hostPage.getScene());
     }
 
     //displays user page on the window
     public static void loadUserPage(String code) {
         UserPage userPage = new UserPage(code);
-        mainStage.setScene(userPage.getScene());
-        mainStage.setFullScreen(true);
+        //mainStage.setScene(userPage.getScene());
+    }
+
+    public static Stage getStage() {
+        return mainStage;
     }
 }
