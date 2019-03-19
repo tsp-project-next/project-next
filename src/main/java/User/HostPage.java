@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -16,6 +17,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.awt.*;
+import java.sql.BatchUpdateException;
 
 
 public class HostPage {
@@ -100,12 +102,18 @@ public class HostPage {
 
         // Song Blacklist-------------------------------------------------
         GridPane blacklist = new GridPane();
-        blacklist.getRowConstraints().addAll(row1, row2);
 
         Text blacklistText = new Text("Blacklist:");
         blacklistText.setFill(Color.WHITE);
         blacklistText.setFont(standard);
         blacklist.add(blacklistText, 0, 0);
+
+        GridPane search = new GridPane();
+        TextField searchBar = new TextField("Search...");
+        Button searchButton = new Button("Search");
+        search.add(searchBar, 0, 0);
+        search.add(searchButton, 1, 0);
+        blacklist.add(search, 0, 1);
 
         ScrollPane blacklistItems = new ScrollPane();
         ListView<String> bLList = new ListView<>();
@@ -117,7 +125,7 @@ public class HostPage {
         blacklistItems.setFitToHeight(true);
         blacklistItems.setFitToWidth(true);
         blacklistItems.setMaxWidth((1*Toolkit.getDefaultToolkit().getScreenSize().getWidth())/4);
-        blacklist.add(blacklistItems, 0, 1);
+        blacklist.add(blacklistItems, 0, 2);
         blacklist.setAlignment(Pos.CENTER);
 
         controller.add(blacklist, 0, 2);
