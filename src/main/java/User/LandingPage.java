@@ -81,7 +81,7 @@ public class LandingPage {
         //invalidCode.initOwner(UserInterface.getStage());
 
         join.setOnAction(event -> {
-            if (joinCode.getText().length() == 4) {
+            if (joinCode.getText().trim().length() == 4) {
                 UserInterface.loadUserPage(joinCode.getText());
             } else {
                 invalidCode.show();

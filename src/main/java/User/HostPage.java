@@ -1,4 +1,7 @@
 package User;
+import client.LobbyUser;
+import com.wrapper.spotify.model_objects.specification.Paging;
+import com.wrapper.spotify.model_objects.specification.Track;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,6 +25,10 @@ import java.sql.BatchUpdateException;
 
 public class HostPage {
 
+    private static Scene UserScene = null;
+    private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
+    private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
+
     private static Scene hostPage = null;
     private String code;
     private int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
@@ -33,6 +40,8 @@ public class HostPage {
     }
 
     private GridPane setup(String code) {
+
+        LobbyUser user = new LobbyUser(clientId, clientSecret);
 
         // Setting up the formatting for the main grid controller--------
         GridPane controller = new GridPane();
@@ -109,7 +118,8 @@ public class HostPage {
         blacklist.add(blacklistText, 0, 0);
 
         GridPane search = new GridPane();
-        TextField searchBar = new TextField("Search...");
+        TextField searchBar = new TextField();
+        searchBar.setPromptText("Search...");
         Button searchButton = new Button("Search");
         search.add(searchBar, 0, 0);
         search.add(searchButton, 1, 0);
@@ -117,8 +127,7 @@ public class HostPage {
 
         ScrollPane blacklistItems = new ScrollPane();
         ListView<String> bLList = new ListView<>();
-        ObservableList<String> bLObsList = FXCollections.observableArrayList(
-                "Test One", "Test Two", "Test Three", "Test Four");
+        ObservableList<String> bLObsList = FXCollections.observableArrayList("");
         bLList.setItems(bLObsList);
         blacklistItems.setContent(bLList);
         blacklistItems.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -127,6 +136,30 @@ public class HostPage {
         blacklistItems.setMaxWidth((1*Toolkit.getDefaultToolkit().getScreenSize().getWidth())/4);
         blacklist.add(blacklistItems, 0, 2);
         blacklist.setAlignment(Pos.CENTER);
+
+        searchButton.setOnAction(event -> {
+
+            bLObsList.clear();
+
+            if (!(searchBar.getText().trim().isEmpty())) {
+
+
+                    Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
+
+                    if (!(bLObsList.contains(searchBar.getText().trim()))) {
+
+                        for (int i = 0; i <= 9; i++) {
+                            Track[] song = tracks.getItems();
+
+                            bLObsList.add(song[i].getName());
+                        }
+                    }
+            } else {
+
+                bLObsList.add("");
+            }
+
+        });
 
         controller.add(blacklist, 0, 2);
         //----------------------------------------------------------------

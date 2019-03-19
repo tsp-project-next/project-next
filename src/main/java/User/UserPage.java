@@ -161,30 +161,31 @@ public class UserPage  {
         add.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         add.setOnAction(event -> {
 
-            if (itemsPlayQueue.get(0).equals("")) {
+            if (!(listSearchResults.getSelectionModel().getSelectedItem().trim().isEmpty())) {
 
-                itemsPlayQueue.clear();
-            }
+                if (itemsPlayQueue.get(0).trim().isEmpty()) {
 
-
-            if (!(itemsPlayQueue.contains(listSearchResults.getSelectionModel().getSelectedItem()))) {
-
-                Paging<Track> tracks = user.searchTracks(searchBar.getText());
-
-                Track[] song = new Track[0];
-
-                for (int i = 0; i <= 9; i++) {
-
-                    song = tracks.getItems();
+                    itemsPlayQueue.clear();
                 }
 
-                // This is for test in local queue
-                // Change this to add to Spotify queue
-                // song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()
-                itemsPlayQueue.add(listSearchResults.getSelectionModel().getSelectedItem());
+                if (!(itemsPlayQueue.contains(listSearchResults.getSelectionModel().getSelectedItem().trim()))) {
 
+                    Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
+
+                    Track[] song = new Track[0];
+
+                    for (int i = 0; i <= 9; i++) {
+
+                        song = tracks.getItems();
+                    }
+
+                    // This is for test in local queue
+                    // Change this to add to Spotify queue
+                    // song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()
+                    itemsPlayQueue.add(listSearchResults.getSelectionModel().getSelectedItem().trim());
+
+                }
             }
-
         });
         root.add(add, 0,5, 2,1);
 
@@ -193,20 +194,20 @@ public class UserPage  {
         Button search = new Button("Search");
         search.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/15, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         search.setOnAction(event -> {
-            
+
             itemsSearchResults.clear();
 
-            if (!(searchBar.getText().equals(""))) {
+            if (!(searchBar.getText().trim().isEmpty())) {
 
-                Paging<Track> tracks = user.searchTracks(searchBar.getText());
+                Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
 
-                if (!(itemsSearchResults.contains(searchBar.getText()))) {
+                if (!(itemsSearchResults.contains(searchBar.getText().trim()))) {
 
                     for (int i = 0; i <= 9; i++) {
                         Track[] song = tracks.getItems();
 
                         itemsSearchResults.add(song[i].getName());
-                        
+
                     }
                 }
             }else {
