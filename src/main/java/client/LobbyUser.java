@@ -66,14 +66,14 @@ public class LobbyUser {
 
             Track[] current = trackPaging.getItems();
 
-            System.out.println("Next track: " + current[0].getName());
-            URI uri = new URI(current[0].getUri());
-            if (Desktop.isDesktopSupported()) {
-                Desktop.getDesktop().browse(uri);
-            }
+//            System.out.println("Next track: " + current[0].getName());
+//            URI uri = new URI(current[0].getUri());
+//            if (Desktop.isDesktopSupported()) {
+//                Desktop.getDesktop().browse(uri);
+//            }
 
             return trackPaging;
-        } catch (InterruptedException | ExecutionException | URISyntaxException | IOException e) {
+        } catch (InterruptedException | ExecutionException e) {
             System.out.println("searchTracks error: " + e.getCause().getMessage());
         }
 

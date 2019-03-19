@@ -144,6 +144,7 @@ public class HostPage {
             if (!(searchBar.getText().trim().isEmpty())) {
 
 
+                if((user.searchTracks(searchBar.getText().trim()).getItems().length !=0)) {
                     Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
 
                     if (!(bLObsList.contains(searchBar.getText().trim()))) {
@@ -154,6 +155,10 @@ public class HostPage {
                             bLObsList.add(song[i].getName());
                         }
                     }
+                } else {
+
+                    bLObsList.add("");
+                }
             } else {
 
                 bLObsList.add("");
