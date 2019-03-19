@@ -161,29 +161,32 @@ public class UserPage  {
         add.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         add.setOnAction(event -> {
 
-            if (!(listSearchResults.getSelectionModel().getSelectedItem().trim().isEmpty())) {
+            if(!(listSearchResults.getItems().toString().trim().equals("[]"))) {
 
-                if (itemsPlayQueue.get(0).trim().isEmpty()) {
+                if (!(listSearchResults.getSelectionModel().getSelectedItems().toString().equals("[]"))) {
 
-                    itemsPlayQueue.clear();
-                }
+                    if (itemsPlayQueue.get(0).trim().isEmpty()) {
 
-                if (!(itemsPlayQueue.contains(listSearchResults.getSelectionModel().getSelectedItem().trim()))) {
-
-                    Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
-
-                    Track[] song = new Track[0];
-
-                    for (int i = 0; i <= 9; i++) {
-
-                        song = tracks.getItems();
+                        itemsPlayQueue.clear();
                     }
 
-                    // This is for test in local queue
-                    // Change this to add to Spotify queue
-                    // song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()
-                    itemsPlayQueue.add(listSearchResults.getSelectionModel().getSelectedItem().trim());
+                    if (!(itemsPlayQueue.contains(listSearchResults.getSelectionModel().getSelectedItem().trim()))) {
 
+                        Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
+
+                        Track[] song = new Track[0];
+
+                        for (int i = 0; i <= 9; i++) {
+
+                            song = tracks.getItems();
+                        }
+
+                        // This is for test in local queue
+                        // Change this to add to Spotify queue
+                        // song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()
+                        itemsPlayQueue.add(listSearchResults.getSelectionModel().getSelectedItem().trim());
+
+                    }
                 }
             }
         });
