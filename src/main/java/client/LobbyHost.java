@@ -5,21 +5,11 @@ import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
-import javafx.beans.value.ChangeListener;
-import javafx.application.Application;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
-import javafx.scene.web.WebView;
-import javafx.stage.Stage;
-import javafx.scene.web.WebEngine;
-import static javafx.concurrent.Worker.State;
+
 
 public class LobbyHost {
 
@@ -49,8 +39,6 @@ public class LobbyHost {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        authorizationCodeRequest = spotifyApi.authorizationCode(code).build();
     }
 
     public static String generateURI() throws Exception {
@@ -67,6 +55,8 @@ public class LobbyHost {
     }
 
     public static void authorizationCode_Sync() {
+        authorizationCodeRequest = spotifyApi.authorizationCode(code).build();
+
         try {
             final AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
 
@@ -78,5 +68,9 @@ public class LobbyHost {
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in authorizationCode_Sync() Lobby Host: " + e.getMessage());
         }
+    }
+
+    public static void setAuthCode(String authCode) {
+        code = authCode;
     }
 }

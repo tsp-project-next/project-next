@@ -1,5 +1,7 @@
 package User;
+import client.LobbyHost;
 import client.LobbyUser;
+import com.wrapper.spotify.SpotifyHttpManager;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.Track;
 import javafx.application.Platform;
@@ -8,8 +10,9 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
@@ -20,7 +23,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.awt.*;
+import java.net.URI;
 import java.sql.BatchUpdateException;
+import java.util.Optional;
 
 
 public class HostPage {
@@ -28,6 +33,7 @@ public class HostPage {
     private static Scene UserScene = null;
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
 
     private static Scene hostPage = null;
     private String code;
@@ -39,9 +45,28 @@ public class HostPage {
         UserInterface.getStage().getScene().setRoot(setup(code));
     }
 
+    private Label label;
+
     private GridPane setup(String code) {
 
         LobbyUser user = new LobbyUser(clientId, clientSecret);
+
+        TextInputDialog urlCode = new TextInputDialog("URL");
+        urlCode.setContentText("paste url here");
+        urlCode.show();
+
+        String authorizationCode = "";
+
+        // Set auth code from box in here
+
+        // End set auth code
+
+        LobbyHost host = new LobbyHost(clientId, clientSecret, redirectUri);
+
+        host.setAuthCode(authorizationCode);
+
+        host.authorizationCode_Sync();
+
 
         // Setting up the formatting for the main grid controller--------
         GridPane controller = new GridPane();

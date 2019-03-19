@@ -31,7 +31,7 @@ public class UserInterface extends Application{
         }
         else if (args[0].equalsIgnoreCase("host"))
         {
-            LobbyHost host = new LobbyHost(clientId, clientSecret, redirectUri);
+            //LobbyHost host = new LobbyHost(clientId, clientSecret, redirectUri);
             //host.generateURI();
         }
 
