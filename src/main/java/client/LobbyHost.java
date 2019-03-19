@@ -1,13 +1,30 @@
 package client;
 
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlDivision;
+import com.gargoylesoftware.htmlunit.html.HtmlInput;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
+import javafx.beans.value.ChangeListener;
+import javafx.application.Application;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+import javafx.scene.web.WebEngine;
+import static javafx.concurrent.Worker.State;
 
 public class LobbyHost {
 
@@ -32,16 +49,24 @@ public class LobbyHost {
                 .show_dialog(true)
                 .build();
 
-        authorizationCodeRequest = spotifyApi.authorizationCode(code).build();
+        try {
+            generateURI();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        generateURI();
+        authorizationCodeRequest = spotifyApi.authorizationCode(code).build();
     }
 
-    public static String generateURI() {
+    public static String generateURI() throws Exception {
         final URI uri = authorizationCodeUriRequest.execute();
 
         // This is where we'd prompt the user with the URI to allow us to query specific account info
         System.out.println("URI: " + uri.toString());
+
+        Desktop desktop = Desktop.getDesktop();
+
+        desktop.browse(uri);
 
         return uri.toString();
     }
