@@ -202,16 +202,22 @@ public class UserPage  {
 
             if (!(searchBar.getText().trim().isEmpty())) {
 
-                Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
+                if((user.searchTracks(searchBar.getText().trim()).getItems().length !=0)) {
 
-                if (!(itemsSearchResults.contains(searchBar.getText().trim()))) {
+                    Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
 
-                    for (int i = 0; i <= 9; i++) {
-                        Track[] song = tracks.getItems();
+                    if (!(itemsSearchResults.contains(searchBar.getText().trim()))) {
 
-                        itemsSearchResults.add(song[i].getName());
+                        for (int i = 0; i <= 9; i++) {
+                            Track[] song = tracks.getItems();
 
+                            itemsSearchResults.add(song[i].getName());
+
+                        }
                     }
+                } else {
+
+                    itemsSearchResults.add("");
                 }
             }else {
 
