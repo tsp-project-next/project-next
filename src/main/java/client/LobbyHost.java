@@ -145,6 +145,7 @@ public class LobbyHost {
     public static void playlistCleanup() {
         try {
             spotifyApi.unfollowPlaylist(userId, playlistId).build().execute();
+            System.out.println("Unfollowed playlist");
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in playlistCleanup: " + e.getMessage());
         }

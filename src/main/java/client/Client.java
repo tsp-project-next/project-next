@@ -77,7 +77,7 @@ public class Client {
     public boolean sendPacket(String data, String cid) {
         try {
             //Create a packet to send
-            Packet packet = new Packet(data, cid);
+            Packet packet = new Packet(cid);
             toServer.writeObject(packet);
             System.out.println("Object sent to server...");
             return true;
@@ -111,7 +111,10 @@ public class Client {
 
     //Use this method to switch through and handle different received packets
     public void handleReceivedPacket(Packet packet) {
-        System.out.println("Received packet with data: " + packet.getData());
+
+        // Need to determine what kind of packet we have and what we want to do with it
+
+        System.out.println("Received packet with data: ");
     }
 
     class HandleServer implements Runnable {
