@@ -3,8 +3,12 @@ package client;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.AuthorizationCodeCredentials;
+import com.wrapper.spotify.model_objects.specification.Playlist;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
+import com.wrapper.spotify.requests.data.playlists.CreatePlaylistRequest;
+import com.wrapper.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
+import com.wrapper.spotify.model_objects.specification.User;
 
 import java.awt.*;
 import java.io.IOException;
@@ -18,6 +22,8 @@ public class LobbyHost {
 
     // We might not need this?
     private static String code = "";
+    private static String userId = "";
+    private static String playlistUri = "";
     private static AuthorizationCodeRequest authorizationCodeRequest = null;
 
     public LobbyHost(String clientId, String clientSecret, URI redirectURI) {
@@ -30,7 +36,7 @@ public class LobbyHost {
 
         authorizationCodeUriRequest = spotifyApi.authorizationCodeUri()
                 .state("thisisouruniqueidentifier")
-                .scope("user-read-birthdate,user-read-email")
+                .scope("playlist-modify-public,playlist-modify-private,playlist-read-private,playlist-read-collaborative,app-remote-control,user-read-currently-playing,streaming")
                 .show_dialog(true)
                 .build();
 
@@ -106,5 +112,37 @@ public class LobbyHost {
         //System.out.println(authCode);
 
         code = authCode;
+    }
+
+    public static void createPlaylist() {
+        GetCurrentUsersProfileRequest profileRequest = spotifyApi.getCurrentUsersProfile().build();
+
+        try {
+            final User user = profileRequest.execute();
+
+            userId = user.getDisplayName();
+
+            CreatePlaylistRequest createPlaylistRequest = spotifyApi.createPlaylist(userId, "queue")
+                    .collaborative(false)
+                    .public_(false)
+                    .description("Bot queue")
+                    .build();
+
+            final Playlist playlist = createPlaylistRequest.execute();
+
+            System.out.println("Name: " + playlist.getName() + "\n");
+            System.out.println("URI: " + playlist.getUri() + "\n");
+
+            playlistUri = playlist.getUri();
+
+            playlist.
+
+        } catch (IOException | SpotifyWebApiException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public static void playlistCleanup() {
+
     }
 }

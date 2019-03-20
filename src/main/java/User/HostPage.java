@@ -56,6 +56,8 @@ public class HostPage {
 
         LobbyHost.authorizationCode_Sync();
 
+        LobbyHost.createPlaylist();
+
 
         // Setting up the formatting for the main grid controller--------
         GridPane controller = new GridPane();
