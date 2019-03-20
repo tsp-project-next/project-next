@@ -54,7 +54,7 @@ public class LobbyHost {
         return uri.toString();
     }
 
-    public static void authorizationCode_Sync() {
+    public static boolean authorizationCode_Sync() {
         authorizationCodeRequest = spotifyApi.authorizationCode(code).build();
 
         //System.out.println("Current Code: " + code + "\n");
@@ -67,8 +67,12 @@ public class LobbyHost {
             spotifyApi.setRefreshToken(authorizationCodeCredentials.getRefreshToken());
 
             System.out.println("Expires in: " + authorizationCodeCredentials.getExpiresIn());
+
+            return true;
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in authorizationCode_Sync() Lobby Host: " + e.getMessage());
+
+            return false;
         }
     }
 
