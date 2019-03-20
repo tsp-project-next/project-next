@@ -37,35 +37,24 @@ public class HostPage {
 
     private static Scene hostPage = null;
     private String code;
+    private String authorizationCode;
     private int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
     private Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
 
-    public HostPage(String code) {
+    public HostPage(String code, String authorizationCode) {
         this.code = code;
-        UserInterface.getStage().getScene().setRoot(setup(code));
+        UserInterface.getStage().getScene().setRoot(setup(code, authorizationCode));
     }
 
     private Label label;
 
-    private GridPane setup(String code) {
+    private GridPane setup(String code, String authorizationCode) {
 
         LobbyUser user = new LobbyUser(clientId, clientSecret);
 
-        TextInputDialog urlCode = new TextInputDialog("URL");
-        urlCode.setContentText("paste url here");
-        urlCode.show();
+        LobbyHost.setAuthCode(authorizationCode);
 
-        String authorizationCode = "";
-
-        // Set auth code from box in here
-
-        // End set auth code
-
-        LobbyHost host = new LobbyHost(clientId, clientSecret, redirectUri);
-
-        host.setAuthCode(authorizationCode);
-
-        host.authorizationCode_Sync();
+        LobbyHost.authorizationCode_Sync();
 
 
         // Setting up the formatting for the main grid controller--------

@@ -1,6 +1,7 @@
 package User;
 
-import com.wrapper.spotify.model_objects.specification.User;
+import client.LobbyHost;
+import com.wrapper.spotify.SpotifyHttpManager;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -9,16 +10,38 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.awt.Toolkit;
-
+import java.net.URI;
+import java.util.Optional;
 
 public class LandingPage {
     private static Scene landingScene = null;
+    private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
+    private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
+    private void showInputTextDialog() {
+
+        LobbyHost host = new LobbyHost(clientId, clientSecret, redirectUri);
+
+        TextInputDialog dialog = new TextInputDialog("walter");
+        dialog.setTitle("Text Input Dialog");
+        dialog.setHeaderText("Look, a Text Input Dialog");
+        dialog.setContentText("Please enter your name:");
+
+        Optional<String> result = dialog.showAndWait();
+
+        if (!(result.toString().trim().equals("Optional[]"))) {
+            System.out.println(result);
+            result.ifPresent(UserInterface::loadHostPage);
+        }
+    }
+
     public LandingPage() {
         double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double screenHeight = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -60,7 +83,11 @@ public class LandingPage {
         // Host button the connects to the host page
         Button host = new Button("Host");
         host.setPrefSize(screenWidth / 8, screenHeight / 12);
-        host.setOnAction(event -> UserInterface.loadHostPage());
+        host.setOnAction(event -> {
+
+            showInputTextDialog();
+
+        });
 
         // Join button that connects to the join page using the given code in the text field
         Button join = new Button("Join");
