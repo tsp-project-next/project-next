@@ -69,8 +69,8 @@ public class UserInterface extends Application{
     }
 
     //displays host page on the window
-    public static void loadHostPage(String authorizationCode) {
-        HostPage hostPage = new HostPage(Utilities.codeGenerator(), authorizationCode);
+    public static void loadHostPage(String authorizationCode, LobbyHost host) {
+        HostPage hostPage = new HostPage(Utilities.codeGenerator(), authorizationCode, host);
         //getStage().setScene(hostPage.getScene());
     }
 

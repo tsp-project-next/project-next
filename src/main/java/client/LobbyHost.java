@@ -24,6 +24,7 @@ public class LobbyHost {
     private static String code = "";
     private static String userId = "";
     private static String playlistUri = "";
+    private static String playlistId = "";
     private static AuthorizationCodeRequest authorizationCodeRequest = null;
 
     public LobbyHost(String clientId, String clientSecret, URI redirectURI) {
@@ -134,15 +135,18 @@ public class LobbyHost {
             System.out.println("URI: " + playlist.getUri() + "\n");
 
             playlistUri = playlist.getUri();
-
-            playlist.
+            playlistId = playlist.getId();
 
         } catch (IOException | SpotifyWebApiException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error in createPlaylist: " + e.getMessage());
         }
     }
 
     public static void playlistCleanup() {
-
+        try {
+            spotifyApi.unfollowPlaylist(userId, playlistId).build().execute();
+        } catch (IOException | SpotifyWebApiException e) {
+            System.out.println("Error in playlistCleanup: " + e.getMessage());
+        }
     }
 }

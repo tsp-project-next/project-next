@@ -38,7 +38,10 @@ public class LandingPage {
 
         if (!(result.toString().trim().equals("Optional[]"))) {
             System.out.println(result);
-            result.ifPresent(UserInterface::loadHostPage);
+
+            if (result.isPresent()) {
+                UserInterface.loadHostPage(result.toString(), host);
+            }
         }
     }
 

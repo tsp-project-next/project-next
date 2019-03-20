@@ -35,14 +35,17 @@ public class HostPage {
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
     private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
 
+    private static LobbyHost host = null;
+
     private static Scene hostPage = null;
     private String code;
     private String authorizationCode;
     private int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
     private Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
 
-    public HostPage(String code, String authorizationCode) {
+    public HostPage(String code, String authorizationCode, LobbyHost host) {
         this.code = code;
+        this.host = host;
         UserInterface.getStage().getScene().setRoot(setup(code, authorizationCode));
     }
 
@@ -52,11 +55,11 @@ public class HostPage {
 
         LobbyUser user = new LobbyUser(clientId, clientSecret);
 
-        LobbyHost.setAuthCode(authorizationCode);
+        host.setAuthCode(authorizationCode);
 
-        LobbyHost.authorizationCode_Sync();
+        host.authorizationCode_Sync();
 
-        LobbyHost.createPlaylist();
+        host.createPlaylist();
 
 
         // Setting up the formatting for the main grid controller--------
