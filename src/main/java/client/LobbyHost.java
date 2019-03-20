@@ -57,6 +57,8 @@ public class LobbyHost {
     public static void authorizationCode_Sync() {
         authorizationCodeRequest = spotifyApi.authorizationCode(code).build();
 
+        //System.out.println("Current Code: " + code + "\n");
+
         try {
             final AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
 
@@ -71,6 +73,34 @@ public class LobbyHost {
     }
 
     public static void setAuthCode(String authCode) {
+        //System.out.println(authCode);
+
+        int start = 0, finish = 0;
+
+        for (int i = 0; i < authCode.length(); i++)
+        {
+            if (authCode.charAt(i) == '?') {
+                if (authCode.charAt(i + 1) == 'c') {
+                    if (authCode.charAt(i + 2) == 'o') {
+                        if (authCode.charAt(i + 3) == 'd') {
+                            if (authCode.charAt(i + 4) == 'e')
+                                start = i + 6;
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = start; i < authCode.length(); i++)
+        {
+            if (authCode.charAt(i) == '&')
+                finish = i;
+        }
+
+        authCode = authCode.substring(start, finish);
+
+        //System.out.println(authCode);
+
         code = authCode;
     }
 }
