@@ -1,3 +1,4 @@
+import User.Utilities;
 import client.Client;
 import org.junit.Test;
 
@@ -22,6 +23,6 @@ public class ClientTest {
     @Test
     public void sendPacketTest() {
         org.junit.Assume.assumeTrue(client.isConnectionEstablished());
-        assertTrue(client.sendPacket("test", "host"));
+        assertTrue(client.sendPacket(Utilities.generatePacketIdentifier(), 0));
     }
 }

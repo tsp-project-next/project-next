@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Packet implements Serializable {
 
-    private String clientIdentifier;
+    private int packetIdentifier;
 
     private int packetType;
 
@@ -16,8 +16,8 @@ public class Packet implements Serializable {
 
     private int flag;
 
-    public Packet(String cId, int packetType) {
-        this.clientIdentifier = cId;
+    public Packet(int packetIdentifier, int packetType) {
+        this.packetIdentifier = packetIdentifier;
         this.packetType = packetType;
     }
 
@@ -49,8 +49,8 @@ public class Packet implements Serializable {
         return playlistURI;
     }
 
-    public String getClientIdentifier() {
-        return clientIdentifier;
+    public int getPacketIdentifier() {
+        return packetIdentifier;
     }
 
     public int getPacketType() {

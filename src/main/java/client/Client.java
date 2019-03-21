@@ -1,5 +1,6 @@
 package client;
 
+import User.Utilities;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.SpotifyHttpManager;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
@@ -40,7 +41,7 @@ public class Client {
         new Thread(new HandleServer(socket, fromServer)).start();
 
         //Send a test packet to the server
-        sendPacket("Testing", "host");
+        sendPacket(Utilities.generatePacketIdentifier(), 0);
     }
 
     public boolean establishConnection(String host) {
@@ -74,10 +75,10 @@ public class Client {
         }
     }
 
-    public boolean sendPacket(String data, String cid) {
+    public boolean sendPacket(int packetID, int packetType) {
         try {
             //Create a packet to send
-            Packet packet = new Packet(cid);
+            Packet packet = new Packet(packetID, packetType);
             toServer.writeObject(packet);
             System.out.println("Object sent to server...");
             return true;

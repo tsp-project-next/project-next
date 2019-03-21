@@ -1,6 +1,5 @@
 package User;
 
-import java.nio.charset.Charset;
 import java.util.Random;
 
 public class Utilities {
@@ -22,4 +21,10 @@ public class Utilities {
     public static String makeHostCode(String code) {
         return "Host-" + code;
     }
+
+    public static int generatePacketIdentifier() {
+        int packetID = new Random().nextInt(999999999);
+        return packetID;
+    }
+
 }
