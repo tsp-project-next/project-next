@@ -75,7 +75,7 @@ public class Client {
         }
     }
 
-    public boolean sendPacket(int packetID, int packetType) {
+    public boolean sendPacket(String packetID, int packetType) {
         try {
             //Create a packet to send
             Packet packet = new Packet(packetID, packetType);

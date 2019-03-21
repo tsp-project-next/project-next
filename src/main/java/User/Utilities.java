@@ -22,9 +22,10 @@ public class Utilities {
         return "Host-" + code;
     }
 
-    public static int generatePacketIdentifier() {
+    public static String generatePacketIdentifier() {
         int packetID = 1 + new Random().nextInt(999999998);
-        return packetID;
+        String result = String.format("%09d", packetID);
+        return result;
     }
 
 }
