@@ -113,9 +113,32 @@ public class Client {
     //Use this method to switch through and handle different received packets
     public void handleReceivedPacket(Packet packet) {
 
-        // Need to determine what kind of packet we have and what we want to do with it
+        System.out.println("Received packet...");
 
-        System.out.println("Received packet with data: ");
+        switch(packet.getPacketType()) {
+            case 0:
+                System.out.println("Packet type: 0");
+                break;
+            case 1:
+                System.out.println("Packet type: 1");
+                break;
+            case 2:
+                System.out.println("Packet type: 2");
+                break;
+            case 3:
+                System.out.println("Packet type: 3");
+                break;
+            case 4:
+                System.out.println("Packet type: 4");
+                break;
+            case 5:
+                System.out.println("Packet type: 5");
+                break;
+            default:
+                System.out.println("Packet Type Mismatch...");
+                break;
+        }
+
     }
 
     class HandleServer implements Runnable {
