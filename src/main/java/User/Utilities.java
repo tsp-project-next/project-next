@@ -23,7 +23,7 @@ public class Utilities {
     }
 
     public static int generatePacketIdentifier() {
-        int packetID = new Random().nextInt(999999999);
+        int packetID = 1 + new Random().nextInt(999999998);
         return packetID;
     }
 
