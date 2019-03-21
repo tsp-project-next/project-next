@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: net.sourceforge.htmlunit:htmlunit-cssparser:1.3.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.sourceforge.htmlunit/htmlunit-cssparser/1.3.0/f0f6762dc92eb3fe0ce6f221ac40e023e8e04a26/htmlunit-cssparser-1.3.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.sourceforge.htmlunit/htmlunit-cssparser/1.3.0/c24dfddd8bca9e6ea692df645e6eeb892c71c3ff/htmlunit-cssparser-1.3.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

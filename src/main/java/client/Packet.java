@@ -6,6 +6,8 @@ public class Packet implements Serializable {
 
     private String clientIdentifier;
 
+    private int packetType;
+
     private String playlistURI;
 
     private String songURI;
@@ -14,8 +16,9 @@ public class Packet implements Serializable {
 
     private int flag;
 
-    public Packet(String cId) {
+    public Packet(String cId, int packetType) {
         this.clientIdentifier = cId;
+        this.packetType = packetType;
     }
 
     public void setFlag(int flag) {
@@ -48,6 +51,10 @@ public class Packet implements Serializable {
 
     public String getClientIdentifier() {
         return clientIdentifier;
+    }
+
+    public int getPacketType() {
+        return packetType;
     }
 
 }
