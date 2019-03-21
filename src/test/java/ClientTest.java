@@ -23,6 +23,6 @@ public class ClientTest {
     @Test
     public void sendPacketTest() {
         org.junit.Assume.assumeTrue(client.isConnectionEstablished());
-        assertTrue(client.sendPacket(Utilities.generatePacketIdentifier(), 0));
+        assertTrue(client.sendPacket(Utilities.generatePacketIdentifier(), 0, null, null, null));
     }
 }

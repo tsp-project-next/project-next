@@ -41,7 +41,7 @@ public class Client {
         new Thread(new HandleServer(socket, fromServer)).start();
 
         //Send a test packet to the server
-        sendPacket(Utilities.generatePacketIdentifier(), 0);
+        sendPacket(Utilities.generatePacketIdentifier(), 0, null, null, null);
     }
 
     public boolean establishConnection(String host) {
@@ -75,10 +75,10 @@ public class Client {
         }
     }
 
-    public boolean sendPacket(String packetID, int packetType) {
+    public boolean sendPacket(String packetIdentifier, int packetType, String playlistURI, String songURI, String lobby) {
         try {
             //Create a packet to send
-            Packet packet = new Packet(packetID, packetType);
+            Packet packet = new Packet(packetIdentifier, packetType, playlistURI, songURI, lobby);
             toServer.writeObject(packet);
             System.out.println("Object sent to server...");
             return true;
@@ -116,9 +116,11 @@ public class Client {
         System.out.println("Received packet...");
 
         switch(packet.getPacketType()) {
+            //packet type 0 = lobby creation
             case 0:
                 System.out.println("Packet type: 0");
                 break;
+            //packet type 1 = lobby join
             case 1:
                 System.out.println("Packet type: 1");
                 break;
