@@ -9,6 +9,8 @@ import com.wrapper.spotify.requests.authorization.authorization_code.Authorizati
 import com.wrapper.spotify.requests.data.playlists.CreatePlaylistRequest;
 import com.wrapper.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
 import com.wrapper.spotify.model_objects.specification.User;
+import User.Utilities;
+import User.UserInterface;
 
 import java.awt.*;
 import java.io.IOException;
@@ -136,6 +138,8 @@ public class LobbyHost {
 
             playlistUri = playlist.getUri();
             playlistId = playlist.getId();
+
+            UserInterface.client.sendPacket(Utilities.generatePacketIdentifier(),0, playlistUri, null, null);
 
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in createPlaylist: " + e.getMessage());

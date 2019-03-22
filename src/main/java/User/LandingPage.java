@@ -1,5 +1,6 @@
 package User;
 
+import client.Client;
 import client.LobbyHost;
 import com.wrapper.spotify.SpotifyHttpManager;
 import javafx.application.Platform;

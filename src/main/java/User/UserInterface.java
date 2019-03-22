@@ -24,6 +24,8 @@ public class UserInterface extends Application{
     private static Stage mainStage = null;
     private static Scene mainScene = null;
 
+    public static Client client;
+
     public static void main(String[] args) {
         if (args[0].equalsIgnoreCase("client"))
         {
@@ -38,7 +40,7 @@ public class UserInterface extends Application{
         System.out.println("Input argument: " + args[0]);
 
         //create a new client object
-        Client client = new Client();
+        client = new Client();
 
         Application.launch(args);
 

@@ -40,8 +40,6 @@ public class Client {
         //create a new thread to read in all new information from the server
         new Thread(new HandleServer(socket, fromServer)).start();
 
-        //Send a test packet to the server
-        sendPacket(Utilities.generatePacketIdentifier(), 0, null, null, null);
     }
 
     public boolean establishConnection(String host) {
