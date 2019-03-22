@@ -125,7 +125,9 @@ public class LobbyHost {
         try {
             final User user = profileRequest.execute();
 
-            userId = user.getDisplayName();
+            userId = user.getId();
+
+
 
             CreatePlaylistRequest createPlaylistRequest = spotifyApi.createPlaylist(userId, "queue")
                     .collaborative(false)
