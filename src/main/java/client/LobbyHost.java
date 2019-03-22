@@ -29,6 +29,7 @@ public class LobbyHost {
     private static String userId = "";
     private static String playlistUri = "";
     private static String playlistId = "";
+    private static String deviceId = "";
     private static AuthorizationCodeRequest authorizationCodeRequest = null;
 
     public LobbyHost(String clientId, String clientSecret, URI redirectURI) {
@@ -127,8 +128,6 @@ public class LobbyHost {
 
             userId = user.getId();
 
-
-
             CreatePlaylistRequest createPlaylistRequest = spotifyApi.createPlaylist(userId, "queue")
                     .collaborative(false)
                     .public_(false)
@@ -173,6 +172,9 @@ public class LobbyHost {
             {
                 System.out.println("Device name: " + d.getName());
                 System.out.println("Is active: " + d.getIs_active() + "\n");
+
+                if (d.getIs_active())
+                    deviceId = d.getId();
             }
 
             return devices;
@@ -188,6 +190,15 @@ public class LobbyHost {
             spotifyApi.addTracksToPlaylist(playlistId, songUri).position(0).build().execute();
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in addSong: " + e.getMessage());
+        }
+    }
+
+    public static void startPlaylist() {
+        try {
+            spotifyApi.startResumeUsersPlayback().context_uri(playlistUri).device_id(deviceId)
+                    .position_ms(0).build().execute();
+        } catch (IOException | SpotifyWebApiException e) {
+            System.out.println("Error in startPlaylist: " + e.getMessage());
         }
     }
 }

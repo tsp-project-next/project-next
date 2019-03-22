@@ -69,6 +69,8 @@ public class HostPage {
 
         host.addSong(songs);
 
+        host.startPlaylist();
+
 
         // Setting up the formatting for the main grid controller--------
         GridPane controller = new GridPane();

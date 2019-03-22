@@ -30,10 +30,10 @@ public class LandingPage {
 
         LobbyHost host = new LobbyHost(clientId, clientSecret, redirectUri);
 
-        TextInputDialog dialog = new TextInputDialog("walter");
-        dialog.setTitle("Text Input Dialog");
-        dialog.setHeaderText("Look, a Text Input Dialog");
-        dialog.setContentText("Please enter your name:");
+        TextInputDialog dialog = new TextInputDialog("");
+        dialog.setTitle("URL Input");
+        dialog.setHeaderText("Input");
+        dialog.setContentText("Please enter the URL:");
 
         Optional<String> result = dialog.showAndWait();
 
