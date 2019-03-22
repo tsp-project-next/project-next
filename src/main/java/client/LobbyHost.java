@@ -3,6 +3,7 @@ package client;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.AuthorizationCodeCredentials;
+import com.wrapper.spotify.model_objects.miscellaneous.Device;
 import com.wrapper.spotify.model_objects.specification.Playlist;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
@@ -11,6 +12,7 @@ import com.wrapper.spotify.requests.data.users_profile.GetCurrentUsersProfileReq
 import com.wrapper.spotify.model_objects.specification.User;
 import User.Utilities;
 import User.UserInterface;
+import javafx.scene.effect.Light;
 
 import java.awt.*;
 import java.io.IOException;
@@ -39,7 +41,7 @@ public class LobbyHost {
 
         authorizationCodeUriRequest = spotifyApi.authorizationCodeUri()
                 .state("thisisouruniqueidentifier")
-                .scope("playlist-modify-public,playlist-modify-private,playlist-read-private,playlist-read-collaborative,app-remote-control,user-read-currently-playing,streaming")
+                .scope("playlist-modify-public,playlist-modify-private,playlist-read-private,playlist-read-collaborative,app-remote-control,user-read-currently-playing,streaming,user-read-playback-state,user-modify-playback-state")
                 .show_dialog(true)
                 .build();
 
@@ -141,6 +143,8 @@ public class LobbyHost {
 
             UserInterface.client.sendPacket(Utilities.generatePacketIdentifier(),0, playlistUri, null, null);
 
+            playlistCleanup();
+
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in createPlaylist: " + e.getMessage());
         }
@@ -152,6 +156,36 @@ public class LobbyHost {
             System.out.println("Unfollowed playlist");
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in playlistCleanup: " + e.getMessage());
+        }
+    }
+
+    public static String playlistExport() {
+        return playlistUri;
+    }
+
+    public static Device[] getDevices() {
+        try {
+            final Device[] devices = spotifyApi.getUsersAvailableDevices().build().execute();
+
+            for (Device d : devices)
+            {
+                System.out.println("Device name: " + d.getName());
+                System.out.println("Is active: " + d.getIs_active() + "\n");
+            }
+
+            return devices;
+        } catch (IOException | SpotifyWebApiException e) {
+            System.out.print("Error in getDevices: " + e.getMessage());
+
+            return null;
+        }
+    }
+
+    public static void addSong(String[] songUri) {
+        try {
+            spotifyApi.addTracksToPlaylist(playlistId, songUri).position(0).build().execute();
+        } catch (IOException | SpotifyWebApiException e) {
+            System.out.println("Error in addSong: " + e.getMessage());
         }
     }
 }

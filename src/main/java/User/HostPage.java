@@ -61,6 +61,14 @@ public class HostPage {
 
         host.createPlaylist();
 
+        host.playlistExport();
+
+        host.getDevices();
+
+        String[] songs = new String[]{"spotify:track:7GhIk7Il098yCjg4BQjzvb"};
+
+        host.addSong(songs);
+
 
         // Setting up the formatting for the main grid controller--------
         GridPane controller = new GridPane();
