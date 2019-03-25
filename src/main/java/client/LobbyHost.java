@@ -12,7 +12,6 @@ import com.wrapper.spotify.requests.data.users_profile.GetCurrentUsersProfileReq
 import com.wrapper.spotify.model_objects.specification.User;
 import User.Utilities;
 import User.UserInterface;
-import javafx.scene.effect.Light;
 
 import java.awt.*;
 import java.io.IOException;
@@ -32,6 +31,8 @@ public class LobbyHost {
     private static String deviceId = "";
     private static AuthorizationCodeRequest authorizationCodeRequest = null;
 
+    // Constructor to build our initial API requests so we can begin to make requests like generating URIs
+    // and initializing our scope for authorization
     public LobbyHost(String clientId, String clientSecret, URI redirectURI) {
 
         spotifyApi = new SpotifyApi.Builder()
@@ -53,6 +54,8 @@ public class LobbyHost {
         }
     }
 
+    // We use this to build a desktop authorization URI to gain spotify authorization privileges for
+    // a specific user
     public static String generateURI() throws Exception {
         final URI uri = authorizationCodeUriRequest.execute();
 
@@ -66,6 +69,8 @@ public class LobbyHost {
         return uri.toString();
     }
 
+    // After a user navigates the URI and authorizes us manually for account access,
+    // we call this method to build our API to make requests on behalf of the user account
     public static boolean authorizationCode_Sync() {
         authorizationCodeRequest = spotifyApi.authorizationCode(code).build();
 
@@ -88,6 +93,7 @@ public class LobbyHost {
         }
     }
 
+    // Parse the authorization code from given OAuth URL so we can successfully create our request methods
     public static void setAuthCode(String authCode) {
         //System.out.println(authCode);
 
@@ -120,6 +126,9 @@ public class LobbyHost {
         code = authCode;
     }
 
+    // Create a playlist and instantly unfollow it so that we can keep direct progress hidden from the user
+    // This allows us to do as much as we might need to without creating a noticeable footprint on the
+    // user's spotify account
     public static void createPlaylist() {
         GetCurrentUsersProfileRequest profileRequest = spotifyApi.getCurrentUsersProfile().build();
 
@@ -151,6 +160,7 @@ public class LobbyHost {
         }
     }
 
+    // Unfollow the playlist, we can't delete playlists so this helps us keep the user's account clear
     public static void playlistCleanup() {
         try {
             spotifyApi.unfollowPlaylist(userId, playlistId).build().execute();
@@ -160,10 +170,12 @@ public class LobbyHost {
         }
     }
 
+    // Return the stored playlist URI so that the user can save it manually
     public static String playlistExport() {
         return playlistUri;
     }
 
+    // List available playback devices for the authorized user account, determine which are active
     public static Device[] getDevices() {
         try {
             final Device[] devices = spotifyApi.getUsersAvailableDevices().build().execute();
@@ -185,6 +197,7 @@ public class LobbyHost {
         }
     }
 
+    // Add songs to the stored playlist
     public static void addSong(String[] songUri) {
         try {
             spotifyApi.addTracksToPlaylist(playlistId, songUri).position(0).build().execute();
@@ -193,6 +206,7 @@ public class LobbyHost {
         }
     }
 
+    // Begin playback from the beginning of the stored playlist
     public static void startPlaylist() {
         try {
             spotifyApi.startResumeUsersPlayback().context_uri(playlistUri).device_id(deviceId)
