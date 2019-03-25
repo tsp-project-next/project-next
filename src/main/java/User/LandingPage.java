@@ -1,6 +1,5 @@
 package User;
 
-import client.Client;
 import client.LobbyHost;
 import com.wrapper.spotify.SpotifyHttpManager;
 import javafx.application.Platform;
@@ -54,7 +53,7 @@ public class LandingPage {
         root.setGridLinesVisible(false);
         root.setStyle("-fx-background-color: transparent");
 
-        // Sizes columns to the size of the screen
+        // Sizes columns to the size of the screen -----------------------
         ColumnConstraints column1 = new ColumnConstraints();
         ColumnConstraints column2 = new ColumnConstraints();
         ColumnConstraints column3 = new ColumnConstraints();
@@ -62,8 +61,9 @@ public class LandingPage {
         column2.setMinWidth(screenWidth / 3);
         column3.setMinWidth(screenWidth / 3);
         column2.setHalignment(HPos.CENTER);
+        //----------------------------------------------------------------
 
-        // Sizes columns to the size of the screen
+        // Sizes columns to the size of the screen -----------------------
         RowConstraints row1 = new RowConstraints();
         RowConstraints row2 = new RowConstraints();
         RowConstraints row3 = new RowConstraints();
@@ -73,18 +73,21 @@ public class LandingPage {
         row1.setValignment(VPos.CENTER);
         row2.setValignment(VPos.CENTER);
         row3.setValignment(VPos.TOP);
+        //---------------------------------------------------------------
 
-        // Adds column and row contraints to the GridPane
+        // Adds column and row contraints to the GridPane ----------------
         root.getColumnConstraints().addAll(column1, column2, column3);
         root.getRowConstraints().addAll(row1, row2, row3);
+        //----------------------------------------------------------------
 
-        // Title of the application
+        // Title of the application---------------------------------------
         Text title = new Text("PROJECT NEXT");
         title.resize(screenWidth / 8, screenHeight / 12);
         title.setFont(Font.font(Font.getDefault().toString(), screenWidth / 20));
         title.setFill(Color.WHITE);
+        //----------------------------------------------------------------
 
-        // Host button the connects to the host page
+        // Host button the connects to the host page ---------------------
         Button host = new Button("Host");
         host.setPrefSize(screenWidth / 8, screenHeight / 12);
         host.setOnAction(event -> {
@@ -92,8 +95,9 @@ public class LandingPage {
             showInputTextDialog();
 
         });
+        //----------------------------------------------------------------
 
-        // Join button that connects to the join page using the given code in the text field
+        //Join Button with Text Field, checks for validity of code -------
         Button join = new Button("Join");
         join.setPrefSize(screenWidth / 8, screenHeight / 12);
 
@@ -109,7 +113,6 @@ public class LandingPage {
         invalidCode.setContentText("Code must be 4 characters.");
         invalidCode.setHeaderText("Invaid Code");
         invalidCode.setTitle("Invaid Code");
-        //invalidCode.initOwner(UserInterface.getStage());
 
         join.setOnAction(event -> {
             if (joinCode.getText().trim().length() == 4) {
@@ -118,7 +121,9 @@ public class LandingPage {
                 invalidCode.show();
             }
         });
+        //----------------------------------------------------------------
 
+        //Exit Button ----------------------------------------------------
         Button exit = new Button("X");
         exit.setOnAction(event -> Platform.exit());
 
@@ -130,6 +135,7 @@ public class LandingPage {
         root.add(host, 1, 1);
         root.add(joinElements, 1, 2);
         root.add(exitFormat, 2, 0);
+        //----------------------------------------------------------------
 
         UserInterface.getStage().getScene().setRoot(root);
     }

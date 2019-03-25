@@ -34,7 +34,7 @@ public class UserPage  {
 
         LobbyUser user = new LobbyUser(clientId, clientSecret);
 
-        // Makes a GridPane Called Root
+        // Makes a GridPane Called Root ----------------------------------
         GridPane root = new GridPane();
         root.setPadding(new Insets(5));
         root.setHgap(10);
@@ -43,11 +43,13 @@ public class UserPage  {
         root.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight());
         root.setMinSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight());
         root.setStyle("-fx-background-color: transparent");
+        //----------------------------------------------------------------
 
-        // Makes a VBox called stack
+        // Makes a VBox called stack -------------------------------------
         VBox stack = new VBox();
+        //----------------------------------------------------------------
 
-        // Sets col and row constraints to grow or not
+        // Sets col and row constraints to grow or not -------------------
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setHgrow(Priority.ALWAYS);
 
@@ -62,34 +64,40 @@ public class UserPage  {
 
         root.getColumnConstraints().addAll(col1, col1, col1, col1, col1 ,col1, col1);
         root.getRowConstraints().addAll(row1, row2, row1, row2, row2, row2, row1);
+        //----------------------------------------------------------------
 
-        //Changes the root of the stage's scene
+        //Changes the root of the stage's scene --------------------------
         UserInterface.getStage().getScene().setRoot(root);
+        //----------------------------------------------------------------
 
-        // Start text zones, font is for scaling font sizes
+        // Start text zones, font is for scaling font sizes --------------
         int font = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()/40;
+        //----------------------------------------------------------------
 
-        // Makes the code displayer for top left of the screen
+        // Makes the code displayer for top left of the screen -----------
         Text code = new Text();
         code.setText("Code:" + Code);
         code.setFill(Color.WHITE);
         code.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
         root.add(code,0, 0);
+        //----------------------------------------------------------------
 
-        // Makes the header for the queue scroll panel
+        // Makes the header for the queue scroll panel -------------------
         Text queue = new Text();
         queue.setText("Play Queue");
         queue.setFill(Color.WHITE);
         queue.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
         root.add(queue,5, 2, 2, 1);
+        //----------------------------------------------------------------
 
-        // Makes and Adds the search bar to the header of the search box and displays the prompt text 'Searching....'
+        // Makes and Adds the search bar to the header -------------------
         TextField searchBar = new TextField();
         searchBar.setMaxSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         searchBar.setPromptText("Search....");
         root.add(searchBar, 0,2);
+        //----------------------------------------------------------------
 
-        // Makes a ScrollPane called searchResults and adds it to the left of the screen with the list
+        // Makes a ScrollPane called searchResults -----------------------
         ScrollPane searchResults = new ScrollPane();
         ListView<String> listSearchResults = new ListView<>();
         ObservableList<String> itemsSearchResults = FXCollections.observableArrayList("");
@@ -100,8 +108,9 @@ public class UserPage  {
         searchResults.setFitToWidth(true);
         searchResults.setMaxWidth((1*Toolkit.getDefaultToolkit().getScreenSize().getWidth())/4);
         root.add(searchResults, 0,3,2,2);
+        //----------------------------------------------------------------
 
-        // Makes a ScrollPane called playQueue and adds it to the right of the screen with the list
+        // Makes a ScrollPane called playQueue ---------------------------
         ScrollPane playQueue = new ScrollPane();
         ListView<String> listPlayQueue = new ListView<>();
         ObservableList<String> itemsPlayQueue = FXCollections.observableArrayList("");
@@ -112,7 +121,9 @@ public class UserPage  {
         playQueue.setFitToWidth(true);
         playQueue.setMaxWidth((1*Toolkit.getDefaultToolkit().getScreenSize().getWidth())/4);
         root.add(playQueue, 5,3,2,2);
+        //----------------------------------------------------------------
 
+        // Current Playing Display ---------------------------------------
         String Song = "Song Title: ";
         String Artist = "Artist: ";
         String Album = "Album: ";
@@ -124,39 +135,34 @@ public class UserPage  {
             Album += itemsPlayQueue.get(0);
         }
 
-        // Makes the header for the middle of the screen information for the current song
         Text playing = new Text();
         playing.setText("Playing ");
         playing.setFill(Color.WHITE);
         playing.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
 
-        // Makes the song title displayer
         Text songTitle = new Text();
         songTitle.setText(Song);
         songTitle.setFill(Color.WHITE);
         songTitle.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
 
-        // Makes the artist displayer
         Text artist = new Text();
         artist.setText(Artist);
         artist.setFill(Color.WHITE);
         artist.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
 
-        // Makes the album displayer
         Text album = new Text();
         album.setText(Album);
         album.setFill(Color.WHITE);
         album.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
 
-        // Sets the spacing between the displayer's
         stack.setSpacing(40);
 
-        // Adds the diplayers to the middle of the screen
         stack.getChildren().addAll(playing, songTitle, artist, album);
         stack.setAlignment(Pos.TOP_LEFT);
         root.add(stack, 3, 3, 2,2);
+        //----------------------------------------------------------------
 
-        // Makes and Adds the 'Add' button centered and under the search displayer
+        // Makes and Adds the 'Add' button to the screen -----------------
         Button add = new Button("Add");
         add.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         add.setOnAction(event -> {
@@ -191,9 +197,9 @@ public class UserPage  {
             }
         });
         root.add(add, 0,5, 2,1);
+        //----------------------------------------------------------------
 
-        // Makes and Adds the 'Search' button to the right of the search text field in the header of the search display box and takes the searchText and
-        // searched Spotify returning the results to the search
+        // Makes and Adds the 'Search' button to the right of the search -
         Button search = new Button("Search");
         search.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/15, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         search.setOnAction(event -> {
@@ -225,20 +231,23 @@ public class UserPage  {
             }
         });
         root.add(search,1 ,2);
+        //----------------------------------------------------------------
 
-        // Makes and Adds the 'X' button to close the program to the top right of the screen
+        // Makes and Adds the 'X' button ---------------------------------
         Button closeButton = new Button("X");
         closeButton.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/30, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         closeButton.setOnAction(event -> Platform.exit());
         root.add(closeButton, 6, 0);
+        //----------------------------------------------------------------
 
-        // Makes and Adds the 'Leave' button centered and under the queue displayer
+        // Makes and Adds the 'Leave' button -----------------------------
         Button leave = new Button("Leave");
         leave.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         leave.setOnAction(event -> UserInterface.loadLandingPage());
         root.add(leave, 5,5, 2,1);
+        //----------------------------------------------------------------
 
-        // Sets the alignment of the elements inside the GridPane
+        // Sets the alignment of the elements inside the GridPane --------
         GridPane.setHalignment(code, HPos.LEFT);
         GridPane.setValignment(code, VPos.TOP);
 
@@ -276,6 +285,7 @@ public class UserPage  {
 
         GridPane.setHalignment(stack, HPos.CENTER);
         GridPane.setValignment(stack, VPos.CENTER);
+        //----------------------------------------------------------------
 
         root.setGridLinesVisible(false);
     }
