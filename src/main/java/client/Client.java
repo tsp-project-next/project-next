@@ -119,6 +119,7 @@ public class Client {
                 System.out.println("Packet type: 0");
                 if(packet.getLobby() != null) {
                     System.out.println("Lobby code: " + packet.getLobby());
+                    System.out.println("Playlist Uri " + packet.getPlaylistURI());
                 }
                 break;
             //packet type 1 = lobby join
