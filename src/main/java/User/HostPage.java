@@ -98,7 +98,7 @@ public class HostPage {
         endSession.setOnAction(event -> UserInterface.loadLandingPage());
         endHolder.getChildren().add(endSession);
         endHolder.setAlignment(Pos.CENTER);
-        controller.add(endHolder, 2, 2);
+        controller.add(endHolder, 1, 2);
         //----------------------------------------------------------------
 
         // Standard Row Constraints---------------------------------------
@@ -191,6 +191,66 @@ public class HostPage {
         });
 
         controller.add(blacklist, 0, 2);
+        //----------------------------------------------------------------
+
+        // Search --------------------------------------------------------
+        GridPane searchPane = new GridPane();
+
+        Text searchText = new Text("Search:");
+        searchText.setFill(Color.WHITE);
+        searchText.setFont(standard);
+        searchPane.add(searchText, 0, 0);
+
+        GridPane hostSearch = new GridPane();
+        TextField hostSearchText= new TextField();
+        hostSearchText.setPromptText("Search...");
+        Button searchButtonHost = new Button("Search");
+        hostSearch.add(hostSearchText, 0, 0);
+        hostSearch.add(searchButtonHost, 1, 0);
+        searchPane.add(hostSearch, 0, 1);
+
+        ScrollPane searchItems = new ScrollPane();
+        ListView<String> hostSearchList = new ListView<>();
+        ObservableList<String> OhostSearchList = FXCollections.observableArrayList("");
+        hostSearchList.setItems(OhostSearchList);
+        searchItems.setContent(hostSearchList);
+        searchItems.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        searchItems.setFitToHeight(true);
+        searchItems.setFitToWidth(true);
+        searchItems.setMaxWidth((1*Toolkit.getDefaultToolkit().getScreenSize().getWidth())/4);
+        searchPane.add(searchItems, 0, 2);
+        searchPane.setAlignment(Pos.CENTER);
+
+        searchButtonHost.setOnAction(event -> {
+
+            OhostSearchList.clear();
+
+            if (!(hostSearchText.getText().trim().isEmpty())) {
+
+
+                if((user.searchTracks(hostSearchText.getText().trim()).getItems().length !=0)) {
+                    Paging<Track> tracks = user.searchTracks(hostSearchText.getText().trim());
+
+                    if (!(OhostSearchList.contains(hostSearchText.getText().trim()))) {
+
+                        for (int i = 0; i <= 9; i++) {
+                            Track[] song = tracks.getItems();
+
+                            OhostSearchList.add(song[i].getName());
+                        }
+                    }
+                } else {
+
+                    OhostSearchList.add("");
+                }
+            } else {
+
+                OhostSearchList.add("");
+            }
+
+        });
+
+        controller.add(searchPane, 2, 2);
         //----------------------------------------------------------------
 
         // Queue----------------------------------------------------------
