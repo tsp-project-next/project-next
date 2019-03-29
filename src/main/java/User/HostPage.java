@@ -63,6 +63,16 @@ public class HostPage {
 
         host.startPlaylist();
 
+        host.nextSong();
+
+        host.nextSong();
+
+        host.previousSong();
+
+        host.pause();
+
+        host.resume();
+
 
         // Setting up the formatting for the main grid controller--------
         GridPane controller = new GridPane();

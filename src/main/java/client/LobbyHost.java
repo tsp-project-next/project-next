@@ -31,6 +31,8 @@ public class LobbyHost {
     private static String deviceId = "";
     private static AuthorizationCodeRequest authorizationCodeRequest = null;
 
+    private static int currentSongProgress = 0;
+
     // Constructor to build our initial API requests so we can begin to make requests like generating URIs
     // and initializing our scope for authorization
     public LobbyHost(String clientId, String clientSecret, URI redirectURI) {
@@ -201,7 +203,6 @@ public class LobbyHost {
     public static void addSong(String[] songUri) {
         try {
             spotifyApi.addTracksToPlaylist(playlistId, songUri).position(spotifyApi.getPlaylistsTracks(playlistId).build().execute().getTotal()).build().execute();
-
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in addSong: " + e.getMessage());
         }
@@ -214,6 +215,38 @@ public class LobbyHost {
                     .position_ms(0).build().execute();
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in startPlaylist: " + e.getMessage());
+        }
+    }
+
+    public static void resume() {
+        try {
+            spotifyApi.startResumeUsersPlayback().device_id(deviceId).build().execute();
+        } catch (IOException | SpotifyWebApiException e) {
+            System.out.println("Error in resume: " + e.getMessage());
+        }
+    }
+
+    public static void pause() {
+        try {
+            spotifyApi.pauseUsersPlayback().build().execute();
+        } catch (IOException | SpotifyWebApiException e) {
+            System.out.println("Error in pause: " + e.getMessage());
+        }
+    }
+
+    public static void nextSong() {
+        try {
+            spotifyApi.skipUsersPlaybackToNextTrack().device_id(deviceId).build().execute();
+        } catch (IOException | SpotifyWebApiException e) {
+            System.out.println("Error in nextSong: " + e.getMessage());
+        }
+    }
+
+    public static void previousSong() {
+        try {
+            spotifyApi.skipUsersPlaybackToPreviousTrack().device_id(deviceId).build().execute();
+        } catch (IOException | SpotifyWebApiException e) {
+            System.out.println("Error in nextSong: " + e.getMessage());
         }
     }
 }
