@@ -190,6 +190,7 @@ public class UserPage  {
                         // This is for test in local queue
                         // Change this to add to Spotify queue
                         // song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()
+
                         itemsPlayQueue.add(listSearchResults.getSelectionModel().getSelectedItem().trim());
 
                     }

@@ -1,4 +1,5 @@
 package User;
+
 import client.LobbyHost;
 import client.LobbyUser;
 import com.wrapper.spotify.SpotifyHttpManager;
@@ -60,10 +61,6 @@ public class HostPage {
 
         host.getDevices();
 
-        String[] songs = new String[]{"spotify:track:7GhIk7Il098yCjg4BQjzvb"};
-
-        host.addSong(songs);
-
         host.startPlaylist();
 
 
@@ -92,13 +89,6 @@ public class HostPage {
         exitHolder.getChildren().add(exitButton);
         exitHolder.setAlignment(Pos.TOP_RIGHT);
         controller.add(exitHolder, 2, 0);
-
-        VBox endHolder = new VBox();
-        Button endSession = new Button("End Session");
-        endSession.setOnAction(event -> UserInterface.loadLandingPage());
-        endHolder.getChildren().add(endSession);
-        endHolder.setAlignment(Pos.CENTER);
-        controller.add(endHolder, 1, 2);
         //----------------------------------------------------------------
 
         // Standard Row Constraints---------------------------------------
@@ -264,8 +254,7 @@ public class HostPage {
 
         ScrollPane queueItems = new ScrollPane();
         ListView<String> listPlayQueue = new ListView<>();
-        ObservableList<String> itemsPlayQueue = FXCollections.observableArrayList(
-                "first", "second", "third", "fourth");
+        ObservableList<String> itemsPlayQueue = FXCollections.observableArrayList("");
         listPlayQueue.setItems(itemsPlayQueue);
         queueItems.setContent(listPlayQueue);
         queueItems.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -278,6 +267,81 @@ public class HostPage {
         controller.add(queue, 2, 1);
         //----------------------------------------------------------------
 
+        // Makes and Adds the 'Add' button to the screen -----------------
+        HBox endHolder = new HBox();
+        endHolder.setSpacing(40);
+
+        Button addBlack = new Button("Add Blacklist");
+        addBlack.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
+//        addBlack.setOnAction(event -> {
+//
+//            if(!(hostSearchList.getItems().toString().trim().equals("[]"))) {
+//
+//                if (!(hostSearchList.getSelectionModel().getSelectedItems().toString().equals("[]"))) {
+//
+//                    if (!(itemsPlayQueue.contains(hostSearchList.getSelectionModel().getSelectedItem().trim()))) {
+//
+//                        Paging<Track> tracks = user.searchTracks(hostSearchText.getText().trim());
+//
+//                        Track[] song = new Track[0];
+//
+//                        for (int i = 0; i <= 9; i++) {
+//
+//                            song = tracks.getItems();
+//                        }
+//
+//                        // This is for test in local queue
+//                        // Change this to add to Spotify queue
+//                        // song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()
+//
+//                        String[] sName = new String [] {song[OhostSearchList.indexOf(hostSearchList.getSelectionModel().getSelectedItem())].getUri()};
+//
+//                        host.addSong(sName);
+//
+////                        host.startPlaylist();
+//
+////                        itemsPlayQueue.add(hostSearchList.getSelectionModel().getSelectedItem().trim());
+//
+//                    }
+//                }
+//            }
+//        });
+
+        Button addSearch = new Button("Add Search");
+        addSearch.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
+        addSearch.setOnAction(event -> {
+
+            if(!(hostSearchList.getItems().toString().trim().equals("[]"))) {
+
+                if (!(hostSearchList.getSelectionModel().getSelectedItems().toString().equals("[]"))) {
+
+                    if (!(itemsPlayQueue.contains(hostSearchList.getSelectionModel().getSelectedItem().trim()))) {
+
+                        Paging<Track> tracks = user.searchTracks(hostSearchText.getText().trim());
+
+                        Track[] song = new Track[0];
+
+                        for (int i = 0; i <= 9; i++) {
+
+                            song = tracks.getItems();
+                        }
+
+                        String[] sName = new String [] {song[OhostSearchList.indexOf(hostSearchList.getSelectionModel().getSelectedItem())].getUri()};
+
+                        host.addSong(sName);
+                    }
+                }
+            }
+        });
+
+
+        Button endSession = new Button("End Session");
+        endSession.setOnAction(event -> UserInterface.loadLandingPage());
+        endHolder.getChildren().addAll(addBlack, endSession, addSearch);
+        endHolder.setAlignment(Pos.CENTER);
+
+        controller.add(endHolder, 1, 2);
+        //----------------------------------------------------------------
 
         // Currently Playing----------------------------------------------
         VBox currentlyPlaying = new VBox();

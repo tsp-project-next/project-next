@@ -200,7 +200,8 @@ public class LobbyHost {
     // Add songs to the stored playlist
     public static void addSong(String[] songUri) {
         try {
-            spotifyApi.addTracksToPlaylist(playlistId, songUri).position(0).build().execute();
+            spotifyApi.addTracksToPlaylist(playlistId, songUri).position(spotifyApi.getPlaylistsTracks(playlistId).build().execute().getTotal()).build().execute();
+
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in addSong: " + e.getMessage());
         }
