@@ -36,7 +36,6 @@ public class LobbyHost {
     // Constructor to build our initial API requests so we can begin to make requests like generating URIs
     // and initializing our scope for authorization
     public LobbyHost(String clientId, String clientSecret, URI redirectURI) {
-
         spotifyApi = new SpotifyApi.Builder()
                 .setClientId(clientId)
                 .setClientSecret(clientSecret)

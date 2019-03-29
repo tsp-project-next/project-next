@@ -24,6 +24,7 @@ import javafx.scene.text.Text;
 
 import java.awt.*;
 import java.net.URI;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class HostPage {
@@ -57,21 +58,11 @@ public class HostPage {
 
         host.createPlaylist();
 
-        host.playlistExport();
-
         host.getDevices();
 
         host.startPlaylist();
 
-        host.nextSong();
 
-        host.nextSong();
-
-        host.previousSong();
-
-        host.pause();
-
-        host.resume();
 
 
         // Setting up the formatting for the main grid controller--------
@@ -372,7 +363,42 @@ public class HostPage {
         album.setFill(Color.WHITE);
         album.setFont(standard);
 
-        currentlyPlaying.getChildren().addAll(playing, songTitle, artist, album);
+        // Button that switches the user's current song to the previous song
+        // in the playlist
+        Button back = new Button("<<");
+        back.setOnAction(event -> {
+            LobbyHost.previousSong();
+        });
+
+        // Used to switch the play button to pause and vice versa
+        AtomicBoolean nowPlaying = new AtomicBoolean(false);
+        // Button that will resume or pause the user's playlist
+        Button play = new Button("Play");
+        play.setOnAction(event -> {
+            if (nowPlaying.get()) {
+                LobbyHost.resume();
+                play.setText("Pause");
+                nowPlaying.set(false);
+            } else {
+                LobbyHost.pause();
+                play.setText("Play");
+                nowPlaying.set(true);
+            }
+        });
+
+        // Button that switches the user's current song to the next song
+        // in the playlist
+        Button next = new Button(">>");
+        next.setOnAction(event -> {
+            LobbyHost.nextSong();
+        });
+
+        // Adds back, play and next to a HBox in order to have the controls in a row
+        HBox controls = new HBox();
+        controls.getChildren().addAll(back, play, next);
+        controls.setAlignment(Pos.CENTER);
+
+        currentlyPlaying.getChildren().addAll(playing, songTitle, artist, album, controls);
         currentlyPlaying.setPadding(new Insets(40));
         currentlyPlaying.setAlignment(Pos.CENTER);
 
