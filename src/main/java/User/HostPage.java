@@ -62,9 +62,6 @@ public class HostPage {
 
         host.startPlaylist();
 
-
-
-
         // Setting up the formatting for the main grid controller--------
         GridPane controller = new GridPane();
         controller.setStyle("-fx-background-color: rgb(26,83,46); -fx-background-radius: 10;");
@@ -110,8 +107,7 @@ public class HostPage {
 
         ScrollPane userList = new ScrollPane();
         ListView<String> uLList = new ListView<>();
-        ObservableList<String> uLObs = FXCollections.observableArrayList(
-                "Alec", "Dakoda", "Scott", "Connor", "Logan");
+        ObservableList<String> uLObs = FXCollections.observableArrayList("");
         uLList.setItems(uLObs);
         userList.setContent(uLList);
         userList.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -180,8 +176,6 @@ public class HostPage {
             }
 
         });
-
-        controller.add(blacklist, 0, 2);
         //----------------------------------------------------------------
 
         // Search --------------------------------------------------------
@@ -240,8 +234,6 @@ public class HostPage {
             }
 
         });
-
-        controller.add(searchPane, 2, 2);
         //----------------------------------------------------------------
 
         // Queue----------------------------------------------------------
@@ -272,8 +264,8 @@ public class HostPage {
         HBox endHolder = new HBox();
         endHolder.setSpacing(40);
 
-        Button addBlack = new Button("Add Blacklist");
-        addBlack.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
+        Button addBlack = new Button("Add To Blacklist");
+        addBlack.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/7.5, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
 //        addBlack.setOnAction(event -> {
 //
 //            if(!(hostSearchList.getItems().toString().trim().equals("[]"))) {
@@ -308,8 +300,8 @@ public class HostPage {
 //            }
 //        });
 
-        Button addSearch = new Button("Add Search");
-        addSearch.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
+        Button addSearch = new Button("Add To Playlist");
+        addSearch.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/7.5, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         addSearch.setOnAction(event -> {
 
             if(!(hostSearchList.getItems().toString().trim().equals("[]"))) {
@@ -330,6 +322,7 @@ public class HostPage {
                         String[] sName = new String [] {song[OhostSearchList.indexOf(hostSearchList.getSelectionModel().getSelectedItem())].getUri()};
 
                         host.addSong(sName);
+
                     }
                 }
             }
@@ -338,11 +331,22 @@ public class HostPage {
 
         Button endSession = new Button("End Session");
         endSession.setOnAction(event -> UserInterface.loadLandingPage());
-        endHolder.getChildren().addAll(addBlack, endSession, addSearch);
+        endHolder.getChildren().add(endSession);
         endHolder.setAlignment(Pos.CENTER);
 
         controller.add(endHolder, 1, 2);
         //----------------------------------------------------------------
+
+
+        blacklist.add(addBlack,0,3);
+
+        controller.add(blacklist, 0, 2);
+
+        searchPane.add(addSearch,0,3);
+
+        controller.add(searchPane, 2, 2);
+
+
 
         // Currently Playing----------------------------------------------
         VBox currentlyPlaying = new VBox();
@@ -399,6 +403,7 @@ public class HostPage {
         controls.setAlignment(Pos.CENTER);
 
         currentlyPlaying.getChildren().addAll(playing, songTitle, artist, album, controls);
+
         currentlyPlaying.setPadding(new Insets(40));
         currentlyPlaying.setAlignment(Pos.CENTER);
 
