@@ -1,5 +1,6 @@
 package client;
 
+import User.UserInterface;
 import User.Utilities;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.SpotifyHttpManager;
@@ -11,6 +12,10 @@ import java.net.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Client {
 
@@ -23,6 +28,9 @@ public class Client {
     private ObjectOutputStream toServer;
     //Object input stream from the server
     private ObjectInputStream fromServer;
+
+    private List<String> awaitingResponseList = Collections.synchronizedList(new ArrayList<>());
+    private ConcurrentHashMap<String, String> responses = new ConcurrentHashMap<>();
 
     public Client() {
         System.out.println("client created...");
@@ -73,6 +81,7 @@ public class Client {
         }
     }
 
+    @SuppressWarnings("Duplicates")
     public boolean sendPacket(String packetIdentifier, int packetType, String playlistURI, String songURI, String lobby) {
         try {
             //Create a packet to send
@@ -84,6 +93,30 @@ public class Client {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    @SuppressWarnings("Duplicates")
+    public String sendPacketWaitResponse(String packetIdentifier, int packetType, String playlistURI, String songURI, String lobby) {
+        try {
+            //Create a packet to send
+            Packet packet = new Packet(packetIdentifier, packetType, playlistURI, songURI, lobby);
+            toServer.writeObject(packet);
+            System.out.println("Object sent to server...");
+            awaitingResponseList.add(packetIdentifier);
+            while(awaitingResponse()) {
+                //wait for one second.
+                try {
+                    System.out.println("awaiting server response");
+                    UserInterface.t.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            return responses.get(packetIdentifier);
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     public void closeStreams() {
@@ -108,6 +141,13 @@ public class Client {
         return false;
     }
 
+    public boolean awaitingResponse() {
+        if(awaitingResponseList.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
     //Use this method to switch through and handle different received packets
     public void handleReceivedPacket(Packet packet) {
 
@@ -125,6 +165,8 @@ public class Client {
             //packet type 1 = lobby join
             case 1:
                 System.out.println("Packet type: 1");
+                responses.put(packet.getPacketIdentifier(), packet.getPlaylistURI());
+                awaitingResponseList.remove(packet.getPacketIdentifier());
                 break;
             case 2:
                 System.out.println("Packet type: 2");

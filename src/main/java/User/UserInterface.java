@@ -26,6 +26,8 @@ public class UserInterface extends Application{
 
     public static Client client;
 
+    public static Thread t;
+
     // Main method -------------------------------------------------------
     public static void main(String[] args) {
         if (args[0].equalsIgnoreCase("client"))
@@ -42,6 +44,9 @@ public class UserInterface extends Application{
 
         //create a new client object
         client = new Client();
+
+        //need to save the thread.
+        t = Thread.currentThread();
 
         Application.launch(args);
 
@@ -84,6 +89,9 @@ public class UserInterface extends Application{
 
     //displays user page on the window -----------------------------------
     public static void loadUserPage(String code) {
+        String identifier = Utilities.generatePacketIdentifier();
+        String responseURI = client.sendPacketWaitResponse(identifier,1, null, null, code);
+        System.out.println("Joined lobby and returned uri: " + responseURI);
         UserPage userPage = new UserPage(code);
         //mainStage.setScene(userPage.getScene());
     }

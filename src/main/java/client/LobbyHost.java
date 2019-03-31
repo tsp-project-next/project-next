@@ -70,6 +70,10 @@ public class LobbyHost {
         return uri.toString();
     }
 
+    public static String getPlaylistURI() {
+        return playlistUri;
+    }
+
     // After a user navigates the URI and authorizes us manually for account access,
     // we call this method to build our API to make requests on behalf of the user account
     public static boolean authorizationCode_Sync() {
