@@ -93,7 +93,9 @@ public class UserInterface extends Application{
         host.startPlaylist();
 
         String codeResponse = client.sendPacketWaitResponse(Utilities.generatePacketIdentifier(),0, host.getPlaylistURI(), null, null);
-
+        if(codeResponse == null) {
+            System.out.println("lobby creation code from server returned null");
+        }
         HostPage hostPage = new HostPage(codeResponse, authorizationCode, host);
         //getStage().setScene(hostPage.getScene());
     }
@@ -103,7 +105,11 @@ public class UserInterface extends Application{
     public static void loadUserPage(String code) {
         String identifier = Utilities.generatePacketIdentifier();
         String responseURI = client.sendPacketWaitResponse(identifier,1, null, null, code);
-        System.out.println("Joined lobby and returned uri: " + responseURI);
+        if(responseURI == null) {
+            System.out.println("lobby join uri from server returned null");
+        } else {
+            System.out.println("Joined lobby and returned uri: " + responseURI);
+        }
         UserPage userPage = new UserPage(code);
         //mainStage.setScene(userPage.getScene());
     }
