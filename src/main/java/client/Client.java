@@ -160,6 +160,8 @@ public class Client {
                 if(packet.getLobby() != null) {
                     System.out.println("Lobby code: " + packet.getLobby());
                     System.out.println("Playlist Uri " + packet.getPlaylistURI());
+                    responses.put(packet.getPacketIdentifier(), packet.getLobby());
+                    awaitingResponseList.remove(packet.getPacketIdentifier());
                 }
                 break;
             //packet type 1 = lobby join

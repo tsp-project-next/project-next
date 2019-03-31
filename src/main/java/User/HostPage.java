@@ -52,16 +52,6 @@ public class HostPage {
 
         LobbyUser user = new LobbyUser(clientId, clientSecret);
 
-        host.setAuthCode(authorizationCode);
-
-        host.authorizationCode_Sync();
-
-        host.createPlaylist();
-
-        host.getDevices();
-
-        host.startPlaylist();
-
         // Setting up the formatting for the main grid controller--------
         GridPane controller = new GridPane();
         controller.setStyle("-fx-background-color: rgb(26,83,46); -fx-background-radius: 10;");

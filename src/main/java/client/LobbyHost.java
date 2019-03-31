@@ -156,8 +156,6 @@ public class LobbyHost {
             playlistUri = playlist.getUri();
             playlistId = playlist.getId();
 
-            UserInterface.client.sendPacket(Utilities.generatePacketIdentifier(),0, playlistUri, null, null);
-
             playlistCleanup();
 
         } catch (IOException | SpotifyWebApiException e) {

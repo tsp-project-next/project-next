@@ -82,7 +82,19 @@ public class UserInterface extends Application{
 
     //displays host page on the window -----------------------------------
     public static void loadHostPage(String authorizationCode, LobbyHost host) {
-        HostPage hostPage = new HostPage(Utilities.codeGenerator(), authorizationCode, host);
+        host.setAuthCode(authorizationCode);
+
+        host.authorizationCode_Sync();
+
+        host.createPlaylist();
+
+        host.getDevices();
+
+        host.startPlaylist();
+
+        String codeResponse = client.sendPacketWaitResponse(Utilities.generatePacketIdentifier(),0, host.getPlaylistURI(), null, null);
+
+        HostPage hostPage = new HostPage(codeResponse, authorizationCode, host);
         //getStage().setScene(hostPage.getScene());
     }
     //--------------------------------------------------------------------
