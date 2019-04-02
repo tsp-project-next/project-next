@@ -4,18 +4,20 @@ import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 import com.wrapper.spotify.model_objects.miscellaneous.Device;
-import com.wrapper.spotify.model_objects.specification.Playlist;
+import com.wrapper.spotify.model_objects.specification.*;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 import com.wrapper.spotify.requests.data.playlists.CreatePlaylistRequest;
+import com.wrapper.spotify.requests.data.playlists.GetPlaylistsTracksRequest;
 import com.wrapper.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
-import com.wrapper.spotify.model_objects.specification.User;
 import User.Utilities;
 import User.UserInterface;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 
 public class LobbyHost {
@@ -254,5 +256,23 @@ public class LobbyHost {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public static Paging<PlaylistTrack> getPlayListTracks() {
+
+        final GetPlaylistsTracksRequest getPlaylistsTracksRequest = spotifyApi.getPlaylistsTracks(playlistId).build();
+
+        try {
+            final Future<Paging<PlaylistTrack>> pagingFuture = getPlaylistsTracksRequest.executeAsync();
+
+            final Paging<PlaylistTrack> playlistTrackPaging = pagingFuture.get();
+
+            return playlistTrackPaging;
+
+        } catch (InterruptedException | ExecutionException e) {
+            System.out.println("Error in getPlayListTracks: " + e.getMessage());
+        }
+
+        return null;
     }
 }

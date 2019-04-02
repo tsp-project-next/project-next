@@ -4,6 +4,7 @@ import client.LobbyHost;
 import client.LobbyUser;
 import com.wrapper.spotify.SpotifyHttpManager;
 import com.wrapper.spotify.model_objects.specification.Paging;
+import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -33,6 +34,7 @@ public class HostPage {
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
     private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
+    public static ObservableList<String> itemsPlayQueue;
 
     private static LobbyHost host = null;
 
@@ -48,6 +50,7 @@ public class HostPage {
         UserInterface.getStage().getScene().setRoot(setup(code, authorizationCode));
     }
 
+    @SuppressWarnings("Duplicates")
     private GridPane setup(String code, String authorizationCode) {
 
         LobbyUser user = new LobbyUser(clientId, clientSecret);
@@ -237,7 +240,7 @@ public class HostPage {
 
         ScrollPane queueItems = new ScrollPane();
         ListView<String> listPlayQueue = new ListView<>();
-        ObservableList<String> itemsPlayQueue = FXCollections.observableArrayList("");
+        itemsPlayQueue = FXCollections.observableArrayList("");
         listPlayQueue.setItems(itemsPlayQueue);
         queueItems.setContent(listPlayQueue);
         queueItems.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -301,6 +304,7 @@ public class HostPage {
                     if (!(itemsPlayQueue.contains(hostSearchList.getSelectionModel().getSelectedItem().trim()))) {
 
                         Paging<Track> tracks = user.searchTracks(hostSearchText.getText().trim());
+
 
                         Track[] song = new Track[0];
 
@@ -404,5 +408,20 @@ public class HostPage {
         controller.getColumnConstraints().addAll(colOne, colOne, colOne);
 
         return controller;
+    }
+
+    public static void updateQueue() {
+
+        itemsPlayQueue.clear();
+
+        Paging<PlaylistTrack> tracks = LobbyHost.getPlayListTracks();
+
+        for (int i = 0; i < tracks.getTotal(); i++) {
+            PlaylistTrack[] song = tracks.getItems();
+
+            itemsPlayQueue.add(song[i].getTrack().getName());
+        }
+
+
     }
 }

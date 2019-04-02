@@ -1,11 +1,13 @@
 package client;
 
+import User.HostPage;
 import User.UserInterface;
 import User.Utilities;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.SpotifyHttpManager;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 import javafx.application.Application;
+import javafx.application.Platform;
 
 import java.io.EOFException;
 import java.net.*;
@@ -173,7 +175,9 @@ public class Client {
             //packet type 2 = song update
             case 2:
                 System.out.println("Packet type: 2");
-                //call getplaylist function from here
+
+                Platform.runLater(() -> HostPage.updateQueue());
+
                 break;
             case 3:
                 System.out.println("Packet type: 3");
