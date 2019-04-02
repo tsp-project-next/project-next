@@ -251,4 +251,8 @@ public class LobbyHost {
             System.out.println("Error in nextSong: " + e.getMessage());
         }
     }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 }

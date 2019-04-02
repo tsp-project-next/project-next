@@ -93,10 +93,13 @@ public class UserInterface extends Application{
         host.startPlaylist();
 
         String codeResponse = client.sendPacketWaitResponse(Utilities.generatePacketIdentifier(),0, host.getPlaylistURI(), null, null);
+
         if(codeResponse == null) {
             System.out.println("lobby creation code from server returned null");
         }
+        host.setCode(codeResponse);
         HostPage hostPage = new HostPage(codeResponse, authorizationCode, host);
+
         //getStage().setScene(hostPage.getScene());
     }
     //--------------------------------------------------------------------
