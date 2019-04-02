@@ -170,8 +170,10 @@ public class Client {
                 responses.put(packet.getPacketIdentifier(), packet.getPlaylistURI());
                 awaitingResponseList.remove(packet.getPacketIdentifier());
                 break;
+            //packet type 2 = song update
             case 2:
                 System.out.println("Packet type: 2");
+                //call getplaylist function from here
                 break;
             case 3:
                 System.out.println("Packet type: 3");
