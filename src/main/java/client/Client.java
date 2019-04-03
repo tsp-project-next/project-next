@@ -177,10 +177,16 @@ public class Client {
             case 2:
                 System.out.println("Packet type: 2");
 
-                Platform.runLater(() -> {
-                    HostPage.updateQueue();
-                    UserPage.updateQueue();
-                });
+                if(HostPage.itemsPlayQueue != null) {
+                    Platform.runLater(() -> {
+                        HostPage.updateQueue();
+                    });
+                }
+//                if(UserPage.itemsPlayQueue != null) {
+//                    Platform.runLater(() -> {
+//                        UserPage.updateQueue();
+//                    });
+//                }
 
                 break;
             case 3:

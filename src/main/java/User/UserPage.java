@@ -291,18 +291,17 @@ public class UserPage  {
         root.setGridLinesVisible(false);
     }
 
-    public static void updateQueue() {
-
-        itemsPlayQueue.clear();
-
-        Paging<PlaylistTrack> tracks = LobbyHost.getPlayListTracks();
-
-        for (int i = 0; i < tracks.getTotal(); i++) {
-            PlaylistTrack[] song = tracks.getItems();
-
-            itemsPlayQueue.add(song[i].getTrack().getName());
-        }
-
-
-    }
+//    public static void updateQueue() {
+//
+//        itemsPlayQueue.clear();
+//
+//        Paging<PlaylistTrack> tracks = LobbyHost.getPlayListTracks();
+//
+//        for (int i = 0; i < tracks.getTotal(); i++) {
+//            PlaylistTrack[] song = tracks.getItems();
+//
+//            itemsPlayQueue.add(song[i].getTrack().getName());
+//        }
+//
+//    }
 }
