@@ -1,7 +1,9 @@
 package User;
 
+import client.LobbyHost;
 import client.LobbyUser;
 import com.wrapper.spotify.model_objects.specification.Paging;
+import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -28,6 +30,7 @@ public class UserPage  {
     private static Scene UserScene = null;
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
+    public static ObservableList<String> itemsPlayQueue;
 
     // Makes and Adds all elements of the UserPage to the UserPage
     public UserPage(String Code) {
@@ -113,7 +116,7 @@ public class UserPage  {
         // Makes a ScrollPane called playQueue ---------------------------
         ScrollPane playQueue = new ScrollPane();
         ListView<String> listPlayQueue = new ListView<>();
-        ObservableList<String> itemsPlayQueue = FXCollections.observableArrayList("");
+        itemsPlayQueue = FXCollections.observableArrayList("");
         listPlayQueue.setItems(itemsPlayQueue);
         playQueue.setContent(listPlayQueue);
         playQueue.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -289,5 +292,20 @@ public class UserPage  {
         //----------------------------------------------------------------
 
         root.setGridLinesVisible(false);
+    }
+
+    public static void updateQueue() {
+
+        itemsPlayQueue.clear();
+
+        Paging<PlaylistTrack> tracks = LobbyHost.getPlayListTracks();
+
+        for (int i = 0; i < tracks.getTotal(); i++) {
+            PlaylistTrack[] song = tracks.getItems();
+
+            itemsPlayQueue.add(song[i].getTrack().getName());
+        }
+
+
     }
 }

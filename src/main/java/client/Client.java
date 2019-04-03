@@ -2,6 +2,7 @@ package client;
 
 import User.HostPage;
 import User.UserInterface;
+import User.UserPage;
 import User.Utilities;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.SpotifyHttpManager;
@@ -176,7 +177,10 @@ public class Client {
             case 2:
                 System.out.println("Packet type: 2");
 
-                Platform.runLater(() -> HostPage.updateQueue());
+                Platform.runLater(() -> {
+                    HostPage.updateQueue();
+                    UserPage.updateQueue();
+                });
 
                 break;
             case 3:

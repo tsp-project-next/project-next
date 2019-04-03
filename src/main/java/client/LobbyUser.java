@@ -64,8 +64,6 @@ public class LobbyUser {
 
             final Paging<Track> trackPaging = pagingFuture.get();
 
-            Track[] current = trackPaging.getItems();
-
             return trackPaging;
         } catch (InterruptedException | ExecutionException e) {
             System.out.println("searchTracks error: " + e.getCause().getMessage());

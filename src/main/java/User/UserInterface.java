@@ -84,23 +84,25 @@ public class UserInterface extends Application{
     public static void loadHostPage(String authorizationCode, LobbyHost host) {
         host.setAuthCode(authorizationCode);
 
-        host.authorizationCode_Sync();
+        if(host.authorizationCode_Sync()) {
 
-        host.createPlaylist();
+            host.createPlaylist();
 
-        host.getDevices();
+            host.getDevices();
 
-        host.startPlaylist();
+            host.startPlaylist();
 
-        String codeResponse = client.sendPacketWaitResponse(Utilities.generatePacketIdentifier(),0, host.getPlaylistURI(), null, null);
 
-        if(codeResponse == null) {
-            System.out.println("lobby creation code from server returned null");
+            String codeResponse = client.sendPacketWaitResponse(Utilities.generatePacketIdentifier(), 0, host.getPlaylistURI(), null, null);
+
+            if (codeResponse == null) {
+                System.out.println("lobby creation code from server returned null");
+            }
+
+            host.setCode(codeResponse);
+            HostPage hostPage = new HostPage(codeResponse, authorizationCode, host);
         }
-        host.setCode(codeResponse);
-        HostPage hostPage = new HostPage(codeResponse, authorizationCode, host);
 
-        //getStage().setScene(hostPage.getScene());
     }
     //--------------------------------------------------------------------
 
