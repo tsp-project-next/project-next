@@ -23,6 +23,8 @@ public class LobbyUser {
     // Initialize all this stuff to null because we'll pass it in the constructor
     private static SpotifyApi spotifyApi = null;
     private static ClientCredentialsRequest clientCredentialsRequest = null;
+    private static String playlistId = null;
+    private static String playlistUri = null;
 
     public LobbyUser(String clientId, String clientSecret)
     {
@@ -72,6 +74,48 @@ public class LobbyUser {
         }
 
         return null;
+    }
+
+    public static Paging<PlaylistTrack> getPlayListTracks() {
+
+        final GetPlaylistsTracksRequest getPlaylistsTracksRequest = spotifyApi.getPlaylistsTracks(playlistId).build();
+
+        try {
+            final Future<Paging<PlaylistTrack>> pagingFuture = getPlaylistsTracksRequest.executeAsync();
+
+            final Paging<PlaylistTrack> playlistTrackPaging = pagingFuture.get();
+
+            return playlistTrackPaging;
+
+        } catch (InterruptedException | ExecutionException e) {
+            System.out.println("Error in getPlayListTracks: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    public void setPLaylistUri(String uri) {
+        playlistUri = uri;
+
+        int idLength = 0;
+
+        for (int i = playlistUri.length(); i >= 0; i--) {
+            if (playlistUri.charAt(i) == ':') {
+                idLength = playlistUri.length() - i;
+            }
+        }
+
+        char[] array = new char[13];
+
+        for (int i = 0; i < idLength; i++) {
+            array[i] = playlistUri.charAt(playlistUri.length() - i);
+        }
+
+        playlistId = array.toString();
+    }
+
+    public String getPlaylistId() {
+        return playlistId;
     }
 
     //need to add a getplaylisttracks method

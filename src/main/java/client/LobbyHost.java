@@ -1,5 +1,6 @@
 package client;
 
+import com.neovisionaries.i18n.CountryCode;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.AuthorizationCodeCredentials;
@@ -9,6 +10,7 @@ import com.wrapper.spotify.requests.authorization.authorization_code.Authorizati
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 import com.wrapper.spotify.requests.data.playlists.CreatePlaylistRequest;
 import com.wrapper.spotify.requests.data.playlists.GetPlaylistsTracksRequest;
+import com.wrapper.spotify.requests.data.search.simplified.SearchTracksRequest;
 import com.wrapper.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
 import User.Utilities;
 import User.UserInterface;
@@ -205,7 +207,9 @@ public class LobbyHost {
     // Add songs to the stored playlist
     public static void addSong(String[] songUri) {
         try {
-            spotifyApi.addTracksToPlaylist(playlistId, songUri).position(spotifyApi.getPlaylistsTracks(playlistId).build().execute().getTotal()).build().execute();
+            int total = spotifyApi.getPlaylistsTracks(playlistId).build().execute().getTotal();
+
+            spotifyApi.addTracksToPlaylist(playlistId, songUri).position(total).build().execute();
             UserInterface.client.sendPacket(Utilities.generatePacketIdentifier(), 2, null, null, code);
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in addSong: " + e.getMessage());
@@ -271,6 +275,27 @@ public class LobbyHost {
 
         } catch (InterruptedException | ExecutionException e) {
             System.out.println("Error in getPlayListTracks: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    // Returns the wrapper data structure for holding URI data with top 10 results
+    public Paging<Track> searchTracks(String toSearch)
+    {
+        final SearchTracksRequest searchTracksRequest = spotifyApi.searchTracks(toSearch)
+                .market(CountryCode.US)
+                .limit(10)
+                .build();
+
+        try {
+            final Future<Paging<Track>> pagingFuture = searchTracksRequest.executeAsync();
+
+            final Paging<Track> trackPaging = pagingFuture.get();
+
+            return trackPaging;
+        } catch (InterruptedException | ExecutionException e) {
+            System.out.println("searchTracks error: " + e.getCause().getMessage());
         }
 
         return null;
