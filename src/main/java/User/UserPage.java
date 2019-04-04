@@ -192,7 +192,7 @@ public class UserPage  {
 
                         String[] sName = new String [] {song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()};
 
-                        LobbyHost.addSong(sName);
+                        UserInterface.client.sendPacket(Utilities.generatePacketIdentifier(), 3, null, sName[0], Code);
                     }
                 }
             }

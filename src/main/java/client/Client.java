@@ -191,6 +191,8 @@ public class Client {
                 break;
             case 3:
                 System.out.println("Packet type: 3");
+                String[] sName = new String[] {packet.getSongURI()};
+                LobbyHost.addSong(sName);
                 break;
             case 4:
                 System.out.println("Packet type: 4");
