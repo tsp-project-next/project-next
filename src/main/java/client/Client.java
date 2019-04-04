@@ -182,11 +182,11 @@ public class Client {
                         HostPage.updateQueue();
                     });
                 }
-//                if(UserPage.itemsPlayQueue != null) {
-//                    Platform.runLater(() -> {
-//                        UserPage.updateQueue();
-//                    });
-//                }
+                if(UserPage.itemsPlayQueue != null) {
+                    Platform.runLater(() -> {
+                        UserPage.updateQueue();
+                    });
+                }
 
                 break;
             case 3:

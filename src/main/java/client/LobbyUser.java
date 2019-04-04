@@ -94,27 +94,30 @@ public class LobbyUser {
         return null;
     }
 
-    public void setPLaylistUri(String uri) {
+    public static void setPLaylistUri(String uri) {
         playlistUri = uri;
 
         int idLength = 0;
 
-        for (int i = playlistUri.length(); i >= 0; i--) {
+        for (int i = playlistUri.length() - 1; i >= 0; i--) {
             if (playlistUri.charAt(i) == ':') {
-                idLength = playlistUri.length() - i;
+                idLength = playlistUri.length() - i - 1;
+                break;
             }
         }
 
-        char[] array = new char[13];
+        char[] array = new char[idLength];
 
         for (int i = 0; i < idLength; i++) {
-            array[i] = playlistUri.charAt(playlistUri.length() - i);
+            array[i] = playlistUri.charAt(playlistUri.length() - idLength + i);
         }
 
-        playlistId = array.toString();
+        playlistId = String.copyValueOf(array);
+
+        System.out.println(playlistId);
     }
 
-    public String getPlaylistId() {
+    public static String getPlaylistId() {
         return playlistId;
     }
 

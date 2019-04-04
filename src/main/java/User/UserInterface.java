@@ -115,6 +115,10 @@ public class UserInterface extends Application{
         } else {
             System.out.println("Joined lobby and returned uri: " + responseURI);
         }
+
+        LobbyUser.setPLaylistUri(responseURI);
+        LobbyUser.getPlaylistId();
+
         UserPage userPage = new UserPage(code);
         //mainStage.setScene(userPage.getScene());
     }
