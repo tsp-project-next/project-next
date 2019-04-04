@@ -43,6 +43,9 @@ public class HostPage {
     private String authorizationCode;
     private int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
     private Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
+    public static String Song;
+    public static String Artist;
+    public static String Album;
 
     public HostPage(String code, String authorizationCode, LobbyHost host) {
         this.code = code;
@@ -259,39 +262,7 @@ public class HostPage {
 
         Button addBlack = new Button("Add To Blacklist");
         addBlack.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/7.5, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
-//        addBlack.setOnAction(event -> {
-//
-//            if(!(hostSearchList.getItems().toString().trim().equals("[]"))) {
-//
-//                if (!(hostSearchList.getSelectionModel().getSelectedItems().toString().equals("[]"))) {
-//
-//                    if (!(itemsPlayQueue.contains(hostSearchList.getSelectionModel().getSelectedItem().trim()))) {
-//
-//                        Paging<Track> tracks = user.searchTracks(hostSearchText.getText().trim());
-//
-//                        Track[] song = new Track[0];
-//
-//                        for (int i = 0; i <= 9; i++) {
-//
-//                            song = tracks.getItems();
-//                        }
-//
-//                        // This is for test in local queue
-//                        // Change this to add to Spotify queue
-//                        // song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()
-//
-//                        String[] sName = new String [] {song[OhostSearchList.indexOf(hostSearchList.getSelectionModel().getSelectedItem())].getUri()};
-//
-//                        host.addSong(sName);
-//
-////                        host.startPlaylist();
-//
-////                        itemsPlayQueue.add(hostSearchList.getSelectionModel().getSelectedItem().trim());
-//
-//                    }
-//                }
-//            }
-//        });
+        // Blacklist functionality here
 
         Button addSearch = new Button("Add To Playlist");
         addSearch.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/7.5, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
@@ -345,19 +316,23 @@ public class HostPage {
         // Currently Playing----------------------------------------------
         VBox currentlyPlaying = new VBox();
 
-        Text playing = new Text("Playing");
+        Text playing = new Text();
+        playing.setText("Playing");
         playing.setFill(Color.WHITE);
         playing.setFont(standard);
 
-        Text songTitle = new Text("Song Title");
+        Text songTitle = new Text();
+        songTitle.setText("Song Title: " + Song);
         songTitle.setFill(Color.WHITE);
         songTitle.setFont(standard);
 
-        Text artist = new Text("Artist");
+        Text artist = new Text();
+        artist.setText("Artist: " + Artist);
         artist.setFill(Color.WHITE);
         artist.setFont(standard);
 
         Text album = new Text("Album");
+        artist.setText("Album: " + Album);
         album.setFill(Color.WHITE);
         album.setFont(standard);
 
@@ -421,6 +396,20 @@ public class HostPage {
 
             itemsPlayQueue.add(song[i].getTrack().getName());
         }
+
+    }
+
+    public static void updateCurrentPlaying() {
+
+        Paging<PlaylistTrack> tracks = LobbyUser.getPlayListTracks();
+
+        PlaylistTrack[] current = tracks.getItems();
+
+
+        Song = current[0].getTrack().getName();
+        Artist = current[0].getTrack().getArtists().toString();
+        Album = current[0].getTrack().getAlbum().toString();
+
 
     }
 }
