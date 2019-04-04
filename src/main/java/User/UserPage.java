@@ -31,6 +31,13 @@ public class UserPage  {
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
     public static ObservableList<String> itemsPlayQueue;
+    Text playing;
+    Text songTitle;
+    Text artist;
+    Text album;
+    public static String Song;
+    public static String Artist;
+    public static String Album;
 
     // Makes and Adds all elements of the UserPage to the UserPage
     public UserPage(String Code) {
@@ -127,34 +134,24 @@ public class UserPage  {
         //----------------------------------------------------------------
 
         // Current Playing Display ---------------------------------------
-        String Song = "Song Title: ";
-        String Artist = "Artist: ";
-        String Album = "Album: ";
 
-        if (!(itemsPlayQueue.get(0).equals(""))) {
-
-            Song += itemsPlayQueue.get(0);
-            Artist += itemsPlayQueue.get(0);
-            Album += itemsPlayQueue.get(0);
-        }
-
-        Text playing = new Text();
-        playing.setText("Playing ");
+        playing = new Text();
+        playing.setText("Playing");
         playing.setFill(Color.WHITE);
         playing.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
 
-        Text songTitle = new Text();
-        songTitle.setText(Song);
+        songTitle = new Text();
+        songTitle.setText("Song Title: " + Song);
         songTitle.setFill(Color.WHITE);
         songTitle.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
 
-        Text artist = new Text();
-        artist.setText(Artist);
+        artist = new Text();
+        artist.setText("Artist: " + Artist);
         artist.setFill(Color.WHITE);
         artist.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
 
-        Text album = new Text();
-        album.setText(Album);
+        album = new Text();
+        album.setText("Album: " + Album);
         album.setFill(Color.WHITE);
         album.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
 
@@ -302,6 +299,20 @@ public class UserPage  {
 
             itemsPlayQueue.add(song[i].getTrack().getName());
         }
+
+    }
+
+    public static void updateCurrentPlaying() {
+
+        Paging<PlaylistTrack> tracks = LobbyUser.getPlayListTracks();
+
+        PlaylistTrack[] current = tracks.getItems();
+
+
+        Song = current[0].getTrack().getName();
+        Artist = current[0].getTrack().getArtists().toString();
+        Album = current[0].getTrack().getAlbum().toString();
+
 
     }
 }
