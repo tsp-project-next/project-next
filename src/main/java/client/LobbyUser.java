@@ -94,7 +94,7 @@ public class LobbyUser {
         return null;
     }
 
-    public static void setPLaylistUri(String uri) {
+    public static String setPLaylistUri(String uri) {
         playlistUri = uri;
 
         int idLength = 0;
@@ -114,7 +114,7 @@ public class LobbyUser {
 
         playlistId = String.copyValueOf(array);
 
-        System.out.println(playlistId);
+        return playlistId;
     }
 
     public static String getPlaylistId() {

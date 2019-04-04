@@ -33,6 +33,7 @@ public class LobbyHost {
     private static String playlistUri = "";
     private static String playlistId = "";
     private static String deviceId = "";
+    private static URI authUri = null;
     private static AuthorizationCodeRequest authorizationCodeRequest = null;
 
     private static int currentSongProgress = 0;
@@ -67,11 +68,15 @@ public class LobbyHost {
         // This is where we'd prompt the user with the URI to allow us to query specific account info
         System.out.println("URI: " + uri.toString());
 
-        Desktop desktop = Desktop.getDesktop();
-
-        desktop.browse(uri);
+        authUri = uri;
 
         return uri.toString();
+    }
+
+    public static void visitURI() throws Exception {
+        Desktop desktop = Desktop.getDesktop();
+
+        desktop.browse(authUri);
     }
 
     public static String getPlaylistURI() {
@@ -103,7 +108,7 @@ public class LobbyHost {
     }
 
     // Parse the authorization code from given OAuth URL so we can successfully create our request methods
-    public static void setAuthCode(String authCode) {
+    public static String setAuthCode(String authCode) {
         //System.out.println(authCode);
 
         int start = 0, finish = 0;
@@ -133,6 +138,8 @@ public class LobbyHost {
         //System.out.println(authCode);
 
         code = authCode;
+
+        return authCode;
     }
 
     // Create a playlist and instantly unfollow it so that we can keep direct progress hidden from the user

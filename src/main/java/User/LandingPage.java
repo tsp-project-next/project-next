@@ -29,6 +29,12 @@ public class LandingPage {
 
         LobbyHost host = new LobbyHost(clientId, clientSecret, redirectUri);
 
+        try {
+            host.visitURI();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         TextInputDialog dialog = new TextInputDialog("");
         dialog.setTitle("URL Input");
         dialog.setHeaderText("Input");
