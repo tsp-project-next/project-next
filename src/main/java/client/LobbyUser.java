@@ -11,10 +11,7 @@ import com.wrapper.spotify.requests.authorization.client_credentials.ClientCrede
 import com.wrapper.spotify.requests.data.playlists.GetPlaylistsTracksRequest;
 import com.wrapper.spotify.requests.data.search.simplified.SearchTracksRequest;
 
-import java.awt.*;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -120,6 +117,4 @@ public class LobbyUser {
     public static String getPlaylistId() {
         return playlistId;
     }
-
-    //need to add a getplaylisttracks method
 }

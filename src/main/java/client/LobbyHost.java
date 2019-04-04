@@ -14,10 +14,14 @@ import com.wrapper.spotify.requests.data.search.simplified.SearchTracksRequest;
 import com.wrapper.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
 import User.Utilities;
 import User.UserInterface;
+import User.HostPage;
+import User.UserPage;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -108,8 +112,8 @@ public class LobbyHost {
     }
 
     // Parse the authorization code from given OAuth URL so we can successfully create our request methods
+
     public static String setAuthCode(String authCode) {
-        //System.out.println(authCode);
 
         int start = 0, finish = 0;
 
@@ -134,8 +138,6 @@ public class LobbyHost {
         }
 
         authCode = authCode.substring(start, finish);
-
-        //System.out.println(authCode);
 
         code = authCode;
 
@@ -228,6 +230,17 @@ public class LobbyHost {
         try {
             spotifyApi.startResumeUsersPlayback().context_uri(playlistUri).device_id(deviceId)
                     .position_ms(0).build().execute();
+
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+
+                    HostPage.updateCurrentPlaying();
+                    UserPage.updateCurrentPlaying();
+                }
+            }, 0, 5000);
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in startPlaylist: " + e.getMessage());
         }

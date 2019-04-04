@@ -25,31 +25,6 @@ public class LandingPage {
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
     private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
-    private void showInputTextDialog() {
-
-        LobbyHost host = new LobbyHost(clientId, clientSecret, redirectUri);
-
-        try {
-            host.visitURI();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        TextInputDialog dialog = new TextInputDialog("");
-        dialog.setTitle("URL Input");
-        dialog.setHeaderText("Input");
-        dialog.setContentText("Please enter the URL:");
-
-        Optional<String> result = dialog.showAndWait();
-
-        if (!(result.toString().trim().equals("Optional[]"))) {
-            System.out.println(result);
-
-            if (result.isPresent()) {
-                UserInterface.loadHostPage(result.toString(), host);
-            }
-        }
-    }
 
     public LandingPage() {
         double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -144,5 +119,32 @@ public class LandingPage {
         //----------------------------------------------------------------
 
         UserInterface.getStage().getScene().setRoot(root);
+    }
+
+    private void showInputTextDialog() {
+
+        LobbyHost host = new LobbyHost(clientId, clientSecret, redirectUri);
+
+        try {
+            host.visitURI();
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        TextInputDialog dialog = new TextInputDialog("");
+        dialog.setTitle("URL Input");
+        dialog.setHeaderText("Input");
+        dialog.setContentText("Please enter the URL:");
+
+        Optional<String> result = dialog.showAndWait();
+
+        if (!(result.toString().trim().equals("Optional[]"))) {
+            System.out.println(result);
+
+            if (result.isPresent()) {
+                UserInterface.loadHostPage(result.toString(), host);
+            }
+        }
     }
 }

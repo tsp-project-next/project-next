@@ -2,7 +2,6 @@ package User;
 
 import client.LobbyHost;
 import client.LobbyUser;
-import com.wrapper.spotify.SpotifyHttpManager;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
@@ -24,39 +23,34 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.awt.*;
-import java.net.URI;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class HostPage {
 
-    private static Scene UserScene = null;
-    private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
-    private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
     public static ObservableList<String> itemsPlayQueue;
 
     private static LobbyHost host = null;
 
     private static Scene hostPage = null;
     private String code;
-    private String authorizationCode;
+
     private int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
     private Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
     public static String Song;
     public static String Artist;
     public static String Album;
 
-    public HostPage(String code, String authorizationCode, LobbyHost host) {
+    public HostPage(String code, LobbyHost host) {
         this.code = code;
         this.host = host;
-        UserInterface.getStage().getScene().setRoot(setup(code, authorizationCode));
+        UserInterface.getStage().getScene().setRoot(setup(code));
     }
 
     @SuppressWarnings("Duplicates")
-    private GridPane setup(String code, String authorizationCode) {
+    private GridPane setup(String code) {
 
-        LobbyUser user = new LobbyUser(clientId, clientSecret);
+        host.startPlaylist();
 
         // Setting up the formatting for the main grid controller--------
         GridPane controller = new GridPane();
@@ -151,8 +145,8 @@ public class HostPage {
             if (!(searchBar.getText().trim().isEmpty())) {
 
 
-                if((user.searchTracks(searchBar.getText().trim()).getItems().length !=0)) {
-                    Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
+                if((host.searchTracks(searchBar.getText().trim()).getItems().length !=0)) {
+                    Paging<Track> tracks = host.searchTracks(searchBar.getText().trim());
 
                     if (!(bLObsList.contains(searchBar.getText().trim()))) {
 
@@ -209,8 +203,8 @@ public class HostPage {
             if (!(hostSearchText.getText().trim().isEmpty())) {
 
 
-                if((user.searchTracks(hostSearchText.getText().trim()).getItems().length !=0)) {
-                    Paging<Track> tracks = user.searchTracks(hostSearchText.getText().trim());
+                if((host.searchTracks(hostSearchText.getText().trim()).getItems().length !=0)) {
+                    Paging<Track> tracks = host.searchTracks(hostSearchText.getText().trim());
 
                     if (!(OhostSearchList.contains(hostSearchText.getText().trim()))) {
 
@@ -274,7 +268,7 @@ public class HostPage {
 
                     if (!(itemsPlayQueue.contains(hostSearchList.getSelectionModel().getSelectedItem().trim()))) {
 
-                        Paging<Track> tracks = user.searchTracks(hostSearchText.getText().trim());
+                        Paging<Track> tracks = host.searchTracks(hostSearchText.getText().trim());
 
 
                         Track[] song = new Track[0];

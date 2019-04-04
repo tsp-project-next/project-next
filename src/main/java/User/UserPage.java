@@ -1,6 +1,5 @@
 package User;
 
-import client.LobbyHost;
 import client.LobbyUser;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
@@ -312,7 +311,10 @@ public class UserPage  {
         Song = current[0].getTrack().getName();
         Artist = current[0].getTrack().getArtists().toString();
         Album = current[0].getTrack().getAlbum().toString();
+    }
 
+    public static void sendToLandingPage() {
 
+        UserInterface.loadLandingPage();
     }
 }

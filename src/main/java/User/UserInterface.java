@@ -30,6 +30,7 @@ public class UserInterface extends Application{
 
     // Main method -------------------------------------------------------
     public static void main(String[] args) {
+
         if (args[0].equalsIgnoreCase("client"))
         {
             LobbyUser user = new LobbyUser(clientId, clientSecret);
@@ -58,6 +59,7 @@ public class UserInterface extends Application{
     // Starts the landing page -------------------------------------------
     @Override
     public void start(Stage primaryStage) {
+
         mainStage = primaryStage;
         //application is currently called Project Next
         mainStage.setTitle("Project Next");
@@ -73,15 +75,15 @@ public class UserInterface extends Application{
 
     //displays landing page on the window --------------------------------
     public static void loadLandingPage() {
+
         getStage().setFullScreen(false);
         LandingPage landingPage = new LandingPage();
-
-        //getStage().setScene(landingPage.getScene());
     }
     //--------------------------------------------------------------------
 
     //displays host page on the window -----------------------------------
     public static void loadHostPage(String authorizationCode, LobbyHost host) {
+
         host.setAuthCode(authorizationCode);
 
         if(host.authorizationCode_Sync()) {
@@ -90,9 +92,6 @@ public class UserInterface extends Application{
 
             host.getDevices();
 
-            host.startPlaylist();
-
-
             String codeResponse = client.sendPacketWaitResponse(Utilities.generatePacketIdentifier(), 0, host.getPlaylistURI(), null, null);
 
             if (codeResponse == null) {
@@ -100,7 +99,8 @@ public class UserInterface extends Application{
             }
 
             host.setCode(codeResponse);
-            HostPage hostPage = new HostPage(codeResponse, authorizationCode, host);
+
+            HostPage hostPage = new HostPage(codeResponse, host);
         }
 
     }
