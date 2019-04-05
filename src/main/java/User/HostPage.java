@@ -413,7 +413,7 @@ public class HostPage {
 
         songTitle.setText("Song: " + current[0].getTrack().getName());
 
-        artist.setText("Artist: " );
+        artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
 
         album.setText("Album: " + current[0].getTrack().getAlbum().getName());
 
