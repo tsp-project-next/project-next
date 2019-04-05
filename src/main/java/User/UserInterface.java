@@ -4,6 +4,7 @@ import client.Client;
 import client.LobbyHost;
 import client.LobbyUser;
 import com.wrapper.spotify.SpotifyHttpManager;
+import com.wrapper.spotify.model_objects.specification.User;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -12,6 +13,8 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 import java.net.URI;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class UserInterface extends Application{
 
@@ -27,6 +30,8 @@ public class UserInterface extends Application{
     public static Client client;
 
     public static Thread t;
+
+    public static Timer timer = new Timer();
 
     // Main method -------------------------------------------------------
     public static void main(String[] args) {
@@ -45,6 +50,10 @@ public class UserInterface extends Application{
 
         //create a new client object
         client = new Client();
+        if(client.isConnectionEstablished() == false) {
+            System.out.println("Connection to server not found.");
+            System.exit(0);
+        }
 
         //need to save the thread.
         t = Thread.currentThread();
@@ -126,5 +135,29 @@ public class UserInterface extends Application{
 
     public static Stage getStage() {
         return mainStage;
+    }
+
+    public static void timerUpdate(Boolean running) {
+
+        if (running) {
+
+            timer.schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+
+                    System.out.println("running");
+                    if(HostPage.isInitialized()) {
+                        HostPage.updateCurrentPlaying();
+                    }
+                    if(UserPage.isInitialized()) {
+                        UserPage.updateCurrentPlaying();
+                    }
+
+                }
+            }, 0, 5000);
+        } else {
+            timer.cancel();
+        }
     }
 }

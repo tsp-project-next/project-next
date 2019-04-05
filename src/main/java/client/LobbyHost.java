@@ -341,36 +341,4 @@ public class LobbyHost {
         return null;
     }
 
-
-    public static void timerUpdate(Boolean running) {
-
-
-        Timer timer = new Timer();
-
-        if (running) {
-
-            timer.schedule(new TimerTask() {
-
-                @Override
-                public void run() {
-
-                    System.out.println("running");
-                    HostPage.updateCurrentPlaying();
-//                UserPage.updateCurrentPlaying();
-
-
-                }
-            }, 0, 5000);
-        } else {
-
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-
-                    System.exit(0);
-                }
-            }, 0 ,5);
-        }
-    }
-
 }

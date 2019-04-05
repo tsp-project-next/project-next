@@ -81,7 +81,7 @@ public class HostPage {
         VBox exitHolder = new VBox();
         Button exitButton = new Button("X");
         exitButton.setOnAction(event -> {
-            LobbyHost.timerUpdate(false);
+            UserInterface.timerUpdate(false);
             Platform.exit();
         });
 
@@ -299,7 +299,10 @@ public class HostPage {
 
 
         Button endSession = new Button("End Session");
-        endSession.setOnAction(event -> UserInterface.loadLandingPage());
+        endSession.setOnAction(event -> {
+            UserInterface.timerUpdate(false);
+            UserInterface.loadLandingPage();
+        });
         endHolder.getChildren().add(endSession);
         endHolder.setAlignment(Pos.CENTER);
 
@@ -401,7 +404,7 @@ public class HostPage {
 
             triggered = true;
 
-            LobbyHost.timerUpdate(true);
+            UserInterface.timerUpdate(true);
         }
     }
 

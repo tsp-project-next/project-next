@@ -51,6 +51,7 @@ public class Client {
     public boolean establishConnection(String host) {
         try {
             socket = new Socket(host, 9000);
+            socket.setKeepAlive(true);
             System.out.println("Socket connected");
             return true;
         } catch (ConnectException ex) {

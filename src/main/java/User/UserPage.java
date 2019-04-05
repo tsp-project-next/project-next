@@ -231,14 +231,20 @@ public class UserPage  {
         // Makes and Adds the 'X' button ---------------------------------
         Button closeButton = new Button("X");
         closeButton.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/30, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
-        closeButton.setOnAction(event -> Platform.exit());
+        closeButton.setOnAction(event -> {
+            UserInterface.timerUpdate(false);
+            Platform.exit();
+        });
         root.add(closeButton, 6, 0);
         //----------------------------------------------------------------
 
         // Makes and Adds the 'Leave' button -----------------------------
         Button leave = new Button("Leave");
         leave.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
-        leave.setOnAction(event -> UserInterface.loadLandingPage());
+        leave.setOnAction(event -> {
+            UserInterface.timerUpdate(false);
+            UserInterface.loadLandingPage();
+        });
         root.add(leave, 5,5, 2,1);
         //----------------------------------------------------------------
 
@@ -283,6 +289,8 @@ public class UserPage  {
         //----------------------------------------------------------------
 
         root.setGridLinesVisible(false);
+        updateCurrentPlaying();
+        updateQueue();
     }
 
     public static void updateQueue() {
@@ -297,6 +305,8 @@ public class UserPage  {
             itemsPlayQueue.add(song[i].getTrack().getName());
         }
 
+        UserInterface.timerUpdate(true);
+
     }
 
     public static void updateCurrentPlaying() {
@@ -307,7 +317,7 @@ public class UserPage  {
 
         songTitle.setText("Song: " + current[0].getTrack().getName());
 
-        artist.setText("Artist: " + current[0].getTrack().getArtists().toString());
+        artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
 
         album.setText("Album: " + current[0].getTrack().getAlbum().getName());
 
