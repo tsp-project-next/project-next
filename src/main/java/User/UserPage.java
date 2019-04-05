@@ -35,6 +35,7 @@ public class UserPage  {
     static Text songTitle = new Text();
     static Text artist = new Text();
     static Text album = new Text();
+    private static LobbyUser user = null;
 
     private int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
     private Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
@@ -42,7 +43,7 @@ public class UserPage  {
     // Makes and Adds all elements of the UserPage to the UserPage
     public UserPage(String Code) {
 
-        LobbyUser user = new LobbyUser(clientId, clientSecret);
+        user = new LobbyUser(clientId, clientSecret);
 
         // Makes a GridPane Called Root ----------------------------------
         GridPane root = new GridPane();
@@ -315,5 +316,10 @@ public class UserPage  {
     public static void sendToLandingPage() {
 
         UserInterface.loadLandingPage();
+    }
+
+    public static boolean isInitialized() {
+        if(user == null) return false;
+        return true;
     }
 }

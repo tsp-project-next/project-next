@@ -413,9 +413,14 @@ public class HostPage {
 
         songTitle.setText("Song: " + current[0].getTrack().getName());
 
-        artist.setText("Artist: " + LobbyHost.aName(current[0].getTrack().getUri()));
+        artist.setText("Artist: " );
 
         album.setText("Album: " + current[0].getTrack().getAlbum().getName());
 
+    }
+
+    public static boolean isInitialized() {
+        if(host == null) return false;
+        return true;
     }
 }

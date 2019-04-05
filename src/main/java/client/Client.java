@@ -173,12 +173,12 @@ public class Client {
                 System.out.println("Packet type: 2");
 
 
-                if(HostPage.itemsPlayQueue != null) {
+                if(HostPage.isInitialized()) {
                     Platform.runLater(() -> {
                         HostPage.updateQueue();
                     });
                 }
-                if(UserPage.itemsPlayQueue != null) {
+                if(UserPage.isInitialized()) {
                     Platform.runLater(() -> {
                         UserPage.updateQueue();
                     });
