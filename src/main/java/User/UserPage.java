@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import java.awt.*;
+
 import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollPane;
 
@@ -30,13 +31,13 @@ public class UserPage  {
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
     public static ObservableList<String> itemsPlayQueue;
-    Text playing;
-    Text songTitle;
-    Text artist;
-    Text album;
-    public static String Song;
-    public static String Artist;
-    public static String Album;
+    static Text playing = new Text();
+    static Text songTitle = new Text();
+    static Text artist = new Text();
+    static Text album = new Text();
+
+    private int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
+    private Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
 
     // Makes and Adds all elements of the UserPage to the UserPage
     public UserPage(String Code) {
@@ -134,25 +135,21 @@ public class UserPage  {
 
         // Current Playing Display ---------------------------------------
 
-        playing = new Text();
         playing.setText("Playing");
         playing.setFill(Color.WHITE);
-        playing.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
+        playing.setFont(standard);
 
-        songTitle = new Text();
-        songTitle.setText("Song Title: " + Song);
+        songTitle.textProperty().setValue("Song: No Song");
         songTitle.setFill(Color.WHITE);
-        songTitle.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
+        songTitle.setFont(standard);
 
-        artist = new Text();
-        artist.setText("Artist: " + Artist);
+        artist.setText("Artist: No Song");
         artist.setFill(Color.WHITE);
-        artist.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
+        artist.setFont(standard);
 
-        album = new Text();
-        album.setText("Album: " + Album);
+        album.setText("Album: No Song");
         album.setFill(Color.WHITE);
-        album.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
+        album.setFont(standard);
 
         stack.setSpacing(40);
 
@@ -307,10 +304,12 @@ public class UserPage  {
 
         PlaylistTrack[] current = tracks.getItems();
 
+        songTitle.setText("Song: " + current[0].getTrack().getName());
 
-        Song = current[0].getTrack().getName();
-        Artist = current[0].getTrack().getArtists().toString();
-        Album = current[0].getTrack().getAlbum().toString();
+        artist.setText("Artist: " + current[0].getTrack().getArtists().toString());
+
+        album.setText("Album: " + current[0].getTrack().getAlbum().getName());
+
     }
 
     public static void sendToLandingPage() {

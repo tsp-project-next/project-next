@@ -3,11 +3,6 @@ package client;
 import User.HostPage;
 import User.UserInterface;
 import User.UserPage;
-import User.Utilities;
-import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.SpotifyHttpManager;
-import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
-import javafx.application.Application;
 import javafx.application.Platform;
 
 import java.io.EOFException;
@@ -176,6 +171,7 @@ public class Client {
             //packet type 2 = song update
             case 2:
                 System.out.println("Packet type: 2");
+
 
                 if(HostPage.itemsPlayQueue != null) {
                     Platform.runLater(() -> {

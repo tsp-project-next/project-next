@@ -92,6 +92,7 @@ public class LobbyUser {
     }
 
     public static String setPLaylistUri(String uri) {
+
         playlistUri = uri;
 
         int idLength = 0;

@@ -12,10 +12,7 @@ import com.wrapper.spotify.requests.data.playlists.CreatePlaylistRequest;
 import com.wrapper.spotify.requests.data.playlists.GetPlaylistsTracksRequest;
 import com.wrapper.spotify.requests.data.search.simplified.SearchTracksRequest;
 import com.wrapper.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
-import User.Utilities;
-import User.UserInterface;
-import User.HostPage;
-import User.UserPage;
+import User.*;
 
 import java.awt.*;
 import java.io.IOException;
@@ -230,17 +227,6 @@ public class LobbyHost {
         try {
             spotifyApi.startResumeUsersPlayback().context_uri(playlistUri).device_id(deviceId)
                     .position_ms(0).build().execute();
-
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-
-                @Override
-                public void run() {
-
-                    HostPage.updateCurrentPlaying();
-                    UserPage.updateCurrentPlaying();
-                }
-            }, 0, 5000);
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in startPlaylist: " + e.getMessage());
         }
@@ -320,4 +306,71 @@ public class LobbyHost {
 
         return null;
     }
+
+    public static String aName (String URI) {
+
+        String playlistID = URI;
+
+        int idLength = 0;
+
+        for (int i = playlistID.length() - 1; i >= 0; i--) {
+            if (playlistID.charAt(i) == ':') {
+                idLength = playlistID.length() - i - 1;
+                break;
+            }
+        }
+
+        char[] array = new char[idLength];
+
+        for (int i = 0; i < idLength; i++) {
+            array[i] = playlistID.charAt(playlistID.length() - idLength + i);
+        }
+
+        String songID = String.copyValueOf(array);
+
+        try {
+
+//            return spotifyApi.getArtist(songID).build().execute().getName();
+            return songID;
+
+        } catch (Exception e) {
+
+            System.out.println("error in getting artist name" + e.getCause().getMessage());
+        }
+
+        return null;
+    }
+
+
+    public static void timerUpdate(Boolean running) {
+
+
+        Timer timer = new Timer();
+
+        if (running) {
+
+            timer.schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+
+                    System.out.println("running");
+                    HostPage.updateCurrentPlaying();
+//                UserPage.updateCurrentPlaying();
+
+
+                }
+            }, 0, 5000);
+        } else {
+
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+
+                    System.exit(0);
+                }
+            }, 0 ,5);
+        }
+    }
+
 }

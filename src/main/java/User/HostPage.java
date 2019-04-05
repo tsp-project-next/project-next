@@ -6,6 +6,7 @@ import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -23,23 +24,29 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.awt.*;
+import java.util.Timer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class HostPage {
 
     public static ObservableList<String> itemsPlayQueue;
+    static Text playing = new Text();
+    static Text songTitle = new Text();
+    static Text artist = new Text();
+    static Text album = new Text();
 
     private static LobbyHost host = null;
 
     private static Scene hostPage = null;
-    private String code;
+    private static String code;
+
+    static boolean triggered = false;
+
 
     private int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
     private Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
-    public static String Song;
-    public static String Artist;
-    public static String Album;
+
 
     public HostPage(String code, LobbyHost host) {
         this.code = code;
@@ -73,7 +80,11 @@ public class HostPage {
 
         VBox exitHolder = new VBox();
         Button exitButton = new Button("X");
-        exitButton.setOnAction(event -> Platform.exit());
+        exitButton.setOnAction(event -> {
+            LobbyHost.timerUpdate(false);
+            Platform.exit();
+        });
+
         exitHolder.getChildren().add(exitButton);
         exitHolder.setAlignment(Pos.TOP_RIGHT);
         controller.add(exitHolder, 2, 0);
@@ -281,7 +292,6 @@ public class HostPage {
                         String[] sName = new String [] {song[OhostSearchList.indexOf(hostSearchList.getSelectionModel().getSelectedItem())].getUri()};
 
                         host.addSong(sName);
-
                     }
                 }
             }
@@ -310,23 +320,19 @@ public class HostPage {
         // Currently Playing----------------------------------------------
         VBox currentlyPlaying = new VBox();
 
-        Text playing = new Text();
         playing.setText("Playing");
         playing.setFill(Color.WHITE);
         playing.setFont(standard);
 
-        Text songTitle = new Text();
-        songTitle.setText("Song Title: " + Song);
+        songTitle.textProperty().setValue("Song: No Song");
         songTitle.setFill(Color.WHITE);
         songTitle.setFont(standard);
 
-        Text artist = new Text();
-        artist.setText("Artist: " + Artist);
+        artist.setText("Artist: No Song");
         artist.setFill(Color.WHITE);
         artist.setFont(standard);
 
-        Text album = new Text("Album");
-        artist.setText("Album: " + Album);
+        album.setText("Album: No Song");
         album.setFill(Color.WHITE);
         album.setFont(standard);
 
@@ -391,19 +397,25 @@ public class HostPage {
             itemsPlayQueue.add(song[i].getTrack().getName());
         }
 
+        if (!triggered) {
+
+            triggered = true;
+
+            LobbyHost.timerUpdate(true);
+        }
     }
 
     public static void updateCurrentPlaying() {
 
-        Paging<PlaylistTrack> tracks = LobbyUser.getPlayListTracks();
+        Paging<PlaylistTrack> tracks = LobbyHost.getPlayListTracks();
 
         PlaylistTrack[] current = tracks.getItems();
 
+        songTitle.setText("Song: " + current[0].getTrack().getName());
 
-        Song = current[0].getTrack().getName();
-        Artist = current[0].getTrack().getArtists().toString();
-        Album = current[0].getTrack().getAlbum().toString();
+        artist.setText("Artist: " + LobbyHost.aName(current[0].getTrack().getUri()));
 
+        album.setText("Album: " + current[0].getTrack().getAlbum().getName());
 
     }
 }
