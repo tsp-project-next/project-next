@@ -35,19 +35,6 @@ public class UserInterface extends Application{
 
     // Main method -------------------------------------------------------
     public static void main(String[] args) {
-
-        if (args[0].equalsIgnoreCase("client"))
-        {
-            LobbyUser user = new LobbyUser(clientId, clientSecret);
-        }
-        else if (args[0].equalsIgnoreCase("host"))
-        {
-            //LobbyHost host = new LobbyHost(clientId, clientSecret, redirectUri);
-            //host.generateURI();
-        }
-
-        System.out.println("Input argument: " + args[0]);
-
         //create a new client object
         client = new Client();
         if(client.isConnectionEstablished() == false) {

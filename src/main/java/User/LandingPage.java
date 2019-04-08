@@ -27,10 +27,14 @@ public class LandingPage {
     private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
 
     public LandingPage() {
+
+
         double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double screenHeight = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
         GridPane root = new GridPane();
+        root.getStylesheets().add("scene.css");
+
         root.setGridLinesVisible(false);
         root.setStyle("-fx-background-color: transparent");
 
@@ -92,8 +96,8 @@ public class LandingPage {
         Alert invalidCode = new Alert(Alert.AlertType.INFORMATION);
         invalidCode.initOwner(UserInterface.getStage());
         invalidCode.setContentText("Code must be 4 characters.");
-        invalidCode.setHeaderText("Invaid Code");
-        invalidCode.setTitle("Invaid Code");
+        invalidCode.setHeaderText("Invalid Code");
+        invalidCode.setTitle("Invalid Code");
 
         join.setOnAction(event -> {
             if (joinCode.getText().trim().length() == 4) {

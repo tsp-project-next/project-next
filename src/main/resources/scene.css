@@ -1,0 +1,38 @@
+.root {
+    -fx-background: rgb(26, 83, 46);
+}
+
+.button {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-font: "Courier New";
+    -fx-background-color: #061905;
+    -fx-text-fill: #ffffff;
+}
+
+.button:hover {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+}
+
+.label {
+    -fx-alignment: center;
+    -fx-font: "Times New Roman";
+    -fx-text-fill: #ffffff;
+}
+
+.gridPane {
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+    -fx-alignment: center;
+    -fx-grid-lines-visible: false;
+    -fx-border-color: #061905;
+}
+
+.scrollPane {
+    -fx-fit-to-width: true;
+    -fx-fit-to-height: true;
+    -fx-hbar-policy: as-needed;
+    -fx-vbar-policy: as-needed;
+    -fx-pannable: true;
+}

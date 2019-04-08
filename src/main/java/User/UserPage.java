@@ -47,6 +47,7 @@ public class UserPage  {
 
         // Makes a GridPane Called Root ----------------------------------
         GridPane root = new GridPane();
+        root.getStylesheets().add("scene.css");
         root.setPadding(new Insets(5));
         root.setHgap(10);
         root.setVgap(10);

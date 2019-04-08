@@ -61,6 +61,7 @@ public class HostPage {
 
         // Setting up the formatting for the main grid controller--------
         GridPane controller = new GridPane();
+        controller.getStylesheets().add("scene.css");
         controller.setStyle("-fx-background-color: rgb(26,83,46); -fx-background-radius: 10;");
         RowConstraints rowOne = new RowConstraints();
         rowOne.setVgrow(Priority.ALWAYS);
@@ -348,9 +349,16 @@ public class HostPage {
 
         // Used to switch the play button to pause and vice versa
         AtomicBoolean nowPlaying = new AtomicBoolean(false);
+        AtomicBoolean firstSong = new AtomicBoolean(true);
         // Button that will resume or pause the user's playlist
         Button play = new Button("Play");
         play.setOnAction(event -> {
+            if (!nowPlaying.get() && firstSong.get()) {
+                LobbyHost.startPlaylist();
+                play.setText("Pause");
+                nowPlaying.set(true);
+                firstSong.set(false);
+            }
             if (nowPlaying.get()) {
                 LobbyHost.resume();
                 play.setText("Pause");

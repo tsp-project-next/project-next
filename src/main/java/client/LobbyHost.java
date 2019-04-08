@@ -307,38 +307,35 @@ public class LobbyHost {
         return null;
     }
 
-    public static String aName (String URI) {
+    public static void timerUpdate(Boolean running) {
 
-        String playlistID = URI;
 
-        int idLength = 0;
+        Timer timer = new Timer();
 
-        for (int i = playlistID.length() - 1; i >= 0; i--) {
-            if (playlistID.charAt(i) == ':') {
-                idLength = playlistID.length() - i - 1;
-                break;
-            }
+        if (running) {
+
+            timer.schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+
+                    System.out.println("running");
+                    HostPage.updateCurrentPlaying();
+//                UserPage.updateCurrentPlaying();
+
+
+                }
+            }, 0, 5000);
+        } else {
+
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+
+                    System.exit(0);
+                }
+            }, 0 ,5);
         }
-
-        char[] array = new char[idLength];
-
-        for (int i = 0; i < idLength; i++) {
-            array[i] = playlistID.charAt(playlistID.length() - idLength + i);
-        }
-
-        String songID = String.copyValueOf(array);
-
-        try {
-
-//            return spotifyApi.getArtist(songID).build().execute().getName();
-            return songID;
-
-        } catch (Exception e) {
-
-            System.out.println("error in getting artist name" + e.getCause().getMessage());
-        }
-
-        return null;
     }
 
 }
