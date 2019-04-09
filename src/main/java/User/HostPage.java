@@ -5,6 +5,8 @@ import client.LobbyUser;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -22,6 +24,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.util.Timer;
@@ -35,6 +38,8 @@ public class HostPage {
     static Text songTitle = new Text();
     static Text artist = new Text();
     static Text album = new Text();
+    static Text scrollingText;
+
 
     private static LobbyHost host = null;
 
@@ -415,7 +420,26 @@ public class HostPage {
 
         PlaylistTrack[] current = tracks.getItems();
 
-        songTitle.setText("Song: " + current[0].getTrack().getName());
+        if (current[0].getTrack().getName().length() >= 20) {
+
+            scrollingText.setText(current[0].getTrack().getName());
+            scrollingText.setLayoutX(0);
+            scrollingText.setLayoutY(20);
+            scrollingText.setWrappingWidth(25);
+            TranslateTransition tt = new TranslateTransition(Duration.millis(30000), scrollingText);
+            tt.setFromX(0 - scrollingText.getWrappingWidth() - 10); // setFromX sets the starting position, coming from the left and going to the right.
+            tt.setToX(scrollingText.getWrappingWidth() + 40); // setToX sets to target position, go beyond the right side of the screen.
+            tt.setCycleCount(Timeline.INDEFINITE); // repeats for ever
+            tt.setAutoReverse(false); //Always start over
+            tt.play();
+
+            songTitle.setText("Song: " + scrollingText);
+
+
+        } else {
+
+            songTitle.setText("Song: " + current[0].getTrack().getName());
+        }
 
         artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
 
