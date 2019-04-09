@@ -210,7 +210,7 @@ public class UserPage  {
 
                     if (!(itemsSearchResults.contains(searchBar.getText().trim()))) {
 
-                        for (int i = 0; i <= 9; i++) {
+                        for (int i = 0; i <= tracks.getTotal(); i++) {
                             Track[] song = tracks.getItems();
 
                             itemsSearchResults.add(song[i].getName());

@@ -167,7 +167,7 @@ public class HostPage {
 
                     if (!(bLObsList.contains(searchBar.getText().trim()))) {
 
-                        for (int i = 0; i <= 9; i++) {
+                        for (int i = 0; i <= tracks.getTotal(); i++) {
                             Track[] song = tracks.getItems();
 
                             bLObsList.add(song[i].getName());
@@ -225,7 +225,7 @@ public class HostPage {
 
                     if (!(OhostSearchList.contains(hostSearchText.getText().trim()))) {
 
-                        for (int i = 0; i <= 9; i++) {
+                        for (int i = 0; i <= tracks.getTotal(); i++) {
                             Track[] song = tracks.getItems();
 
                             OhostSearchList.add(song[i].getName());
