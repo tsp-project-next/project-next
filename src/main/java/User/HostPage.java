@@ -340,13 +340,6 @@ public class HostPage {
         album.setFill(Color.WHITE);
         album.setFont(standard);
 
-        // Button that switches the user's current song to the previous song
-        // in the playlist
-        Button back = new Button("<<");
-        back.setOnAction(event -> {
-            LobbyHost.previousSong();
-        });
-
         // Used to switch the play button to pause and vice versa
         AtomicBoolean nowPlaying = new AtomicBoolean(false);
         AtomicBoolean firstSong = new AtomicBoolean(true);
@@ -358,6 +351,13 @@ public class HostPage {
                 play.setText("Pause");
                 nowPlaying.set(true);
                 firstSong.set(false);
+
+                if (!triggered) {
+
+                    triggered = true;
+
+                    UserInterface.timerUpdate(true);
+                }
             }
             if (nowPlaying.get()) {
                 LobbyHost.resume();
@@ -379,7 +379,7 @@ public class HostPage {
 
         // Adds back, play and next to a HBox in order to have the controls in a row
         HBox controls = new HBox();
-        controls.getChildren().addAll(back, play, next);
+        controls.getChildren().addAll(play, next);
         controls.setAlignment(Pos.CENTER);
 
         currentlyPlaying.getChildren().addAll(playing, songTitle, artist, album, controls);
@@ -406,13 +406,6 @@ public class HostPage {
             PlaylistTrack[] song = tracks.getItems();
 
             itemsPlayQueue.add(song[i].getTrack().getName());
-        }
-
-        if (!triggered) {
-
-            triggered = true;
-
-            UserInterface.timerUpdate(true);
         }
     }
 

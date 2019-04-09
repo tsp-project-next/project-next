@@ -144,7 +144,6 @@ public class LandingPage {
         Optional<String> result = dialog.showAndWait();
 
         if (!(result.toString().trim().equals("Optional[]"))) {
-            System.out.println(result);
 
             if (result.isPresent()) {
                 UserInterface.loadHostPage(result.toString(), host);

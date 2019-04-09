@@ -67,7 +67,7 @@ public class LobbyHost {
         final URI uri = authorizationCodeUriRequest.execute();
 
         // This is where we'd prompt the user with the URI to allow us to query specific account info
-        System.out.println("URI: " + uri.toString());
+        //System.out.println("URI: " + uri.toString());
 
         authUri = uri;
 
@@ -98,7 +98,7 @@ public class LobbyHost {
             spotifyApi.setAccessToken(authorizationCodeCredentials.getAccessToken());
             spotifyApi.setRefreshToken(authorizationCodeCredentials.getRefreshToken());
 
-            System.out.println("Expires in: " + authorizationCodeCredentials.getExpiresIn());
+            //System.out.println("Expires in: " + authorizationCodeCredentials.getExpiresIn());
 
             return true;
         } catch (IOException | SpotifyWebApiException e) {
@@ -160,8 +160,8 @@ public class LobbyHost {
 
             final Playlist playlist = createPlaylistRequest.execute();
 
-            System.out.println("Name: " + playlist.getName() + "\n");
-            System.out.println("URI: " + playlist.getUri() + "\n");
+            //System.out.println("Name: " + playlist.getName() + "\n");
+            System.out.println("Playlist URI: " + playlist.getUri() + "\n");
 
             playlistUri = playlist.getUri();
             playlistId = playlist.getId();
@@ -177,7 +177,7 @@ public class LobbyHost {
     public static void playlistCleanup() {
         try {
             spotifyApi.unfollowPlaylist(userId, playlistId).build().execute();
-            System.out.println("Unfollowed playlist");
+            //System.out.println("Unfollowed playlist");
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in playlistCleanup: " + e.getMessage());
         }
@@ -256,14 +256,6 @@ public class LobbyHost {
         }
     }
 
-    public static void previousSong() {
-        try {
-            spotifyApi.skipUsersPlaybackToPreviousTrack().device_id(deviceId).build().execute();
-        } catch (IOException | SpotifyWebApiException e) {
-            System.out.println("Error in nextSong: " + e.getMessage());
-        }
-    }
-
     public void setCode(String code) {
         this.code = code;
     }
@@ -306,36 +298,4 @@ public class LobbyHost {
 
         return null;
     }
-
-    public static void timerUpdate(Boolean running) {
-
-
-        Timer timer = new Timer();
-
-        if (running) {
-
-            timer.schedule(new TimerTask() {
-
-                @Override
-                public void run() {
-
-                    System.out.println("running");
-                    HostPage.updateCurrentPlaying();
-//                UserPage.updateCurrentPlaying();
-
-
-                }
-            }, 0, 5000);
-        } else {
-
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-
-                    System.exit(0);
-                }
-            }, 0 ,5);
-        }
-    }
-
 }

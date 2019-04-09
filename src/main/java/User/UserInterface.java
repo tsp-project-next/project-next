@@ -109,7 +109,7 @@ public class UserInterface extends Application{
         if(responseURI == null) {
             System.out.println("lobby join uri from server returned null");
         } else {
-            System.out.println("Joined lobby and returned uri: " + responseURI);
+            //System.out.println("Joined lobby and returned uri: " + responseURI);
         }
 
         LobbyUser.setPLaylistUri(responseURI);
@@ -133,7 +133,7 @@ public class UserInterface extends Application{
                 @Override
                 public void run() {
 
-                    System.out.println("running");
+                    //System.out.println("running");
                     if(HostPage.isInitialized()) {
                         HostPage.updateCurrentPlaying();
                     }

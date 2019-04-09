@@ -46,7 +46,7 @@ public class LobbyUser {
             spotifyApi.setAccessToken(clientCredentials.getAccessToken());
 
             // Debug
-            System.out.println("Expires in: " + clientCredentials.getExpiresIn());
+            //System.out.println("Expires in: " + clientCredentials.getExpiresIn());
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in LobbyUser Constructor: " + e.getMessage());
         }
