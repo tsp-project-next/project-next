@@ -225,7 +225,7 @@ public class HostPage {
 
                     if (!(OhostSearchList.contains(hostSearchText.getText().trim()))) {
 
-                        for (int i = 0; i <= tracks.getTotal(); i++) {
+                        for (int i = 0; i < tracks.getItems().length; i++) {
                             Track[] song = tracks.getItems();
 
                             OhostSearchList.add(song[i].getName());
@@ -306,6 +306,7 @@ public class HostPage {
 
         Button endSession = new Button("End Session");
         endSession.setOnAction(event -> {
+            UserInterface.client.sendPacket(Utilities.generatePacketIdentifier(), 4, null, null, null);
             UserInterface.timerUpdate(false);
             UserInterface.loadLandingPage();
         });
@@ -420,30 +421,32 @@ public class HostPage {
 
         PlaylistTrack[] current = tracks.getItems();
 
-        if (current[0].getTrack().getName().length() >= 20) {
+        if(current != null && current.length != 0) {
+            if (current[0].getTrack().getName().length() >= 20) {
 
-            scrollingText.setText(current[0].getTrack().getName());
-            scrollingText.setLayoutX(0);
-            scrollingText.setLayoutY(20);
-            scrollingText.setWrappingWidth(25);
-            TranslateTransition tt = new TranslateTransition(Duration.millis(30000), scrollingText);
-            tt.setFromX(0 - scrollingText.getWrappingWidth() - 10); // setFromX sets the starting position, coming from the left and going to the right.
-            tt.setToX(scrollingText.getWrappingWidth() + 40); // setToX sets to target position, go beyond the right side of the screen.
-            tt.setCycleCount(Timeline.INDEFINITE); // repeats for ever
-            tt.setAutoReverse(false); //Always start over
-            tt.play();
+                scrollingText.setText(current[0].getTrack().getName());
+                scrollingText.setLayoutX(0);
+                scrollingText.setLayoutY(20);
+                scrollingText.setWrappingWidth(25);
+                TranslateTransition tt = new TranslateTransition(Duration.millis(30000), scrollingText);
+                tt.setFromX(0 - scrollingText.getWrappingWidth() - 10); // setFromX sets the starting position, coming from the left and going to the right.
+                tt.setToX(scrollingText.getWrappingWidth() + 40); // setToX sets to target position, go beyond the right side of the screen.
+                tt.setCycleCount(Timeline.INDEFINITE); // repeats for ever
+                tt.setAutoReverse(false); //Always start over
+                tt.play();
 
-            songTitle.setText("Song: " + scrollingText);
+                songTitle.setText("Song: " + scrollingText);
 
 
-        } else {
+            } else {
 
-            songTitle.setText("Song: " + current[0].getTrack().getName());
+                songTitle.setText("Song: " + current[0].getTrack().getName());
+            }
+
+            artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
+
+            album.setText("Album: " + current[0].getTrack().getAlbum().getName());
         }
-
-        artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
-
-        album.setText("Album: " + current[0].getTrack().getAlbum().getName());
 
     }
 

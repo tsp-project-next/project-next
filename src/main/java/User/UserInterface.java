@@ -31,7 +31,7 @@ public class UserInterface extends Application{
 
     public static Thread t;
 
-    public static Timer timer = new Timer();
+    private static Timer timer = new Timer();
 
     // Main method -------------------------------------------------------
     public static void main(String[] args) {
@@ -124,9 +124,10 @@ public class UserInterface extends Application{
         return mainStage;
     }
 
-    public static void timerUpdate(Boolean running) {
+    public static void timerUpdate(Boolean start) {
 
-        if (running) {
+        if (start) {
+            timer = new Timer();
 
             timer.schedule(new TimerTask() {
 

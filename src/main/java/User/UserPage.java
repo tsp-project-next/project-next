@@ -210,7 +210,7 @@ public class UserPage  {
 
                     if (!(itemsSearchResults.contains(searchBar.getText().trim()))) {
 
-                        for (int i = 0; i <= tracks.getTotal(); i++) {
+                        for (int i = 0; i < tracks.getItems().length; i++) {
                             Track[] song = tracks.getItems();
 
                             itemsSearchResults.add(song[i].getName());
@@ -243,6 +243,7 @@ public class UserPage  {
         Button leave = new Button("Leave");
         leave.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         leave.setOnAction(event -> {
+            UserInterface.client.sendPacket(Utilities.generatePacketIdentifier(), 4, null, null, null);
             UserInterface.timerUpdate(false);
             UserInterface.loadLandingPage();
         });
@@ -316,12 +317,13 @@ public class UserPage  {
 
         PlaylistTrack[] current = tracks.getItems();
 
-        songTitle.setText("Song: " + current[0].getTrack().getName());
+        if(current != null && current.length != 0) {
+            songTitle.setText("Song: " + current[0].getTrack().getName());
 
-        artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
+            artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
 
-        album.setText("Album: " + current[0].getTrack().getAlbum().getName());
-
+            album.setText("Album: " + current[0].getTrack().getAlbum().getName());
+        }
     }
 
     public static void sendToLandingPage() {

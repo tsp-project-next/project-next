@@ -191,6 +191,7 @@ public class Client {
                 String[] sName = new String[] {packet.getSongURI()};
                 LobbyHost.addSong(sName);
                 break;
+            //this just received a empty packet to verify that you were exited from the lobby
             case 4:
                 System.out.println("Packet type: 4");
                 break;

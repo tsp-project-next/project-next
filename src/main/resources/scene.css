@@ -5,7 +5,7 @@
 .button {
     -fx-alignment: center;
     -fx-text-alignment: center;
-    -fx-font: "Courier New";
+    -fx-font-family: "Courier New";
     -fx-background-color: #061905;
     -fx-text-fill: #ffffff;
 }
@@ -17,7 +17,7 @@
 
 .label {
     -fx-alignment: center;
-    -fx-font: "Times New Roman";
+    -fx-font-family: "Times New Roman";
     -fx-text-fill: #ffffff;
 }
 
