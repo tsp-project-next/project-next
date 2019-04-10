@@ -186,7 +186,7 @@ public class UserPage  {
 
                         Track[] song = new Track[0];
 
-                        for (int i = 0; i <= 9; i++) {
+                        for (int i = 0; i <= tracks.getItems().length; i++) {
 
                             song = tracks.getItems();
                         }
