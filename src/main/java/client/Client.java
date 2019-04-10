@@ -172,7 +172,12 @@ public class Client {
             //packet type 1 = lobby join
             case 1:
                 System.out.println("Packet type: 1");
-                responses.put(packet.getPacketIdentifier(), packet.getPlaylistURI());
+                if(packet.getPlaylistURI() == null) {
+                    //have to use space instead of null because null isnt allowed
+                    responses.put(packet.getPacketIdentifier(), " ");
+                } else {
+                    responses.put(packet.getPacketIdentifier(), packet.getPlaylistURI());
+                }
                 awaitingResponseList.remove(packet.getPacketIdentifier());
                 break;
             //packet type 2 = song update

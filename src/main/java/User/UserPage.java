@@ -302,6 +302,9 @@ public class UserPage  {
 
         root.setGridLinesVisible(false);
 
+        updateCurrentPlaying();
+        updateQueue();
+
         return root;
     }
 
