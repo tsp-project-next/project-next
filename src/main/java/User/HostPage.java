@@ -1,14 +1,12 @@
 package User;
 
 import client.LobbyHost;
-import client.LobbyUser;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -27,31 +25,21 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.awt.*;
-import java.util.Timer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class HostPage {
 
-    public static ObservableList<String> itemsPlayQueue;
-    static Text playing = new Text();
-    static Text songTitle = new Text();
-    static Text artist = new Text();
-    static Text album = new Text();
-    static Text scrollingText;
-
-
+//    private static Scene hostPage = null;
     private static LobbyHost host = null;
-
-    private static Scene hostPage = null;
+    private static ObservableList<String> itemsPlayQueue;
+    private static Text playing = new Text();
+    private static Text songTitle = new Text();
+    private static Text artist = new Text();
+    private static Text album = new Text();
+    private static Text scrollingText = new Text();
+    private static boolean triggered = false;
     private static String code;
-
-    static boolean triggered = false;
-
-
-    private int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
-    private Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
-
 
     public HostPage(String code, LobbyHost host) {
         this.code = code;
@@ -59,8 +47,12 @@ public class HostPage {
         UserInterface.getStage().getScene().setRoot(setup(code));
     }
 
+
     @SuppressWarnings("Duplicates")
     private GridPane setup(String code) {
+
+        int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
+        Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
 
         host.startPlaylist();
 
@@ -75,7 +67,7 @@ public class HostPage {
         controller.setAlignment(Pos.CENTER);
         controller.setHgap(10);
         controller.setVgap(10);
-        controller.setPadding(new Insets(25, 25, 25, 25));
+        controller.setPadding(new Insets(5));
         //----------------------------------------------------------------
 
         // Basic Features-------------------------------------------------
@@ -334,9 +326,23 @@ public class HostPage {
         playing.setFill(Color.WHITE);
         playing.setFont(standard);
 
-        songTitle.textProperty().setValue("Song: No Song");
+
+        HBox SONG = new HBox();
+        SONG.setMaxWidth(100);
+
+        songTitle.textProperty().setValue("Song: ");
         songTitle.setFill(Color.WHITE);
         songTitle.setFont(standard);
+
+        scrollingText.setText("No Song");
+        scrollingText.setLayoutX(songTitle.getLayoutX() + 10);
+        scrollingText.setLayoutY(songTitle.getLayoutY());
+        scrollingText.setFill(Color.WHITE);
+        scrollingText.setFont(standard);
+//        scrollingText.setWrappingWidth(100);
+
+        SONG.getChildren().addAll(songTitle, scrollingText);
+
 
         artist.setText("Artist: No Song");
         artist.setFill(Color.WHITE);
@@ -388,7 +394,7 @@ public class HostPage {
         controls.getChildren().addAll(play, next);
         controls.setAlignment(Pos.CENTER);
 
-        currentlyPlaying.getChildren().addAll(playing, songTitle, artist, album, controls);
+        currentlyPlaying.getChildren().addAll(playing, SONG, artist, album, controls);
 
         currentlyPlaying.setPadding(new Insets(40));
         currentlyPlaying.setAlignment(Pos.CENTER);
@@ -408,10 +414,13 @@ public class HostPage {
 
         Paging<PlaylistTrack> tracks = LobbyHost.getPlayListTracks();
 
-        for (int i = 0; i < tracks.getTotal(); i++) {
-            PlaylistTrack[] song = tracks.getItems();
+        if (tracks != null) {
 
-            itemsPlayQueue.add(song[i].getTrack().getName());
+            for (int i = 0; i < tracks.getItems().length; i++) {
+                PlaylistTrack[] song = tracks.getItems();
+
+                itemsPlayQueue.add(song[i].getTrack().getName());
+            }
         }
     }
 
@@ -419,35 +428,28 @@ public class HostPage {
 
         Paging<PlaylistTrack> tracks = LobbyHost.getPlayListTracks();
 
-        PlaylistTrack[] current = tracks.getItems();
+        if (tracks != null) {
 
-        if(current != null && current.length != 0) {
-            if (current[0].getTrack().getName().length() >= 20) {
+            PlaylistTrack[] current = tracks.getItems();
 
-                scrollingText.setText(current[0].getTrack().getName());
-                scrollingText.setLayoutX(0);
-                scrollingText.setLayoutY(20);
-                scrollingText.setWrappingWidth(25);
-                TranslateTransition tt = new TranslateTransition(Duration.millis(30000), scrollingText);
-                tt.setFromX(0 - scrollingText.getWrappingWidth() - 10); // setFromX sets the starting position, coming from the left and going to the right.
-                tt.setToX(scrollingText.getWrappingWidth() + 40); // setToX sets to target position, go beyond the right side of the screen.
+            String songName = current[0].getTrack().getName();
+
+            if (songName.length() >= 20 ) {
+
+                TranslateTransition tt = new TranslateTransition(Duration.millis(3000), scrollingText);
+                tt.setFromX(songTitle.getLayoutX() + 10); // setFromX sets the starting position, coming from the left and going to the right.
+                tt.setToX(scrollingText.getWrappingWidth() + songTitle.getLayoutX() + 100); // setToX sets to target position, go beyond the right side of the screen.
                 tt.setCycleCount(Timeline.INDEFINITE); // repeats for ever
                 tt.setAutoReverse(false); //Always start over
                 tt.play();
-
-                songTitle.setText("Song: " + scrollingText);
-
-
-            } else {
-
-                songTitle.setText("Song: " + current[0].getTrack().getName());
             }
+
+            scrollingText.setText(songName);
 
             artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
 
             album.setText("Album: " + current[0].getTrack().getAlbum().getName());
         }
-
     }
 
     public static boolean isInitialized() {

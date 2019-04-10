@@ -4,12 +4,11 @@ import client.LobbyHost;
 import com.wrapper.spotify.SpotifyHttpManager;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
-import javafx.geometry.Pos;
+import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -21,14 +20,16 @@ import java.net.URI;
 import java.util.Optional;
 
 public class LandingPage {
-    private static Scene landingScene = null;
+//    private static Scene landingScene = null;
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
     private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
 
     public LandingPage() {
+        UserInterface.getStage().getScene().setRoot(setup());
+    }
 
-
+    public GridPane setup() {
         double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double screenHeight = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
@@ -37,6 +38,8 @@ public class LandingPage {
 
         root.setGridLinesVisible(false);
         root.setStyle("-fx-background-color: transparent");
+
+        root.setPadding(new Insets(5));
 
         // Sizes columns to the size of the screen -----------------------
         ColumnConstraints column1 = new ColumnConstraints();
@@ -75,54 +78,29 @@ public class LandingPage {
         // Host button the connects to the host page ---------------------
         Button host = new Button("Host");
         host.setPrefSize(screenWidth / 8, screenHeight / 12);
-        host.setOnAction(event -> {
-
-            showInputTextDialog();
-
-        });
+        host.setOnAction(event -> showInputTextDialog());
         //----------------------------------------------------------------
 
         //Join Button with Text Field, checks for validity of code -------
         Button join = new Button("Join");
         join.setPrefSize(screenWidth / 8, screenHeight / 12);
-
-        TextField joinCode = new TextField();
-        joinCode.setMaxSize(screenWidth / 8, screenHeight / 12);
-        joinCode.setPromptText("Enter Code Here");
-        VBox joinElements = new VBox();
-        joinElements.setAlignment(Pos.TOP_CENTER);
-        joinElements.getChildren().addAll(join, joinCode);
-
-        Alert invalidCode = new Alert(Alert.AlertType.INFORMATION);
-        invalidCode.initOwner(UserInterface.getStage());
-        invalidCode.setContentText("Code must be 4 characters.");
-        invalidCode.setHeaderText("Invalid Code");
-        invalidCode.setTitle("Invalid Code");
-
-        join.setOnAction(event -> {
-            if (joinCode.getText().trim().length() == 4) {
-                UserInterface.loadUserPage(joinCode.getText());
-            } else {
-                invalidCode.show();
-            }
-        });
+        join.setOnAction(event -> userPrompt());
         //----------------------------------------------------------------
 
         //Exit Button ----------------------------------------------------
         Button exit = new Button("X");
         exit.setOnAction(event -> Platform.exit());
 
-        VBox exitFormat = new VBox();
-        exitFormat.getChildren().add(exit);
-        exitFormat.setAlignment(Pos.TOP_RIGHT);
-
         root.add(title, 1, 0);
         root.add(host, 1, 1);
-        root.add(joinElements, 1, 2);
-        root.add(exitFormat, 2, 0);
+        root.add(join, 1, 2);
+        root.add(exit, 2, 0);
+
+        GridPane.setHalignment(exit, HPos.RIGHT);
+        GridPane.setValignment(exit,VPos.TOP);
         //----------------------------------------------------------------
 
-        UserInterface.getStage().getScene().setRoot(root);
+        return root;
     }
 
     private void showInputTextDialog() {
@@ -148,6 +126,50 @@ public class LandingPage {
             if (result.isPresent()) {
                 UserInterface.loadHostPage(result.toString(), host);
             }
+        }
+    }
+
+    private void userPrompt () {
+
+        TextInputDialog dialog = new TextInputDialog("");
+        dialog.setTitle("Join Code");
+        dialog.setHeaderText("Input");
+        dialog.setContentText("Please enter the Code:");
+
+        Optional<String> result = dialog.showAndWait();
+
+        Alert invalidCode = new Alert(Alert.AlertType.INFORMATION);
+        invalidCode.initOwner(UserInterface.getStage());
+        invalidCode.setContentText("Invalid Code");
+        invalidCode.setHeaderText("Alert");
+        invalidCode.setTitle("Alert");
+
+        Alert empty = new Alert(Alert.AlertType.INFORMATION);
+        empty.initOwner(UserInterface.getStage());
+        empty.setContentText("No Input");
+        empty.setHeaderText("Alert");
+        empty.setTitle("Alert");
+
+        Alert shortCode = new Alert(Alert.AlertType.INFORMATION);
+        shortCode.initOwner(UserInterface.getStage());
+        shortCode.setContentText("Code is too short");
+        shortCode.setHeaderText("Alert");
+        shortCode.setTitle("Alert");
+
+
+
+        if(result.isPresent()) {
+
+            if (result.get().trim().length() == 4) {
+
+                UserInterface.loadUserPage(result.get().trim());
+            } else {
+                shortCode.show();
+            }
+
+        } else {
+
+            empty.show();
         }
     }
 }

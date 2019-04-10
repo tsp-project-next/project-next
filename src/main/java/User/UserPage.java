@@ -27,23 +27,29 @@ import javafx.scene.control.ScrollPane;
 
 public class UserPage  {
 
-    private static Scene UserScene = null;
+//    private static Scene UserScene = null;
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
-    public static ObservableList<String> itemsPlayQueue;
-    static Text playing = new Text();
-    static Text songTitle = new Text();
-    static Text artist = new Text();
-    static Text album = new Text();
+    private static ObservableList<String> itemsPlayQueue;
+    private static Text playing = new Text();
+    private static Text songTitle = new Text();
+    private static Text artist = new Text();
+    private static Text album = new Text();
     private static LobbyUser user = null;
 
-    private int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
-    private Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
+
+    public UserPage(String code) {
+        UserInterface.getStage().getScene().setRoot(setup(code));
+    }
 
     // Makes and Adds all elements of the UserPage to the UserPage
-    public UserPage(String Code) {
+    @SuppressWarnings("Duplicates")
+    private GridPane setup(String Code) {
 
         user = new LobbyUser(clientId, clientSecret);
+
+        int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
+        Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
 
         // Makes a GridPane Called Root ----------------------------------
         GridPane root = new GridPane();
@@ -291,8 +297,8 @@ public class UserPage  {
         //----------------------------------------------------------------
 
         root.setGridLinesVisible(false);
-        updateCurrentPlaying();
-        updateQueue();
+
+        return root;
     }
 
     public static void updateQueue() {
@@ -301,7 +307,7 @@ public class UserPage  {
 
         Paging<PlaylistTrack> tracks = LobbyUser.getPlayListTracks();
 
-        for (int i = 0; i < tracks.getTotal(); i++) {
+        for (int i = 0; i < tracks.getItems().length; i++) {
             PlaylistTrack[] song = tracks.getItems();
 
             itemsPlayQueue.add(song[i].getTrack().getName());

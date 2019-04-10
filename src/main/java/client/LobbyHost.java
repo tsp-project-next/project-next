@@ -17,8 +17,6 @@ import User.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 

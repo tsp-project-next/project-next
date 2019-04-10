@@ -37,7 +37,7 @@ public class UserInterface extends Application{
     public static void main(String[] args) {
         //create a new client object
         client = new Client();
-        if(client.isConnectionEstablished() == false) {
+        if(!client.isConnectionEstablished()) {
             System.out.println("Connection to server not found.");
             System.exit(0);
         }
@@ -146,6 +146,7 @@ public class UserInterface extends Application{
             }, 0, 5000);
         } else {
             timer.cancel();
+            timer.purge();
         }
     }
 }
