@@ -267,7 +267,23 @@ public class HostPage {
 
         Button addBlack = new Button("Add To Blacklist");
         addBlack.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/7.5, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
-        // Blacklist functionality here
+        addBlack.setOnAction(event -> {
+
+            Paging<Track> tracks = host.searchTracks(blacklistText.getText().trim());
+
+
+            Track[] song = new Track[0];
+
+            for (int i = 0; i <= tracks.getItems().length; i++) {
+
+                song = tracks.getItems();
+            }
+
+            String[] sName = new String [] {song[bLObsList.indexOf(bLList.getSelectionModel().getSelectedItem())].getUri()};
+
+
+
+        });
 
         Button addSearch = new Button("Add To Playlist");
         addSearch.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/7.5, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
