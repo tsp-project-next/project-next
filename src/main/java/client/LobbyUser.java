@@ -61,12 +61,10 @@ public class LobbyUser {
                 .build();
 
         try {
-            final Future<Paging<Track>> pagingFuture = searchTracksRequest.executeAsync();
+            Paging<Track> pagingFuture = searchTracksRequest.execute();
 
-            final Paging<Track> trackPaging = pagingFuture.get();
-
-            return trackPaging;
-        } catch (InterruptedException | ExecutionException e) {
+            return pagingFuture;
+        } catch (IOException | SpotifyWebApiException e) {
             System.out.println("searchTracks error: " + e.getCause().getMessage());
         }
 

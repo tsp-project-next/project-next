@@ -54,7 +54,7 @@ public class HostPage {
         int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
         Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
 
-        host.startPlaylist();
+        //host.startPlaylist();
 
         // Setting up the formatting for the main grid controller--------
         GridPane controller = new GridPane();
@@ -284,7 +284,7 @@ public class HostPage {
 
                         Track[] song = new Track[0];
 
-                        for (int i = 0; i <= 9; i++) {
+                        for (int i = 0; i <= tracks.getTotal(); i++) {
 
                             song = tracks.getItems();
                         }

@@ -17,8 +17,6 @@ import User.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 
 public class LobbyHost {
@@ -263,13 +261,11 @@ public class LobbyHost {
         final GetPlaylistsTracksRequest getPlaylistsTracksRequest = spotifyApi.getPlaylistsTracks(playlistId).build();
 
         try {
-            final Future<Paging<PlaylistTrack>> pagingFuture = getPlaylistsTracksRequest.executeAsync();
+            Paging<PlaylistTrack> pagingFuture = getPlaylistsTracksRequest.execute();
 
-            final Paging<PlaylistTrack> playlistTrackPaging = pagingFuture.get();
+            return pagingFuture;
 
-            return playlistTrackPaging;
-
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in getPlayListTracks: " + e.getMessage());
         }
 
@@ -285,12 +281,10 @@ public class LobbyHost {
                 .build();
 
         try {
-            final Future<Paging<Track>> pagingFuture = searchTracksRequest.executeAsync();
+            Paging<Track> pagingFuture = searchTracksRequest.execute();
 
-            final Paging<Track> trackPaging = pagingFuture.get();
-
-            return trackPaging;
-        } catch (InterruptedException | ExecutionException e) {
+            return pagingFuture;
+        } catch (IOException | SpotifyWebApiException e) {
             System.out.println("searchTracks error: " + e.getCause().getMessage());
         }
 
