@@ -125,6 +125,12 @@ public class Client {
             if(toServer != null) toServer.close();
             if(socket != null) socket.close();
             System.out.println("Streams closed.");
+            ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
+            int noThreads = currentGroup.activeCount();
+            Thread[] lstThreads = new Thread[noThreads];
+            currentGroup.enumerate(lstThreads);
+
+            for (int i = 0; i < noThreads; i++) System.out.println("Thread No:" + i + " = " + lstThreads[i].getName());
         } catch(IOException ex) {
             ex.printStackTrace();
         }

@@ -31,7 +31,8 @@ public class UserInterface extends Application{
 
     public static Thread t;
 
-    private static Timer timer = new Timer();
+    private static Timer timer;
+    private static boolean isTimerRunning = false;
 
     // Main method -------------------------------------------------------
     public static void main(String[] args) {
@@ -127,13 +128,16 @@ public class UserInterface extends Application{
     public static void timerUpdate(Boolean start) {
 
         if (start) {
+            isTimerRunning = true;
             timer = new Timer();
 
             timer.schedule(new TimerTask() {
 
                 @Override
                 public void run() {
-
+                    if(isTimerRunning == false) {
+                        return;
+                    }
                     //System.out.println("running");
                     if(HostPage.isInitialized()) {
                         HostPage.updateCurrentPlaying();
@@ -141,12 +145,16 @@ public class UserInterface extends Application{
                     if(UserPage.isInitialized()) {
                         UserPage.updateCurrentPlaying();
                     }
-
                 }
             }, 0, 5000);
         } else {
             timer.cancel();
             timer.purge();
+            isTimerRunning = false;
         }
+    }
+
+    public static boolean isTimerRunning() {
+        return isTimerRunning;
     }
 }

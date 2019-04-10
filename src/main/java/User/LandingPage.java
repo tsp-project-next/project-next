@@ -89,7 +89,12 @@ public class LandingPage {
 
         //Exit Button ----------------------------------------------------
         Button exit = new Button("X");
-        exit.setOnAction(event -> Platform.exit());
+        exit.setOnAction(event -> {
+            if(UserInterface.isTimerRunning()) {
+                UserInterface.timerUpdate(false);
+            }
+            Platform.exit();
+        });
 
         root.add(title, 1, 0);
         root.add(host, 1, 1);

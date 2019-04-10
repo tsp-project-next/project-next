@@ -79,7 +79,9 @@ public class HostPage {
         VBox exitHolder = new VBox();
         Button exitButton = new Button("X");
         exitButton.setOnAction(event -> {
-            UserInterface.timerUpdate(false);
+            if(UserInterface.isTimerRunning()) {
+                UserInterface.timerUpdate(false);
+            }
             Platform.exit();
         });
 
@@ -299,7 +301,9 @@ public class HostPage {
         Button endSession = new Button("End Session");
         endSession.setOnAction(event -> {
             UserInterface.client.sendPacket(Utilities.generatePacketIdentifier(), 4, null, null, null);
-            UserInterface.timerUpdate(false);
+            if(UserInterface.isTimerRunning()) {
+                UserInterface.timerUpdate(false);
+            }
             UserInterface.loadLandingPage();
         });
         endHolder.getChildren().add(endSession);

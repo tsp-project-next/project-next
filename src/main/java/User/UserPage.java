@@ -239,7 +239,9 @@ public class UserPage  {
         Button closeButton = new Button("X");
         closeButton.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/30, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         closeButton.setOnAction(event -> {
-            UserInterface.timerUpdate(false);
+            if(UserInterface.isTimerRunning()) {
+                UserInterface.timerUpdate(false);
+            }
             Platform.exit();
         });
         root.add(closeButton, 6, 0);
@@ -250,7 +252,9 @@ public class UserPage  {
         leave.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         leave.setOnAction(event -> {
             UserInterface.client.sendPacket(Utilities.generatePacketIdentifier(), 4, null, null, null);
-            UserInterface.timerUpdate(false);
+            if(UserInterface.isTimerRunning()) {
+                UserInterface.timerUpdate(false);
+            }
             UserInterface.loadLandingPage();
         });
         root.add(leave, 5,5, 2,1);
