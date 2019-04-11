@@ -33,6 +33,7 @@ public class HostPage {
 //    private static Scene hostPage = null;
     private static LobbyHost host = null;
     private static ObservableList<String> itemsPlayQueue;
+    private static ObservableList<String> uLObs;
     private static Text playing = new Text();
     private static Text songTitle = new Text();
     private static Text artist = new Text();
@@ -108,7 +109,7 @@ public class HostPage {
 
         ScrollPane userList = new ScrollPane();
         ListView<String> uLList = new ListView<>();
-        ObservableList<String> uLObs = FXCollections.observableArrayList("");
+        uLObs = FXCollections.observableArrayList("");
         uLList.setItems(uLObs);
         userList.setContent(uLList);
         userList.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -267,7 +268,23 @@ public class HostPage {
 
         Button addBlack = new Button("Add To Blacklist");
         addBlack.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/7.5, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
-        // Blacklist functionality here
+        addBlack.setOnAction(event -> {
+
+            Paging<Track> tracks = host.searchTracks(blacklistText.getText().trim());
+
+
+            Track[] song = new Track[0];
+
+            for (int i = 0; i <= tracks.getItems().length; i++) {
+
+                song = tracks.getItems();
+            }
+
+            String[] sName = new String [] {song[bLObsList.indexOf(bLList.getSelectionModel().getSelectedItem())].getUri()};
+
+
+
+        });
 
         Button addSearch = new Button("Add To Playlist");
         addSearch.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/7.5, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
@@ -363,7 +380,7 @@ public class HostPage {
         Button play = new Button("Play");
         play.setOnAction(event -> {
             if (!nowPlaying.get() && firstSong.get()) {
-                LobbyHost.startPlaylist();
+                host.startPlaylist();
                 play.setText("Pause");
                 nowPlaying.set(true);
                 firstSong.set(false);
@@ -376,11 +393,11 @@ public class HostPage {
                 }
             }
             if (nowPlaying.get()) {
-                LobbyHost.resume();
+                host.resume();
                 play.setText("Pause");
                 nowPlaying.set(false);
             } else {
-                LobbyHost.pause();
+                host.pause();
                 play.setText("Play");
                 nowPlaying.set(true);
             }
@@ -390,7 +407,7 @@ public class HostPage {
         // in the playlist
         Button next = new Button(">>");
         next.setOnAction(event -> {
-            LobbyHost.nextSong();
+            host.nextSong();
         });
 
         // Adds back, play and next to a HBox in order to have the controls in a row
@@ -416,7 +433,7 @@ public class HostPage {
 
         itemsPlayQueue.clear();
 
-        Paging<PlaylistTrack> tracks = LobbyHost.getPlayListTracks();
+        Paging<PlaylistTrack> tracks = host.getPlayListTracks();
 
         if (tracks != null) {
 
@@ -430,7 +447,9 @@ public class HostPage {
 
     public static void updateCurrentPlaying() {
 
-        Paging<PlaylistTrack> tracks = LobbyHost.getPlayListTracks();
+        Paging<PlaylistTrack> tracks = host.getPlayListTracks();
+
+        //Track currentlyPlaying = host.getCurrentPlaying();
 
         if (tracks != null) {
 
@@ -454,6 +473,10 @@ public class HostPage {
 
             album.setText("Album: " + current[0].getTrack().getAlbum().getName());
         }
+    }
+
+    public static void updateUserId(String[] users) {
+        uLObs.setAll(users);
     }
 
     public static boolean isInitialized() {

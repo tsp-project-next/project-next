@@ -7,6 +7,7 @@ import com.wrapper.spotify.SpotifyHttpManager;
 import com.wrapper.spotify.model_objects.specification.User;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -107,8 +108,18 @@ public class UserInterface extends Application{
     public static void loadUserPage(String code) {
         String identifier = Utilities.generatePacketIdentifier();
         String responseURI = client.sendPacketWaitResponse(identifier,1, null, null, code);
-        if(responseURI == null) {
+        if(responseURI == " ") {
+            //need to actually do something here
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Invalid Lobby Code");
+
+            // alert.setHeaderText("Results:");
+            alert.setContentText("Invalid Lobby Code");
+            alert.setHeaderText("Please check case sensitivity or make sure the lobby is still being hosted.");
+
+            alert.showAndWait();
             System.out.println("lobby join uri from server returned null");
+            return;
         } else {
             //System.out.println("Joined lobby and returned uri: " + responseURI);
         }
@@ -138,7 +149,7 @@ public class UserInterface extends Application{
                     if(isTimerRunning == false) {
                         return;
                     }
-                    //System.out.println("running");
+
                     if(HostPage.isInitialized()) {
                         HostPage.updateCurrentPlaying();
                     }

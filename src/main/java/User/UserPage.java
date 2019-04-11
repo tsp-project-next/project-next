@@ -302,6 +302,9 @@ public class UserPage  {
 
         root.setGridLinesVisible(false);
 
+        updateCurrentPlaying();
+        updateQueue();
+
         return root;
     }
 
@@ -309,7 +312,7 @@ public class UserPage  {
 
         itemsPlayQueue.clear();
 
-        Paging<PlaylistTrack> tracks = LobbyUser.getPlayListTracks();
+        Paging<PlaylistTrack> tracks = user.getPlayListTracks();
 
         for (int i = 0; i < tracks.getItems().length; i++) {
             PlaylistTrack[] song = tracks.getItems();
@@ -323,7 +326,7 @@ public class UserPage  {
 
     public static void updateCurrentPlaying() {
 
-        Paging<PlaylistTrack> tracks = LobbyUser.getPlayListTracks();
+        Paging<PlaylistTrack> tracks = user.getPlayListTracks();
 
         PlaylistTrack[] current = tracks.getItems();
 
