@@ -1,5 +1,6 @@
 import User.Utilities;
 import client.Client;
+import client.Packet;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -23,6 +24,7 @@ public class ClientTest {
     @Test
     public void sendPacketTest() {
         org.junit.Assume.assumeTrue(client.isConnectionEstablished());
-        assertTrue(client.sendPacket(Utilities.generatePacketIdentifier(), 0, null, null, null));
+        Packet packet = new Packet(Utilities.generatePacketIdentifier(), 0);
+        assertTrue(client.sendPacket(packet));
     }
 }
