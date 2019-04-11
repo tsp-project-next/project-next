@@ -33,6 +33,7 @@ public class HostPage {
 //    private static Scene hostPage = null;
     private static LobbyHost host = null;
     private static ObservableList<String> itemsPlayQueue;
+    private static ObservableList<String> uLObs;
     private static Text playing = new Text();
     private static Text songTitle = new Text();
     private static Text artist = new Text();
@@ -108,7 +109,7 @@ public class HostPage {
 
         ScrollPane userList = new ScrollPane();
         ListView<String> uLList = new ListView<>();
-        ObservableList<String> uLObs = FXCollections.observableArrayList("");
+        uLObs = FXCollections.observableArrayList("");
         uLList.setItems(uLObs);
         userList.setContent(uLList);
         userList.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -470,6 +471,10 @@ public class HostPage {
 
             album.setText("Album: " + current[0].getTrack().getAlbum().getName());
         }
+    }
+
+    public static void updateUserId(String[] users) {
+        uLObs.setAll(users);
     }
 
     public static boolean isInitialized() {
