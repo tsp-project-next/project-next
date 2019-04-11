@@ -1,6 +1,7 @@
 package User;
 
 import client.LobbyUser;
+import client.Packet;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
@@ -193,7 +194,10 @@ public class UserPage  {
 
                         String[] sName = new String [] {song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()};
 
-                        UserInterface.client.sendPacket(Utilities.generatePacketIdentifier(), 3, null, sName[0], Code);
+                        Packet packet = new Packet(Utilities.generatePacketIdentifier(), 3);
+                        packet.setSongURI(sName[0]);
+                        packet.setLobby(Code);
+                        UserInterface.client.sendPacket(packet);
                     }
                 }
             }
@@ -251,7 +255,9 @@ public class UserPage  {
         Button leave = new Button("Leave");
         leave.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         leave.setOnAction(event -> {
-            UserInterface.client.sendPacket(Utilities.generatePacketIdentifier(), 4, null, null, null);
+            Packet packet = new Packet(Utilities.generatePacketIdentifier(), 4);
+
+            UserInterface.client.sendPacket(packet);
             if(UserInterface.isTimerRunning()) {
                 UserInterface.timerUpdate(false);
             }

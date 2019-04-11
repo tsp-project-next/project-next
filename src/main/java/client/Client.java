@@ -81,10 +81,8 @@ public class Client {
     }
 
     @SuppressWarnings("Duplicates")
-    public boolean sendPacket(String packetIdentifier, int packetType, String playlistURI, String songURI, String lobby) {
+    public boolean sendPacket(Packet packet) {
         try {
-            //Create a packet to send
-            Packet packet = new Packet(packetIdentifier, packetType, playlistURI, songURI, lobby);
             toServer.writeObject(packet);
             System.out.println("Object sent to server...");
             return true;
@@ -95,13 +93,11 @@ public class Client {
     }
 
     @SuppressWarnings("Duplicates")
-    public String sendPacketWaitResponse(String packetIdentifier, int packetType, String playlistURI, String songURI, String lobby) {
+    public String sendPacketWaitResponse(Packet packet) {
         try {
-            //Create a packet to send
-            Packet packet = new Packet(packetIdentifier, packetType, playlistURI, songURI, lobby);
             toServer.writeObject(packet);
             System.out.println("Object sent to server...");
-            awaitingResponseList.add(packetIdentifier);
+            awaitingResponseList.add(packet.getPacketIdentifier());
             while(awaitingResponse()) {
                 //wait for one second.
                 try {
@@ -111,7 +107,7 @@ public class Client {
                     ex.printStackTrace();
                 }
             }
-            return responses.get(packetIdentifier);
+            return responses.get(packet.getPacketIdentifier());
         } catch(IOException ex) {
             ex.printStackTrace();
         }

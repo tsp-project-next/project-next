@@ -3,6 +3,7 @@ package User;
 import client.Client;
 import client.LobbyHost;
 import client.LobbyUser;
+import client.Packet;
 import com.wrapper.spotify.SpotifyHttpManager;
 import com.wrapper.spotify.model_objects.specification.User;
 import javafx.application.Application;
@@ -90,7 +91,9 @@ public class UserInterface extends Application{
 
             host.getDevices();
 
-            String codeResponse = client.sendPacketWaitResponse(Utilities.generatePacketIdentifier(), 0, host.getPlaylistURI(), null, null);
+            Packet packet = new Packet(Utilities.generatePacketIdentifier(), 0);
+            packet.setPlaylistURI(host.getPlaylistURI());
+            String codeResponse = client.sendPacketWaitResponse(packet);
 
             if (codeResponse == null) {
                 System.out.println("lobby creation code from server returned null");
@@ -106,8 +109,9 @@ public class UserInterface extends Application{
 
     //displays user page on the window -----------------------------------
     public static void loadUserPage(String code) {
-        String identifier = Utilities.generatePacketIdentifier();
-        String responseURI = client.sendPacketWaitResponse(identifier,1, null, null, code);
+        Packet packet = new Packet(Utilities.generatePacketIdentifier(), 1);
+        packet.setLobby(code);
+        String responseURI = client.sendPacketWaitResponse(packet);
         if(responseURI == " ") {
             //need to actually do something here
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

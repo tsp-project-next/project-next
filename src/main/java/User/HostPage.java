@@ -1,6 +1,7 @@
 package User;
 
 import client.LobbyHost;
+import client.Packet;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
@@ -317,7 +318,8 @@ public class HostPage {
 
         Button endSession = new Button("End Session");
         endSession.setOnAction(event -> {
-            UserInterface.client.sendPacket(Utilities.generatePacketIdentifier(), 4, null, null, null);
+            Packet packet = new Packet(Utilities.generatePacketIdentifier(), 4);
+            UserInterface.client.sendPacket(packet);
             if(UserInterface.isTimerRunning()) {
                 UserInterface.timerUpdate(false);
             }

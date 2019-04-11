@@ -212,7 +212,9 @@ public class LobbyHost {
             int total = spotifyApi.getPlaylistsTracks(playlistId).build().execute().getTotal();
 
             spotifyApi.addTracksToPlaylist(playlistId, songUri).position(total).build().execute();
-            UserInterface.client.sendPacket(Utilities.generatePacketIdentifier(), 2, null, null, code);
+            Packet packet = new Packet(Utilities.generatePacketIdentifier(), 2);
+            packet.setLobby(code);
+            UserInterface.client.sendPacket(packet);
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in addSong: " + e.getMessage());
         }
