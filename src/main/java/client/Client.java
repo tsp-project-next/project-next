@@ -126,7 +126,10 @@ public class Client {
             Thread[] lstThreads = new Thread[noThreads];
             currentGroup.enumerate(lstThreads);
 
-            for (int i = 0; i < noThreads; i++) System.out.println("Thread No:" + i + " = " + lstThreads[i].getName());
+            for (int i = 0; i < noThreads; i++) {
+                System.out.println("Thread No:" + i + " = " + lstThreads[i].getName());
+            }
+
         } catch(IOException ex) {
             ex.printStackTrace();
         }

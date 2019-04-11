@@ -2,6 +2,8 @@ package User;
 
 import client.LobbyHost;
 import client.Packet;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
@@ -42,6 +44,7 @@ public class HostPage {
     private static Text scrollingText = new Text();
     private static boolean triggered = false;
     private static String code;
+    private static String currentSong = "";
 
     public HostPage(String code, LobbyHost host) {
         this.code = code;
@@ -409,7 +412,15 @@ public class HostPage {
         // in the playlist
         Button next = new Button(">>");
         next.setOnAction(event -> {
-            host.nextSong();
+            String cSong = host.getCurrentPlaying().getUri();
+
+            JsonArray arrayedTracks = new JsonParser().parse("[{\"uri\":\"" + cSong + "\"}]").getAsJsonArray();
+
+            host.deleteSongFromPlaylist(arrayedTracks);
+
+            host.startPlaylist();
+
+            updateQueue();
         });
 
         // Adds back, play and next to a HBox in order to have the controls in a row
@@ -449,15 +460,23 @@ public class HostPage {
 
     public static void updateCurrentPlaying() {
 
+        //System.out.println("WE LOOPED");
+
         Paging<PlaylistTrack> tracks = host.getPlayListTracks();
 
-        //Track currentlyPlaying = host.getCurrentPlaying();
+        String currentlyPlaying = host.getCurrentPlaying().getUri();
+
+        //System.out.println("Currently playing: " + currentlyPlaying);
 
         if (tracks != null) {
 
             PlaylistTrack[] current = tracks.getItems();
 
             String songName = current[0].getTrack().getName();
+
+            currentSong = current[0].getTrack().getUri();
+
+            //System.out.println("Current song in tracks != null : " + currentSong);
 
             if (songName.length() >= 20 ) {
 
@@ -474,6 +493,23 @@ public class HostPage {
             artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
 
             album.setText("Album: " + current[0].getTrack().getAlbum().getName());
+        }
+
+        //System.out.println("Currently playing inbetween: " + currentlyPlaying);
+        //System.out.println("currentSong inbetween: " + currentSong);
+
+        if (!currentlyPlaying.equals(currentSong) && tracks != null) {
+            // If the host has naturally moved to another song, store the title of the
+            // currenly playing song
+            currentSong = currentlyPlaying;
+
+            //System.out.println("Current song is different");
+
+            JsonArray arrayedTracks = new JsonParser().parse("[{\"uri\":\"" + tracks.getItems()[0].getTrack().getUri() + "\"}]").getAsJsonArray();
+
+            host.deleteSongFromPlaylist(arrayedTracks);
+
+            updateQueue();
         }
     }
 

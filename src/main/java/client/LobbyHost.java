@@ -1,5 +1,6 @@
 package client;
 
+import com.google.gson.JsonArray;
 import com.neovisionaries.i18n.CountryCode;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
@@ -112,6 +113,7 @@ public class LobbyHost {
 
         for (int i = 0; i < authCode.length(); i++)
         {
+
             if (authCode.charAt(i) == '?') {
                 if (authCode.charAt(i + 1) == 'c') {
                     if (authCode.charAt(i + 2) == 'o') {
@@ -124,10 +126,11 @@ public class LobbyHost {
             }
         }
 
+
         for (int i = start; i < authCode.length(); i++)
         {
             if (authCode.charAt(i) == '&')
-                finish = i;
+                    finish = i;
         }
 
         authCode = authCode.substring(start, finish);
@@ -291,5 +294,27 @@ public class LobbyHost {
         }
 
         return null;
+    }
+
+    public Track getCurrentPlaying() {
+        try {
+            Track current = spotifyApi.getUsersCurrentlyPlayingTrack().build().execute().getItem();
+
+            return current;
+        } catch (IOException | SpotifyWebApiException e) {
+            System.out.println("getCurrentPlaying error: " + e.getCause().getMessage());
+        }
+
+        return null;
+    }
+
+    public void deleteSongFromPlaylist(JsonArray tracks) {
+        try {
+             //System.out.println(tracks.get(0));
+
+            spotifyApi.removeTracksFromPlaylist(playlistId, tracks).build().execute();
+        } catch (IOException | SpotifyWebApiException e) {
+            System.out.println("deleteSongFromPlaylist error: " + e.getCause().getMessage());
+        }
     }
 }
