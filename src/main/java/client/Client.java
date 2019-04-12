@@ -205,8 +205,15 @@ public class Client {
             case 4:
                 System.out.println("Packet type: 4");
                 break;
+            //userid list update
             case 5:
                 System.out.println("Packet type: 5");
+                if(packet.getUserIds() != null) {
+                    //commented out because it throws null errors currently
+                    //Platform.runLater(() -> {
+                      //  HostPage.updateUserId(packet.getUserIds());
+                    //});
+                }
                 break;
             default:
                 System.out.println("Packet Type Mismatch...");

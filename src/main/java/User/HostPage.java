@@ -28,6 +28,8 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -515,8 +517,9 @@ public class HostPage {
         }
     }
 
-    public static void updateUserId(String[] users) {
-        uLObs.setAll(users);
+    public static void updateUserId(ArrayList<String> array) {
+        uLObs.clear();
+        uLObs.addAll(array);
     }
 
     public static boolean isInitialized() {
