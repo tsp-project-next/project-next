@@ -478,7 +478,7 @@ public class HostPage {
 
             //System.out.println("Current song in tracks != null : " + currentSong);
 
-            if (songName.length() >= 20 ) {
+            /*if (songName.length() >= 20 ) {
 
                 TranslateTransition tt = new TranslateTransition(Duration.millis(3000), scrollingText);
                 tt.setFromX(songTitle.getLayoutX() + 10); // setFromX sets the starting position, coming from the left and going to the right.
@@ -486,7 +486,7 @@ public class HostPage {
                 tt.setCycleCount(Timeline.INDEFINITE); // repeats for ever
                 tt.setAutoReverse(false); //Always start over
                 tt.play();
-            }
+            }*/
 
             scrollingText.setText(songName);
 
@@ -508,6 +508,8 @@ public class HostPage {
             JsonArray arrayedTracks = new JsonParser().parse("[{\"uri\":\"" + tracks.getItems()[0].getTrack().getUri() + "\"}]").getAsJsonArray();
 
             host.deleteSongFromPlaylist(arrayedTracks);
+
+            host.startPlaylist();
 
             updateQueue();
         }

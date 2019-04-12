@@ -76,13 +76,11 @@ public class LobbyUser {
         final GetPlaylistsTracksRequest getPlaylistsTracksRequest = spotifyApi.getPlaylistsTracks(playlistId).build();
 
         try {
-            final Future<Paging<PlaylistTrack>> pagingFuture = getPlaylistsTracksRequest.executeAsync();
+            Paging<PlaylistTrack> pagingFuture = getPlaylistsTracksRequest.execute();
 
-            final Paging<PlaylistTrack> playlistTrackPaging = pagingFuture.get();
+            return pagingFuture;
 
-            return playlistTrackPaging;
-
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in getPlayListTracks: " + e.getMessage());
         }
 
