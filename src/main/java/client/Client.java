@@ -4,6 +4,8 @@ import User.HostPage;
 import User.UserInterface;
 import User.UserPage;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.EOFException;
 import java.net.*;
@@ -208,13 +210,27 @@ public class Client {
             //userid list update
             case 5:
                 System.out.println("Packet type: 5");
-                if(packet.getUserIds() != null) {
+
+                System.out.println(packet.getUserIds());
+
+                if( packet.getUserIds() != null) {
                     //commented out because it throws null errors currently
-                    //Platform.runLater(() -> {
-                      //  HostPage.updateUserId(packet.getUserIds());
-                    //});
+
+                    Platform.runLater(() -> {
+
+
+                        HostPage.updateUserId(packet.getUserIds());
+                    });
                 }
                 break;
+
+            case 6:
+
+                Platform.runLater(() -> {
+                    UserPage.sendToLandingPage();
+                });
+                break;
+
             default:
                 System.out.println("Packet Type Mismatch...");
                 break;

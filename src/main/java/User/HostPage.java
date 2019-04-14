@@ -7,14 +7,11 @@ import com.google.gson.JsonParser;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -25,13 +22,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 
 public class HostPage {
 
@@ -51,12 +45,13 @@ public class HostPage {
     public HostPage(String code, LobbyHost host) {
         this.code = code;
         this.host = host;
-        UserInterface.getStage().getScene().setRoot(setup(code));
+
+        setup(code);
     }
 
 
     @SuppressWarnings("Duplicates")
-    private GridPane setup(String code) {
+    private static void setup(String code) {
 
         int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
         Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
@@ -86,6 +81,10 @@ public class HostPage {
         VBox exitHolder = new VBox();
         Button exitButton = new Button("X");
         exitButton.setOnAction(event -> {
+            Packet senUsersToLandingPage = new Packet(Utilities.generatePacketIdentifier(), 6);
+            senUsersToLandingPage.setLobby(code);
+            UserInterface.client.sendPacket(senUsersToLandingPage);
+
             if(UserInterface.isTimerRunning()) {
                 UserInterface.timerUpdate(false);
             }
@@ -324,7 +323,9 @@ public class HostPage {
         Button endSession = new Button("End Session");
         endSession.setOnAction(event -> {
             Packet packet = new Packet(Utilities.generatePacketIdentifier(), 4);
+            packet.setLobby(code);
             UserInterface.client.sendPacket(packet);
+
             if(UserInterface.isTimerRunning()) {
                 UserInterface.timerUpdate(false);
             }
@@ -441,7 +442,7 @@ public class HostPage {
         controller.getRowConstraints().addAll(rowOne, rowOne, rowOne);
         controller.getColumnConstraints().addAll(colOne, colOne, colOne);
 
-        return controller;
+        UserInterface.getStage().getScene().setRoot(controller);
     }
 
     public static void updateQueue() {
@@ -518,7 +519,9 @@ public class HostPage {
     }
 
     public static void updateUserId(ArrayList<String> array) {
+
         uLObs.clear();
+
         uLObs.addAll(array);
     }
 

@@ -5,7 +5,6 @@ import client.LobbyHost;
 import client.LobbyUser;
 import client.Packet;
 import com.wrapper.spotify.SpotifyHttpManager;
-import com.wrapper.spotify.model_objects.specification.User;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -109,7 +108,8 @@ public class UserInterface extends Application{
 
     //displays user page on the window -----------------------------------
     public static void loadUserPage(String code) {
-        Packet packet = new Packet(Utilities.generatePacketIdentifier(), 1);
+        Packet packet = new Packet( Utilities.generatePacketIdentifier(), 1);
+        Packet packet1 = new Packet( Utilities.generatePacketIdentifier(), 5);
         packet.setLobby(code);
         String responseURI = client.sendPacketWaitResponse(packet);
         if(responseURI == " ") {
@@ -125,14 +125,16 @@ public class UserInterface extends Application{
             System.out.println("lobby join uri from server returned null");
             return;
         } else {
-            //System.out.println("Joined lobby and returned uri: " + responseURI);
+
+            LobbyUser.setPLaylistUri(responseURI);
+            LobbyUser.getPlaylistId();
+
+            packet1.setLobby(code);
+
+            client.sendPacket(packet1);
+
+            UserPage userPage = new UserPage(code);
         }
-
-        LobbyUser.setPLaylistUri(responseURI);
-        LobbyUser.getPlaylistId();
-
-        UserPage userPage = new UserPage(code);
-        //mainStage.setScene(userPage.getScene());
     }
     //--------------------------------------------------------------------
 
