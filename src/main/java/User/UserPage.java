@@ -12,7 +12,6 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
@@ -26,9 +25,8 @@ import java.awt.*;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollPane;
 
+@SuppressWarnings("Duplicates")
 public class UserPage  {
-
-//    private static Scene UserScene = null;
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
     private static ObservableList<String> itemsPlayQueue;
@@ -38,15 +36,12 @@ public class UserPage  {
     private static Text album = new Text();
     private static LobbyUser user = null;
 
-
     public UserPage(String code) {
-        UserInterface.getStage().getScene().setRoot(setup(code));
+        setup(code);
     }
 
     // Makes and Adds all elements of the UserPage to the UserPage
-    @SuppressWarnings("Duplicates")
-    private GridPane setup(String Code) {
-
+    private static void setup(String Code) {
         user = new LobbyUser(clientId, clientSecret);
 
         int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
@@ -62,10 +57,6 @@ public class UserPage  {
         root.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight());
         root.setMinSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight());
         root.setStyle("-fx-background-color: transparent");
-        //----------------------------------------------------------------
-
-        // Makes a VBox called stack -------------------------------------
-        VBox stack = new VBox();
         //----------------------------------------------------------------
 
         // Sets col and row constraints to grow or not -------------------
@@ -143,6 +134,7 @@ public class UserPage  {
         //----------------------------------------------------------------
 
         // Current Playing Display ---------------------------------------
+        VBox stack = new VBox();
 
         playing.setText("Playing");
         playing.setFill(Color.WHITE);
@@ -171,24 +163,18 @@ public class UserPage  {
         Button add = new Button("Add");
         add.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         add.setOnAction(event -> {
-
             if(!(listSearchResults.getItems().toString().trim().equals("[]"))) {
-
                 if (!(listSearchResults.getSelectionModel().getSelectedItems().toString().equals("[]"))) {
-
                     if (itemsPlayQueue.get(0).trim().isEmpty()) {
-
                         itemsPlayQueue.clear();
                     }
 
                     if (!(itemsPlayQueue.contains(listSearchResults.getSelectionModel().getSelectedItem().trim()))) {
-
                         Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
 
                         Track[] song = new Track[0];
 
                         for (int i = 0; i <= tracks.getItems().length; i++) {
-
                             song = tracks.getItems();
                         }
 
@@ -209,17 +195,13 @@ public class UserPage  {
         Button search = new Button("Search");
         search.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/15, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         search.setOnAction(event -> {
-
             itemsSearchResults.clear();
 
             if (!(searchBar.getText().trim().isEmpty())) {
-
                 if((user.searchTracks(searchBar.getText().trim()).getItems().length !=0)) {
-
                     Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
 
                     if (!(itemsSearchResults.contains(searchBar.getText().trim()))) {
-
                         for (int i = 0; i < tracks.getItems().length; i++) {
                             Track[] song = tracks.getItems();
 
@@ -228,11 +210,9 @@ public class UserPage  {
                         }
                     }
                 } else {
-
                     itemsSearchResults.add("");
                 }
             }else {
-
                 itemsSearchResults.add("");
             }
         });
@@ -241,7 +221,6 @@ public class UserPage  {
 
         // Makes and Adds the 'X' button ---------------------------------
         Button closeButton = new Button("X");
-        closeButton.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/30, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         closeButton.setOnAction(event -> {
             if(UserInterface.isTimerRunning()) {
                 UserInterface.timerUpdate(false);
@@ -306,16 +285,13 @@ public class UserPage  {
         GridPane.setValignment(stack, VPos.CENTER);
         //----------------------------------------------------------------
 
-        root.setGridLinesVisible(false);
-
         updateCurrentPlaying();
         updateQueue();
 
-        return root;
+        UserInterface.getStage().getScene().setRoot(root);
     }
 
     public static void updateQueue() {
-
         itemsPlayQueue.clear();
 
         Paging<PlaylistTrack> tracks = user.getPlayListTracks();
@@ -328,10 +304,12 @@ public class UserPage  {
 
         UserInterface.timerUpdate(true);
 
+        if(itemsPlayQueue.isEmpty()) {
+            itemsPlayQueue.add("");
+        }
     }
 
     public static void updateCurrentPlaying() {
-
         Paging<PlaylistTrack> tracks = user.getPlayListTracks();
 
         PlaylistTrack[] current = tracks.getItems();
@@ -346,7 +324,6 @@ public class UserPage  {
     }
 
     public static void sendToLandingPage() {
-
         UserInterface.loadLandingPage();
     }
 

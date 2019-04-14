@@ -10,8 +10,10 @@ import com.wrapper.spotify.model_objects.specification.Track;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -27,9 +29,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@SuppressWarnings("Duplicates")
 public class HostPage {
-
-//    private static Scene hostPage = null;
     private static LobbyHost host = null;
     private static ObservableList<String> itemsPlayQueue;
     private static ObservableList<String> uLObs;
@@ -49,14 +50,10 @@ public class HostPage {
         setup(code);
     }
 
-
-    @SuppressWarnings("Duplicates")
     private static void setup(String code) {
 
         int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
         Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
-
-        //host.startPlaylist();
 
         // Setting up the formatting for the main grid controller--------
         GridPane controller = new GridPane();
@@ -350,6 +347,7 @@ public class HostPage {
 
         // Currently Playing----------------------------------------------
         VBox currentlyPlaying = new VBox();
+        currentlyPlaying.setSpacing(40);
 
         playing.setText("Playing");
         playing.setFill(Color.WHITE);
@@ -434,13 +432,29 @@ public class HostPage {
         currentlyPlaying.getChildren().addAll(playing, SONG, artist, album, controls);
 
         currentlyPlaying.setPadding(new Insets(40));
-        currentlyPlaying.setAlignment(Pos.CENTER);
+        currentlyPlaying.setAlignment(Pos.TOP_LEFT);
 
-        controller.add(currentlyPlaying, 1, 1);
+        GridPane cPlay = new GridPane();
+
+        RowConstraints twentyfiveRow = new RowConstraints();
+        twentyfiveRow.setPercentHeight(50);
+
+        ColumnConstraints twentyfiveColumn = new ColumnConstraints();
+        twentyfiveColumn.setPercentWidth(50);
+
+        cPlay.getRowConstraints().addAll(twentyfiveRow, twentyfiveRow, twentyfiveRow, twentyfiveRow);
+        cPlay.getColumnConstraints().addAll(twentyfiveColumn, twentyfiveColumn, twentyfiveColumn, twentyfiveColumn);
+
+        cPlay.add(currentlyPlaying, 1,1,2, 2);
+
+        controller.add(cPlay, 1, 1);
         //----------------------------------------------------------------
 
         controller.getRowConstraints().addAll(rowOne, rowOne, rowOne);
         controller.getColumnConstraints().addAll(colOne, colOne, colOne);
+
+        GridPane.setHalignment(joinCode, HPos.LEFT);
+        GridPane.setValignment(joinCode, VPos.TOP);
 
         UserInterface.getStage().getScene().setRoot(controller);
     }

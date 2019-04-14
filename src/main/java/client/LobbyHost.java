@@ -18,9 +18,8 @@ import User.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
 
-
+@SuppressWarnings("Duplicates")
 public class LobbyHost {
 
     private static SpotifyApi spotifyApi = null;
@@ -247,14 +246,6 @@ public class LobbyHost {
             spotifyApi.pauseUsersPlayback().build().execute();
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in pause: " + e.getMessage());
-        }
-    }
-
-    public static void nextSong() {
-        try {
-            spotifyApi.skipUsersPlaybackToNextTrack().device_id(deviceId).build().execute();
-        } catch (IOException | SpotifyWebApiException e) {
-            System.out.println("Error in nextSong: " + e.getMessage());
         }
     }
 

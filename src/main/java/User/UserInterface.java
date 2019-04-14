@@ -109,7 +109,6 @@ public class UserInterface extends Application{
     //displays user page on the window -----------------------------------
     public static void loadUserPage(String code) {
         Packet packet = new Packet( Utilities.generatePacketIdentifier(), 1);
-        Packet packet1 = new Packet( Utilities.generatePacketIdentifier(), 5);
         packet.setLobby(code);
         String responseURI = client.sendPacketWaitResponse(packet);
         if(responseURI == " ") {
@@ -128,10 +127,6 @@ public class UserInterface extends Application{
 
             LobbyUser.setPLaylistUri(responseURI);
             LobbyUser.getPlaylistId();
-
-            packet1.setLobby(code);
-
-            client.sendPacket(packet1);
 
             UserPage userPage = new UserPage(code);
         }

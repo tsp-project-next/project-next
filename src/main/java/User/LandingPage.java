@@ -6,7 +6,6 @@ import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
@@ -19,53 +18,45 @@ import java.awt.Toolkit;
 import java.net.URI;
 import java.util.Optional;
 
+@SuppressWarnings("Duplicates")
 public class LandingPage {
-//    private static Scene landingScene = null;
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
     private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
 
     public LandingPage() {
-        UserInterface.getStage().getScene().setRoot(setup());
+        setup();
     }
 
-    public GridPane setup() {
+    public static void setup() {
         double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double screenHeight = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
         GridPane root = new GridPane();
         root.getStylesheets().add("scene.css");
 
-        root.setGridLinesVisible(false);
-        root.setStyle("-fx-background-color: transparent");
-
         root.setPadding(new Insets(5));
 
         // Sizes columns to the size of the screen -----------------------
         ColumnConstraints column1 = new ColumnConstraints();
         ColumnConstraints column2 = new ColumnConstraints();
-        ColumnConstraints column3 = new ColumnConstraints();
-        column1.setMinWidth(screenWidth / 3);
-        column2.setMinWidth(screenWidth / 3);
-        column3.setMinWidth(screenWidth / 3);
+        column1.setHgrow(Priority.ALWAYS);
+        column2.setHgrow(Priority.ALWAYS);
         column2.setHalignment(HPos.CENTER);
         //----------------------------------------------------------------
 
         // Sizes columns to the size of the screen -----------------------
         RowConstraints row1 = new RowConstraints();
         RowConstraints row2 = new RowConstraints();
-        RowConstraints row3 = new RowConstraints();
-        row1.setMinHeight(screenHeight / 3);
-        row2.setMinHeight(screenHeight / 3);
-        row3.setMinHeight(screenHeight / 3);
+        row1.setVgrow(Priority.ALWAYS);
+        row2.setVgrow(Priority.ALWAYS);
         row1.setValignment(VPos.CENTER);
-        row2.setValignment(VPos.CENTER);
-        row3.setValignment(VPos.TOP);
+        row2.setValignment(VPos.TOP);
         //---------------------------------------------------------------
 
         // Adds column and row contraints to the GridPane ----------------
-        root.getColumnConstraints().addAll(column1, column2, column3);
-        root.getRowConstraints().addAll(row1, row2, row3);
+        root.getColumnConstraints().addAll(column1, column2, column1);
+        root.getRowConstraints().addAll(row1, row1, row2);
         //----------------------------------------------------------------
 
         // Title of the application---------------------------------------
@@ -105,17 +96,15 @@ public class LandingPage {
         GridPane.setValignment(exit,VPos.TOP);
         //----------------------------------------------------------------
 
-        return root;
+        UserInterface.getStage().getScene().setRoot(root);
     }
 
-    private void showInputTextDialog() {
-
+    private static void showInputTextDialog() {
         LobbyHost host = new LobbyHost(clientId, clientSecret, redirectUri);
 
         try {
             host.visitURI();
         } catch (Exception e) {
-
             e.printStackTrace();
         }
 
@@ -127,15 +116,13 @@ public class LandingPage {
         Optional<String> result = dialog.showAndWait();
 
         if (!(result.toString().trim().equals("Optional[]"))) {
-
             if (result.isPresent()) {
                 UserInterface.loadHostPage(result.toString(), host);
             }
         }
     }
 
-    private void userPrompt () {
-
+    private static void userPrompt () {
         TextInputDialog dialog = new TextInputDialog("");
         dialog.setTitle("Join Code");
         dialog.setHeaderText("Input");
@@ -161,19 +148,13 @@ public class LandingPage {
         shortCode.setHeaderText("Alert");
         shortCode.setTitle("Alert");
 
-
-
         if(result.isPresent()) {
-
             if (result.get().trim().length() == 4) {
-
                 UserInterface.loadUserPage(result.get().trim());
             } else {
                 shortCode.show();
             }
-
         } else {
-
             empty.show();
         }
     }
