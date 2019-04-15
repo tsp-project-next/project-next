@@ -169,4 +169,12 @@ public class UserInterface extends Application{
     public static boolean isTimerRunning() {
         return isTimerRunning;
     }
+
+    public static void inBlackList() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Alert");
+        alert.setContentText("Alert");
+        alert.setHeaderText("Song is in blacklist");
+        alert.showAndWait();
+    }
 }

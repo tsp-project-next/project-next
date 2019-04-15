@@ -1,5 +1,7 @@
 package client;
 
+import User.UserInterface;
+import User.Utilities;
 import com.neovisionaries.i18n.CountryCode;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+@SuppressWarnings("Duplicates")
 public class LobbyUser {
 
     // Initialize all this stuff to null because we'll pass it in the constructor
@@ -114,4 +117,5 @@ public class LobbyUser {
     public static String getPlaylistId() {
         return playlistId;
     }
+
 }

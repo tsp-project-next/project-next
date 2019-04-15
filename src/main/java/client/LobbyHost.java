@@ -217,6 +217,7 @@ public class LobbyHost {
             spotifyApi.addTracksToPlaylist(playlistId, songUri).position(total).build().execute();
             Packet packet = new Packet(Utilities.generatePacketIdentifier(), 2);
             packet.setLobby(code);
+            packet.setSongURI(songUri[0]);
             UserInterface.client.sendPacket(packet);
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in addSong: " + e.getMessage());
@@ -308,5 +309,12 @@ public class LobbyHost {
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("deleteSongFromPlaylist error: " + e.getCause().getMessage());
         }
+    }
+
+    public static void addToBlackList(String songUri) {
+        Packet blackListPacket = new Packet(Utilities.generatePacketIdentifier(), 8);
+        blackListPacket.setLobby(code);
+        blackListPacket.setBlackListURI(songUri);
+        UserInterface.client.sendPacket(blackListPacket);
     }
 }

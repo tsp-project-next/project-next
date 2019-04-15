@@ -180,6 +180,8 @@ public class UserPage  {
 
                         String[] sName = new String [] {song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()};
 
+                        System.out.println(sName[0]);
+
                         Packet packet = new Packet(Utilities.generatePacketIdentifier(), 3);
                         packet.setSongURI(sName[0]);
                         packet.setLobby(Code);

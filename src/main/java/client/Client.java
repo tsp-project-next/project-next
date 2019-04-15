@@ -225,9 +225,23 @@ public class Client {
                 break;
 
             case 6:
-
+                System.out.println("Packet type: 6");
                 Platform.runLater(() -> {
                     UserPage.sendToLandingPage();
+                });
+                break;
+
+            case 7:
+                System.out.println("Packet type: 7");
+                Platform.runLater(() -> {
+                   UserInterface.inBlackList();
+                });
+                break;
+
+            case 8:
+                System.out.println("Packet type: 8");
+                Platform.runLater(() -> {
+                    HostPage.addedToBlackList();
                 });
                 break;
 

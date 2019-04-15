@@ -164,7 +164,7 @@ public class HostPage {
 
                     if (!(bLObsList.contains(searchBar.getText().trim()))) {
 
-                        for (int i = 0; i <= tracks.getTotal(); i++) {
+                        for (int i = 0; i < tracks.getItems().length; i++) {
                             Track[] song = tracks.getItems();
 
                             bLObsList.add(song[i].getName());
@@ -274,7 +274,6 @@ public class HostPage {
 
             Paging<Track> tracks = host.searchTracks(blacklistText.getText().trim());
 
-
             Track[] song = new Track[0];
 
             for (int i = 0; i <= tracks.getItems().length; i++) {
@@ -284,8 +283,9 @@ public class HostPage {
 
             String[] sName = new String [] {song[bLObsList.indexOf(bLList.getSelectionModel().getSelectedItem())].getUri()};
 
+            System.out.println(sName[0]);
 
-
+            host.addToBlackList(sName[0]);
         });
 
         Button addSearch = new Button("Add To Playlist");
@@ -309,6 +309,8 @@ public class HostPage {
                         }
 
                         String[] sName = new String [] {song[OhostSearchList.indexOf(hostSearchList.getSelectionModel().getSelectedItem())].getUri()};
+
+                        System.out.println(sName[0]);
 
                         host.addSong(sName);
                     }
@@ -533,7 +535,6 @@ public class HostPage {
     }
 
     public static void updateUserId(ArrayList<String> array) {
-
         uLObs.clear();
 
         uLObs.addAll(array);
@@ -542,5 +543,13 @@ public class HostPage {
     public static boolean isInitialized() {
         if(host == null) return false;
         return true;
+    }
+
+    public static void addedToBlackList() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Alert");
+        alert.setContentText("Alert");
+        alert.setHeaderText("Added to blacklist");
+        alert.showAndWait();
     }
 }
