@@ -20,13 +20,12 @@ import java.util.TimerTask;
 public class UserInterface extends Application{
 
     // We need these initialized for lobby user or host. Do not alter ----
-    private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
-    private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
+//    private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
+//    private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
+//    private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
     //--------------------------------------------------------------------
 
     private static Stage mainStage = null;
-    private static Scene mainScene = null;
 
     public static Client client;
 
@@ -75,7 +74,7 @@ public class UserInterface extends Application{
     public static void loadLandingPage() {
 
         getStage().setFullScreen(false);
-        LandingPage landingPage = new LandingPage();
+        new LandingPage();
     }
     //--------------------------------------------------------------------
 
@@ -99,8 +98,7 @@ public class UserInterface extends Application{
             }
 
             host.setCode(codeResponse);
-
-            HostPage hostPage = new HostPage(codeResponse, host);
+            new HostPage(codeResponse, host);
         }
 
     }
@@ -112,11 +110,9 @@ public class UserInterface extends Application{
         packet.setLobby(code);
         String responseURI = client.sendPacketWaitResponse(packet);
         if(responseURI == " ") {
-            //need to actually do something here
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Invalid Lobby Code");
 
-            // alert.setHeaderText("Results:");
             alert.setContentText("Invalid Lobby Code");
             alert.setHeaderText("Please check case sensitivity or make sure the lobby is still being hosted.");
 
@@ -128,7 +124,7 @@ public class UserInterface extends Application{
             LobbyUser.setPLaylistUri(responseURI);
             LobbyUser.getPlaylistId();
 
-            UserPage userPage = new UserPage(code);
+            new UserPage(code);
         }
     }
     //--------------------------------------------------------------------

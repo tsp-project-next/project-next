@@ -1,7 +1,5 @@
 package client;
 
-import User.UserInterface;
-import User.Utilities;
 import com.neovisionaries.i18n.CountryCode;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
@@ -14,8 +12,6 @@ import com.wrapper.spotify.requests.data.playlists.GetPlaylistsTracksRequest;
 import com.wrapper.spotify.requests.data.search.simplified.SearchTracksRequest;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 @SuppressWarnings("Duplicates")
 public class LobbyUser {

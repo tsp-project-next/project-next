@@ -40,11 +40,9 @@ public class HostPage {
     private static Text album = new Text();
     private static Text scrollingText = new Text();
     private static boolean triggered = false;
-    private static String code;
     private static String currentSong = "";
 
     public HostPage(String code, LobbyHost host) {
-        this.code = code;
         this.host = host;
 
         setup(code);

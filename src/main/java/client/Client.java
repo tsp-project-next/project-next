@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+@SuppressWarnings("Duplicates")
 public class Client {
 
     //Host name or ip address
