@@ -56,7 +56,6 @@ public class UserPage  {
         root.setAlignment(Pos.CENTER);
         root.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight());
         root.setMinSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight());
-        root.setStyle("-fx-background-color: transparent");
         //----------------------------------------------------------------
 
         // Sets col and row constraints to grow or not -------------------
@@ -74,10 +73,6 @@ public class UserPage  {
 
         root.getColumnConstraints().addAll(col1, col1, col1, col1, col1 ,col1, col1);
         root.getRowConstraints().addAll(row1, row2, row1, row2, row2, row2, row1);
-        //----------------------------------------------------------------
-
-        //Changes the root of the stage's scene --------------------------
-        UserInterface.getStage().getScene().setRoot(root);
         //----------------------------------------------------------------
 
         // Start text zones, font is for scaling font sizes --------------
@@ -155,8 +150,8 @@ public class UserPage  {
         stack.setSpacing(40);
 
         stack.getChildren().addAll(playing, songTitle, artist, album);
-        stack.setAlignment(Pos.TOP_LEFT);
-        root.add(stack, 3, 3, 2,2);
+        stack.setAlignment(Pos.TOP_CENTER);
+        root.add(stack, 2, 3, 3,2);
         //----------------------------------------------------------------
 
         // Makes and Adds the 'Add' button to the screen -----------------
@@ -172,11 +167,9 @@ public class UserPage  {
                     if (!(itemsPlayQueue.contains(listSearchResults.getSelectionModel().getSelectedItem().trim()))) {
                         Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
 
-                        Track[] song = new Track[0];
+                        Track[] song;
 
-                        for (int i = 0; i <= tracks.getItems().length; i++) {
-                            song = tracks.getItems();
-                        }
+                        song = tracks.getItems();
 
                         String[] sName = new String [] {song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()};
 
@@ -208,7 +201,6 @@ public class UserPage  {
                             Track[] song = tracks.getItems();
 
                             itemsSearchResults.add(song[i].getName());
-
                         }
                     }
                 } else {

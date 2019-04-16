@@ -6,7 +6,6 @@ import client.LobbyUser;
 import client.Packet;
 import com.wrapper.spotify.SpotifyHttpManager;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;

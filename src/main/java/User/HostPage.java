@@ -272,14 +272,11 @@ public class HostPage {
         addBlack.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/7.5, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         addBlack.setOnAction(event -> {
 
-            Paging<Track> tracks = host.searchTracks(blacklistText.getText().trim());
+            Paging<Track> tracks = host.searchTracks(searchBar.getText().trim());
 
-            Track[] song = new Track[0];
+            Track[] song;
 
-            for (int i = 0; i <= tracks.getItems().length; i++) {
-
-                song = tracks.getItems();
-            }
+            song = tracks.getItems();
 
             String[] sName = new String [] {song[bLObsList.indexOf(bLList.getSelectionModel().getSelectedItem())].getUri()};
 
@@ -300,19 +297,18 @@ public class HostPage {
 
                         Paging<Track> tracks = host.searchTracks(hostSearchText.getText().trim());
 
+                        Track[] song;
 
-                        Track[] song = new Track[0];
-
-                        for (int i = 0; i <= tracks.getItems().length; i++) {
-
-                            song = tracks.getItems();
-                        }
+                        song = tracks.getItems();
 
                         String[] sName = new String [] {song[OhostSearchList.indexOf(hostSearchList.getSelectionModel().getSelectedItem())].getUri()};
 
                         System.out.println(sName[0]);
 
-                        host.addSong(sName);
+                        Packet packet = new Packet(Utilities.generatePacketIdentifier(), 3);
+                        packet.setSongURI(sName[0]);
+                        packet.setLobby(code);
+                        UserInterface.client.sendPacket(packet);
                     }
                 }
             }
@@ -434,22 +430,9 @@ public class HostPage {
         currentlyPlaying.getChildren().addAll(playing, SONG, artist, album, controls);
 
         currentlyPlaying.setPadding(new Insets(40));
-        currentlyPlaying.setAlignment(Pos.TOP_LEFT);
+        currentlyPlaying.setAlignment(Pos.CENTER);
 
-        GridPane cPlay = new GridPane();
-
-        RowConstraints twentyfiveRow = new RowConstraints();
-        twentyfiveRow.setPercentHeight(50);
-
-        ColumnConstraints twentyfiveColumn = new ColumnConstraints();
-        twentyfiveColumn.setPercentWidth(50);
-
-        cPlay.getRowConstraints().addAll(twentyfiveRow, twentyfiveRow, twentyfiveRow, twentyfiveRow);
-        cPlay.getColumnConstraints().addAll(twentyfiveColumn, twentyfiveColumn, twentyfiveColumn, twentyfiveColumn);
-
-        cPlay.add(currentlyPlaying, 1,1,2, 2);
-
-        controller.add(cPlay, 1, 1);
+        controller.add(currentlyPlaying, 1, 1);
         //----------------------------------------------------------------
 
         controller.getRowConstraints().addAll(rowOne, rowOne, rowOne);

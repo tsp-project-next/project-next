@@ -4,8 +4,6 @@ import User.HostPage;
 import User.UserInterface;
 import User.UserPage;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.io.EOFException;
 import java.net.*;
@@ -210,9 +208,6 @@ public class Client {
             //userid list update
             case 5:
                 System.out.println("Packet type: 5");
-
-                System.out.println(packet.getUserIds().size());
-
                 if( packet.getUserIds() != null) {
                     //commented out because it throws null errors currently
 
@@ -232,7 +227,7 @@ public class Client {
             case 7:
                 System.out.println("Packet type: 7");
                 Platform.runLater(() -> {
-                   UserInterface.inBlackList();
+                    UserInterface.inBlackList();
                 });
                 break;
 
