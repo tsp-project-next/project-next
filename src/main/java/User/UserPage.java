@@ -216,6 +216,10 @@ public class UserPage  {
         // Makes and Adds the 'X' button ---------------------------------
         Button closeButton = new Button("X");
         closeButton.setOnAction(event -> {
+            Packet packet = new Packet(Utilities.generatePacketIdentifier(), 4);
+            packet.setLobby(Code);
+
+            UserInterface.client.sendPacket(packet);
             if(UserInterface.isTimerRunning()) {
                 UserInterface.timerUpdate(false);
             }
