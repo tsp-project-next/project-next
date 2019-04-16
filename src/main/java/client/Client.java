@@ -211,14 +211,12 @@ public class Client {
             case 5:
                 System.out.println("Packet type: 5");
 
-                System.out.println(packet.getUserIds());
+                System.out.println(packet.getUserIds().size());
 
                 if( packet.getUserIds() != null) {
                     //commented out because it throws null errors currently
 
                     Platform.runLater(() -> {
-
-
                         HostPage.updateUserId(packet.getUserIds());
                     });
                 }

@@ -237,6 +237,7 @@ public class UserPage  {
         leave.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
         leave.setOnAction(event -> {
             Packet packet = new Packet(Utilities.generatePacketIdentifier(), 4);
+            packet.setLobby(Code);
 
             UserInterface.client.sendPacket(packet);
             if(UserInterface.isTimerRunning()) {
