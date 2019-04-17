@@ -265,6 +265,8 @@ public class HostPage {
 
                     triggered = true;
 
+                    //currentSong = host.getCurrentPlaying().getUri();
+
                     UserInterface.timerUpdate(true);
                 }
             }
@@ -448,6 +450,10 @@ public class HostPage {
             for (int i = 0; i < tracks.getItems().length; i++) {
                 PlaylistTrack[] song = tracks.getItems();
 
+                for (int j = 0 ; j < song.length; j++) {
+                    System.out.println(song[j].getTrack().getName());
+                }
+
                 itemsPlayQueue.add(song[i].getTrack().getName());
             }
         }
@@ -457,24 +463,31 @@ public class HostPage {
 
         Paging<PlaylistTrack> tracks = host.getPlayListTracks();
 
-        String currentlyPlaying = host.getCurrentPlaying().getUri();
+        System.out.println(tracks.getItems().length);
 
-        if (tracks != null) {
+        String currentlyPlaying = "";
+
+        try {
+            currentlyPlaying = host.getCurrentPlaying().getUri();
+        } catch (NullPointerException e) {
+            //System.out.println("We caught this null pointer exception");
+        }
+
+        if (tracks.getItems().length != 0) {
 
             PlaylistTrack[] current = tracks.getItems();
 
             currentSong = current[0].getTrack().getUri();
 
-            songTitle.setText("Song"+ current[0].getTrack().getName());
-
+            songTitle.setText("Song: "+ current[0].getTrack().getName());
 
             artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
 
             album.setText("Album: " + current[0].getTrack().getAlbum().getName());
         }
 
-        if (!currentlyPlaying.equals(currentSong) && tracks != null) {
 
+        if (!currentlyPlaying.equals(currentSong) && tracks != null && !currentlyPlaying.equals("")) {
             // If the host has naturally moved to another song, store the title of the
             // currenly playing song
             currentSong = currentlyPlaying;
@@ -487,6 +500,16 @@ public class HostPage {
 
             updateQueue();
         }
+
+        if (currentlyPlaying.equals("")) {
+            String songName = "";
+
+            songTitle.setText(songName);
+
+            artist.setText("Artist: ");
+
+            album.setText("Album: ");
+        }
     }
 
     public static void updateUserId(ArrayList<String> array) {
@@ -497,8 +520,9 @@ public class HostPage {
     }
 
     public static boolean isInitialized() {
-
-        if(host == null) return false;
+        if(host == null)
+            return false;
+        
         return true;
     }
 

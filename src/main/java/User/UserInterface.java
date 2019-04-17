@@ -146,7 +146,7 @@ public class UserInterface extends Application{
                         UserPage.updateCurrentPlaying();
                     }
                 }
-            }, 0, 5000);
+            }, 0, 1000);
         } else {
             timer.cancel();
             timer.purge();
