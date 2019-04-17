@@ -42,9 +42,13 @@ public class UserPage  {
 
     // Makes and Adds all elements of the UserPage to the UserPage
     private static void setup(String Code) {
+
         user = new LobbyUser(clientId, clientSecret);
 
-        int fontSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 40;
+        double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        double screenHeight = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+
+        int fontSize = (int) screenHeight / 40;
         Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
 
         // Makes a GridPane Called Root ----------------------------------
@@ -54,8 +58,8 @@ public class UserPage  {
         root.setHgap(10);
         root.setVgap(10);
         root.setAlignment(Pos.CENTER);
-        root.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight());
-        root.setMinSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight());
+        root.setPrefSize(screenWidth, screenHeight);
+        root.setMinSize(screenWidth, screenHeight);
         //----------------------------------------------------------------
 
         // Sets col and row constraints to grow or not -------------------
@@ -75,34 +79,52 @@ public class UserPage  {
         root.getRowConstraints().addAll(row1, row2, row1, row2, row2, row2, row1);
         //----------------------------------------------------------------
 
-        // Start text zones, font is for scaling font sizes --------------
-        int font = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()/40;
-        //----------------------------------------------------------------
-
         // Makes the code displayer for top left of the screen -----------
         Text code = new Text();
         code.setText("Code:" + Code);
         code.setFill(Color.WHITE);
-        code.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
+        code.setFont(standard);
         root.add(code,0, 0);
         //----------------------------------------------------------------
 
-        // Makes the header for the queue scroll panel -------------------
-        Text queue = new Text();
-        queue.setText("Play Queue");
-        queue.setFill(Color.WHITE);
-        queue.setFont(Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, font));
-        root.add(queue,5, 2, 2, 1);
+        // Makes and Adds the 'X' button ---------------------------------
+        Button closeButton = new Button("X");
+        closeButton.setOnAction(event -> {
+            Packet packet = new Packet(Utilities.generatePacketIdentifier(), 6);
+            packet.setLobby(Code);
+
+            UserInterface.client.sendPacket(packet);
+            if(UserInterface.isTimerRunning()) {
+                UserInterface.timerUpdate(false);
+            }
+            Platform.exit();
+        });
+
+        root.add(closeButton, 6, 0);
         //----------------------------------------------------------------
 
-        // Makes and Adds the search bar to the header -------------------
+        // Makes and Adds the 'Leave' button -----------------------------
+        Button leave = new Button("Leave");
+        leave.setPrefSize(screenWidth/10, screenHeight /30);
+        leave.setOnAction(event -> {
+            Packet packet = new Packet(Utilities.generatePacketIdentifier(), 4);
+            packet.setLobby(Code);
+
+            UserInterface.client.sendPacket(packet);
+            if(UserInterface.isTimerRunning()) {
+                UserInterface.timerUpdate(false);
+            }
+            UserInterface.loadLandingPage();
+        });
+        root.add(leave, 5,5, 2,1);
+        //----------------------------------------------------------------
+
+        // Makes search scroll pane with search and add ------------------
         TextField searchBar = new TextField();
-        searchBar.setMaxSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
+        searchBar.setMaxSize(screenWidth/10, screenHeight /30);
         searchBar.setPromptText("Search....");
         root.add(searchBar, 0,2);
-        //----------------------------------------------------------------
 
-        // Makes a ScrollPane called searchResults -----------------------
         ScrollPane searchResults = new ScrollPane();
         ListView<String> listSearchResults = new ListView<>();
         ObservableList<String> itemsSearchResults = FXCollections.observableArrayList("");
@@ -111,52 +133,36 @@ public class UserPage  {
         searchResults.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         searchResults.setFitToHeight(true);
         searchResults.setFitToWidth(true);
-        searchResults.setMaxWidth((1*Toolkit.getDefaultToolkit().getScreenSize().getWidth())/4);
+        searchResults.setMaxWidth((1*screenWidth)/4);
         root.add(searchResults, 0,3,2,2);
-        //----------------------------------------------------------------
 
-        // Makes a ScrollPane called playQueue ---------------------------
-        ScrollPane playQueue = new ScrollPane();
-        ListView<String> listPlayQueue = new ListView<>();
-        itemsPlayQueue = FXCollections.observableArrayList("");
-        listPlayQueue.setItems(itemsPlayQueue);
-        playQueue.setContent(listPlayQueue);
-        playQueue.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        playQueue.setFitToHeight(true);
-        playQueue.setFitToWidth(true);
-        playQueue.setMaxWidth((1*Toolkit.getDefaultToolkit().getScreenSize().getWidth())/4);
-        root.add(playQueue, 5,3,2,2);
-        //----------------------------------------------------------------
+        Button search = new Button("Search");
+        search.setPrefSize(screenWidth/15, screenHeight /30);
+        search.setOnAction(event -> {
+            itemsSearchResults.clear();
 
-        // Current Playing Display ---------------------------------------
-        VBox stack = new VBox();
+            if (!(searchBar.getText().trim().isEmpty())) {
+                if((user.searchTracks(searchBar.getText().trim()).getItems().length !=0)) {
+                    Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
 
-        playing.setText("Playing");
-        playing.setFill(Color.WHITE);
-        playing.setFont(standard);
+                    if (!(itemsSearchResults.contains(searchBar.getText().trim()))) {
+                        for (int i = 0; i < tracks.getItems().length; i++) {
+                            Track[] song = tracks.getItems();
 
-        songTitle.textProperty().setValue("Song: No Song");
-        songTitle.setFill(Color.WHITE);
-        songTitle.setFont(standard);
+                            itemsSearchResults.add(song[i].getName());
+                        }
+                    }
+                } else {
+                    itemsSearchResults.add("");
+                }
+            }else {
+                itemsSearchResults.add("");
+            }
+        });
+        root.add(search,1 ,2);
 
-        artist.setText("Artist: No Song");
-        artist.setFill(Color.WHITE);
-        artist.setFont(standard);
-
-        album.setText("Album: No Song");
-        album.setFill(Color.WHITE);
-        album.setFont(standard);
-
-        stack.setSpacing(40);
-
-        stack.getChildren().addAll(playing, songTitle, artist, album);
-        stack.setAlignment(Pos.TOP_CENTER);
-        root.add(stack, 2, 3, 3,2);
-        //----------------------------------------------------------------
-
-        // Makes and Adds the 'Add' button to the screen -----------------
         Button add = new Button("Add");
-        add.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
+        add.setPrefSize(screenWidth/10, screenHeight /30);
         add.setOnAction(event -> {
             if(!(listSearchResults.getItems().toString().trim().equals("[]"))) {
                 if (!(listSearchResults.getSelectionModel().getSelectedItems().toString().equals("[]"))) {
@@ -186,62 +192,49 @@ public class UserPage  {
         root.add(add, 0,5, 2,1);
         //----------------------------------------------------------------
 
-        // Makes and Adds the 'Search' button to the right of the search -
-        Button search = new Button("Search");
-        search.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/15, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
-        search.setOnAction(event -> {
-            itemsSearchResults.clear();
+        // Current Playing Display ---------------------------------------
+        VBox stack = new VBox();
 
-            if (!(searchBar.getText().trim().isEmpty())) {
-                if((user.searchTracks(searchBar.getText().trim()).getItems().length !=0)) {
-                    Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
+        playing.setText("Playing");
+        playing.setFill(Color.WHITE);
+        playing.setFont(standard);
 
-                    if (!(itemsSearchResults.contains(searchBar.getText().trim()))) {
-                        for (int i = 0; i < tracks.getItems().length; i++) {
-                            Track[] song = tracks.getItems();
+        songTitle.textProperty().setValue("Song: No Song");
+        songTitle.setFill(Color.WHITE);
+        songTitle.setFont(standard);
 
-                            itemsSearchResults.add(song[i].getName());
-                        }
-                    }
-                } else {
-                    itemsSearchResults.add("");
-                }
-            }else {
-                itemsSearchResults.add("");
-            }
-        });
-        root.add(search,1 ,2);
+        artist.setText("Artist: No Song");
+        artist.setFill(Color.WHITE);
+        artist.setFont(standard);
+
+        album.setText("Album: No Song");
+        album.setFill(Color.WHITE);
+        album.setFont(standard);
+
+        stack.setSpacing(40);
+
+        stack.getChildren().addAll(playing, songTitle, artist, album);
+        stack.setAlignment(Pos.TOP_CENTER);
+        root.add(stack, 2, 3, 3,2);
         //----------------------------------------------------------------
 
-        // Makes and Adds the 'X' button ---------------------------------
-        Button closeButton = new Button("X");
-        closeButton.setOnAction(event -> {
-            Packet packet = new Packet(Utilities.generatePacketIdentifier(), 6);
-            packet.setLobby(Code);
+        // Makes a ScrollPane called playQueue ---------------------------
+        Text queue = new Text();
+        queue.setText("Play Queue");
+        queue.setFill(Color.WHITE);
+        queue.setFont(standard);
+        root.add(queue,5, 2, 2, 1);
 
-            UserInterface.client.sendPacket(packet);
-            if(UserInterface.isTimerRunning()) {
-                UserInterface.timerUpdate(false);
-            }
-            Platform.exit();
-        });
-        root.add(closeButton, 6, 0);
-        //----------------------------------------------------------------
-
-        // Makes and Adds the 'Leave' button -----------------------------
-        Button leave = new Button("Leave");
-        leave.setPrefSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/10, Toolkit.getDefaultToolkit().getScreenSize().getHeight() /30);
-        leave.setOnAction(event -> {
-            Packet packet = new Packet(Utilities.generatePacketIdentifier(), 4);
-            packet.setLobby(Code);
-
-            UserInterface.client.sendPacket(packet);
-            if(UserInterface.isTimerRunning()) {
-                UserInterface.timerUpdate(false);
-            }
-            UserInterface.loadLandingPage();
-        });
-        root.add(leave, 5,5, 2,1);
+        ScrollPane playQueue = new ScrollPane();
+        ListView<String> listPlayQueue = new ListView<>();
+        itemsPlayQueue = FXCollections.observableArrayList("");
+        listPlayQueue.setItems(itemsPlayQueue);
+        playQueue.setContent(listPlayQueue);
+        playQueue.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        playQueue.setFitToHeight(true);
+        playQueue.setFitToWidth(true);
+        playQueue.setMaxWidth((1*screenWidth)/4);
+        root.add(playQueue, 5,3,2,2);
         //----------------------------------------------------------------
 
         // Sets the alignment of the elements inside the GridPane --------
@@ -291,11 +284,13 @@ public class UserPage  {
     }
 
     public static void updateQueue() {
+
         itemsPlayQueue.clear();
 
         Paging<PlaylistTrack> tracks = user.getPlayListTracks();
 
         for (int i = 0; i < tracks.getItems().length; i++) {
+
             PlaylistTrack[] song = tracks.getItems();
 
             itemsPlayQueue.add(song[i].getTrack().getName());
@@ -309,11 +304,13 @@ public class UserPage  {
     }
 
     public static void updateCurrentPlaying() {
+
         Paging<PlaylistTrack> tracks = user.getPlayListTracks();
 
         PlaylistTrack[] current = tracks.getItems();
 
         if(current != null && current.length != 0) {
+
             songTitle.setText("Song: " + current[0].getTrack().getName());
 
             artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
@@ -323,10 +320,12 @@ public class UserPage  {
     }
 
     public static void sendToLandingPage() {
+
         UserInterface.loadLandingPage();
     }
 
     public static boolean isInitialized() {
+
         if(user == null) return false;
         return true;
     }

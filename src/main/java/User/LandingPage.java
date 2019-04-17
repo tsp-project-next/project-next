@@ -29,6 +29,7 @@ public class LandingPage {
     }
 
     public static void setup() {
+
         double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double screenHeight = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
@@ -37,45 +38,21 @@ public class LandingPage {
 
         root.setPadding(new Insets(5));
 
-        // Sizes columns to the size of the screen -----------------------
-        ColumnConstraints column1 = new ColumnConstraints();
-        ColumnConstraints column2 = new ColumnConstraints();
-        column1.setHgrow(Priority.ALWAYS);
-        column2.setHgrow(Priority.ALWAYS);
-        column2.setHalignment(HPos.CENTER);
-        //----------------------------------------------------------------
-
-        // Sizes columns to the size of the screen -----------------------
+        // Sizes rows adn columns to the size of the screen --------------
         RowConstraints row1 = new RowConstraints();
-        RowConstraints row2 = new RowConstraints();
         row1.setVgrow(Priority.ALWAYS);
-        row2.setVgrow(Priority.ALWAYS);
-        row1.setValignment(VPos.CENTER);
-        row2.setValignment(VPos.TOP);
-        //---------------------------------------------------------------
 
-        // Adds column and row contraints to the GridPane ----------------
+        RowConstraints row2 = new RowConstraints();
+        row2.setVgrow(Priority.ALWAYS);
+
+        ColumnConstraints column1 = new ColumnConstraints();
+        column1.setHgrow(Priority.ALWAYS);
+
+        ColumnConstraints column2 = new ColumnConstraints();
+        column2.setHgrow(Priority.ALWAYS);
+
         root.getColumnConstraints().addAll(column1, column2, column1);
         root.getRowConstraints().addAll(row1, row1, row2);
-        //----------------------------------------------------------------
-
-        // Title of the application---------------------------------------
-        Text title = new Text("PROJECT NEXT");
-        title.resize(screenWidth / 8, screenHeight / 12);
-        title.setFont(Font.font(Font.getDefault().toString(), screenWidth / 20));
-        title.setFill(Color.WHITE);
-        //----------------------------------------------------------------
-
-        // Host button the connects to the host page ---------------------
-        Button host = new Button("Host");
-        host.setPrefSize(screenWidth / 8, screenHeight / 12);
-        host.setOnAction(event -> showInputTextDialog());
-        //----------------------------------------------------------------
-
-        //Join Button with Text Field, checks for validity of code -------
-        Button join = new Button("Join");
-        join.setPrefSize(screenWidth / 8, screenHeight / 12);
-        join.setOnAction(event -> userPrompt());
         //----------------------------------------------------------------
 
         //Exit Button ----------------------------------------------------
@@ -87,13 +64,46 @@ public class LandingPage {
             Platform.exit();
         });
 
-        root.add(title, 1, 0);
-        root.add(host, 1, 1);
-        root.add(join, 1, 2);
         root.add(exit, 2, 0);
+        //----------------------------------------------------------------
 
+        // Title of the application---------------------------------------
+        Text title = new Text("PROJECT NEXT");
+        title.resize(screenWidth / 8, screenHeight / 12);
+        title.setFont(Font.font(Font.getDefault().toString(), screenWidth / 20));
+        title.setFill(Color.WHITE);
+
+        root.add(title, 1, 0);
+        //----------------------------------------------------------------
+
+        // Host button the connects to the host page ---------------------
+        Button host = new Button("Host");
+        host.setPrefSize(screenWidth / 8, screenHeight / 12);
+        host.setOnAction(event -> showInputTextDialog());
+
+        root.add(host, 1, 1);
+        //----------------------------------------------------------------
+
+        //Join Button with Text Field, checks for validity of code -------
+        Button join = new Button("Join");
+        join.setPrefSize(screenWidth / 8, screenHeight / 12);
+        join.setOnAction(event -> userPrompt());
+
+        root.add(join, 1, 2);
+        //----------------------------------------------------------------
+
+        // Sets the alignment of the elements inside the GridPane --------
         GridPane.setHalignment(exit, HPos.RIGHT);
         GridPane.setValignment(exit,VPos.TOP);
+
+        GridPane.setHalignment(title, HPos.CENTER);
+        GridPane.setValignment(title,VPos.CENTER);
+
+        GridPane.setHalignment(host, HPos.CENTER);
+        GridPane.setValignment(host, VPos.CENTER);
+
+        GridPane.setHalignment(join, HPos.CENTER);
+        GridPane.setValignment(join, VPos.TOP);
         //----------------------------------------------------------------
 
         UserInterface.getStage().getScene().setRoot(root);

@@ -4,7 +4,6 @@ import client.Client;
 import client.LobbyHost;
 import client.LobbyUser;
 import client.Packet;
-import com.wrapper.spotify.SpotifyHttpManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -13,17 +12,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.awt.*;
-import java.net.URI;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class UserInterface extends Application{
-
-    // We need these initialized for lobby user or host. Do not alter ----
-//    private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
-//    private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
-//    private static final URI redirectUri = SpotifyHttpManager.makeUri("https://tsp-project-next.github.io/");
-    //--------------------------------------------------------------------
 
     private static Stage mainStage = null;
 
