@@ -23,9 +23,6 @@ public class UserInterface extends Application{
 
     public static Thread t;
 
-    private static Timer timer;
-    private static boolean isTimerRunning = false;
-
     // Main method -------------------------------------------------------
     public static void main(String[] args) {
         //create a new client object
@@ -123,39 +120,6 @@ public class UserInterface extends Application{
 
     public static Stage getStage() {
         return mainStage;
-    }
-
-    public static void timerUpdate(Boolean start) {
-
-        if (start) {
-            isTimerRunning = true;
-            timer = new Timer();
-
-            timer.schedule(new TimerTask() {
-
-                @Override
-                public void run() {
-                    if(isTimerRunning == false) {
-                        return;
-                    }
-
-                    if(HostPage.isInitialized()) {
-                        HostPage.updateCurrentPlaying();
-                    }
-                    if(UserPage.isInitialized()) {
-                        UserPage.updateCurrentPlaying();
-                    }
-                }
-            }, 0, 1000);
-        } else {
-            timer.cancel();
-            timer.purge();
-            isTimerRunning = false;
-        }
-    }
-
-    public static boolean isTimerRunning() {
-        return isTimerRunning;
     }
 
     public static void inBlackList() {
