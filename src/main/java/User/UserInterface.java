@@ -128,5 +128,12 @@ public class UserInterface extends Application{
         alert.setContentText("Alert");
         alert.setHeaderText("Song is in blacklist");
         alert.showAndWait();
+
+        if(HostPage.isInitialized()) {
+            HostPage.checkEmpty();
+        } else if (UserPage.isInitialized()) {
+            UserPage.checkEmpty();
+        }
+
     }
 }

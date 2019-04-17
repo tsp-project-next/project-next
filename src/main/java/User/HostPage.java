@@ -221,8 +221,6 @@ public class HostPage {
 
             String[] sName = new String [] {song[bLObsList.indexOf(bLList.getSelectionModel().getSelectedItem())].getUri()};
 
-            System.out.println(sName[0]);
-
             host.addToBlackList(sName[0]);
         });
 
@@ -415,8 +413,6 @@ public class HostPage {
 
                         String[] sName = new String [] {song[OhostSearchList.indexOf(hostSearchList.getSelectionModel().getSelectedItem())].getUri()};
 
-                        System.out.println(sName[0]);
-
                         Packet packet = new Packet(Utilities.generatePacketIdentifier(), 3);
                         packet.setSongURI(sName[0]);
                         packet.setLobby(code);
@@ -456,10 +452,6 @@ public class HostPage {
             for (int i = 0; i < tracks.getItems().length; i++) {
                 PlaylistTrack[] song = tracks.getItems();
 
-                for (int j = 0 ; j < song.length; j++) {
-                    System.out.println(song[j].getTrack().getName());
-                }
-
                 itemsPlayQueue.add(song[i].getTrack().getName());
             }
         }
@@ -468,8 +460,6 @@ public class HostPage {
     public static void updateCurrentPlaying() {
 
         Paging<PlaylistTrack> tracks = host.getPlayListTracks();
-
-        System.out.println(tracks.getItems().length);
 
         String currentlyPlaying = "";
 
@@ -558,9 +548,6 @@ public class HostPage {
                     if(HostPage.isInitialized()) {
                         HostPage.updateCurrentPlaying();
                     }
-                    if(UserPage.isInitialized()) {
-                        UserPage.updateCurrentPlaying();
-                    }
                 }
             }, 0, 1000);
         } else {
@@ -572,5 +559,12 @@ public class HostPage {
 
     public static boolean isTimerRunning() {
         return isTimerRunning;
+    }
+
+    public static void checkEmpty() {
+
+        if(itemsPlayQueue.isEmpty()) {
+            itemsPlayQueue.add("");
+        }
     }
 }

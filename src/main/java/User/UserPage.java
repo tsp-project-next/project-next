@@ -184,8 +184,6 @@ public class UserPage  {
 
                         String[] sName = new String [] {song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()};
 
-                        System.out.println(sName[0]);
-
                         Packet packet = new Packet(Utilities.generatePacketIdentifier(), 3);
                         packet.setSongURI(sName[0]);
                         packet.setLobby(Code);
@@ -328,6 +326,10 @@ public class UserPage  {
 
     public static void sendToLandingPage() {
 
+        if(isTimerRunning()) {
+            timerUpdate(false);
+        }
+
         UserInterface.loadLandingPage();
     }
 
@@ -351,9 +353,6 @@ public class UserPage  {
                         return;
                     }
 
-                    if(HostPage.isInitialized()) {
-                        HostPage.updateCurrentPlaying();
-                    }
                     if(UserPage.isInitialized()) {
                         UserPage.updateCurrentPlaying();
                     }
@@ -368,5 +367,12 @@ public class UserPage  {
 
     public static boolean isTimerRunning() {
         return isTimerRunning;
+    }
+
+    public static void checkEmpty() {
+
+        if(itemsPlayQueue.isEmpty()) {
+            itemsPlayQueue.add("");
+        }
     }
 }
