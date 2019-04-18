@@ -27,6 +27,8 @@ import javafx.scene.text.Text;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @SuppressWarnings("Duplicates")
@@ -40,6 +42,9 @@ public class HostPage {
     private static Text album = new Text();
     private static boolean triggered = false;
     private static String currentSong = "";
+
+    private static Timer timer;
+    private static boolean isTimerRunning = false;
 
     public HostPage(String code, LobbyHost host) {
         this.host = host;
@@ -89,8 +94,8 @@ public class HostPage {
             senUsersToLandingPage.setLobby(code);
             UserInterface.client.sendPacket(senUsersToLandingPage);
 
-            if(UserInterface.isTimerRunning()) {
-                UserInterface.timerUpdate(false);
+            if(isTimerRunning()) {
+                timerUpdate(false);
             }
             Platform.exit();
         });
@@ -105,9 +110,8 @@ public class HostPage {
             packet.setLobby(code);
             UserInterface.client.sendPacket(packet);
 
-            if(UserInterface.isTimerRunning()) {
-
-                UserInterface.timerUpdate(false);
+            if(isTimerRunning()) {
+                timerUpdate(false);
             }
             UserInterface.loadLandingPage();
         });
@@ -217,8 +221,6 @@ public class HostPage {
 
             String[] sName = new String [] {song[bLObsList.indexOf(bLList.getSelectionModel().getSelectedItem())].getUri()};
 
-            System.out.println(sName[0]);
-
             host.addToBlackList(sName[0]);
         });
 
@@ -267,7 +269,9 @@ public class HostPage {
 
                     //currentSong = host.getCurrentPlaying().getUri();
 
-                    UserInterface.timerUpdate(true);
+                    if(!isTimerRunning()) {
+                        timerUpdate(true);
+                    }
                 }
             }
             if (nowPlaying.get()) {
@@ -409,8 +413,6 @@ public class HostPage {
 
                         String[] sName = new String [] {song[OhostSearchList.indexOf(hostSearchList.getSelectionModel().getSelectedItem())].getUri()};
 
-                        System.out.println(sName[0]);
-
                         Packet packet = new Packet(Utilities.generatePacketIdentifier(), 3);
                         packet.setSongURI(sName[0]);
                         packet.setLobby(code);
@@ -450,10 +452,6 @@ public class HostPage {
             for (int i = 0; i < tracks.getItems().length; i++) {
                 PlaylistTrack[] song = tracks.getItems();
 
-                for (int j = 0 ; j < song.length; j++) {
-                    System.out.println(song[j].getTrack().getName());
-                }
-
                 itemsPlayQueue.add(song[i].getTrack().getName());
             }
         }
@@ -462,8 +460,6 @@ public class HostPage {
     public static void updateCurrentPlaying() {
 
         Paging<PlaylistTrack> tracks = host.getPlayListTracks();
-
-        System.out.println(tracks.getItems().length);
 
         String currentlyPlaying = "";
 
@@ -533,5 +529,42 @@ public class HostPage {
         alert.setContentText("Alert");
         alert.setHeaderText("Added to blacklist");
         alert.showAndWait();
+    }
+
+    public static void timerUpdate(Boolean start) {
+
+        if (start) {
+            isTimerRunning = true;
+            timer = new Timer();
+
+            timer.schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+                    if(isTimerRunning == false) {
+                        return;
+                    }
+
+                    if(HostPage.isInitialized()) {
+                        HostPage.updateCurrentPlaying();
+                    }
+                }
+            }, 0, 1000);
+        } else {
+            timer.cancel();
+            timer.purge();
+            isTimerRunning = false;
+        }
+    }
+
+    public static boolean isTimerRunning() {
+        return isTimerRunning;
+    }
+
+    public static void checkEmpty() {
+
+        if(itemsPlayQueue.isEmpty()) {
+            itemsPlayQueue.add("");
+        }
     }
 }

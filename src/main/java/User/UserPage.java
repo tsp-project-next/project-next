@@ -21,6 +21,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollPane;
@@ -35,6 +37,9 @@ public class UserPage  {
     private static Text artist = new Text();
     private static Text album = new Text();
     private static LobbyUser user = null;
+
+    private static Timer timer;
+    private static boolean isTimerRunning = false;
 
     public UserPage(String code) {
         setup(code);
@@ -94,8 +99,8 @@ public class UserPage  {
             packet.setLobby(Code);
 
             UserInterface.client.sendPacket(packet);
-            if(UserInterface.isTimerRunning()) {
-                UserInterface.timerUpdate(false);
+            if(isTimerRunning()) {
+                timerUpdate(false);
             }
             Platform.exit();
         });
@@ -111,8 +116,8 @@ public class UserPage  {
             packet.setLobby(Code);
 
             UserInterface.client.sendPacket(packet);
-            if(UserInterface.isTimerRunning()) {
-                UserInterface.timerUpdate(false);
+            if(isTimerRunning()) {
+                timerUpdate(false);
             }
             UserInterface.loadLandingPage();
         });
@@ -178,8 +183,6 @@ public class UserPage  {
                         song = tracks.getItems();
 
                         String[] sName = new String [] {song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()};
-
-                        System.out.println(sName[0]);
 
                         Packet packet = new Packet(Utilities.generatePacketIdentifier(), 3);
                         packet.setSongURI(sName[0]);
@@ -296,7 +299,9 @@ public class UserPage  {
             itemsPlayQueue.add(song[i].getTrack().getName());
         }
 
-        UserInterface.timerUpdate(true);
+        if(!isTimerRunning()) {
+            timerUpdate(true);
+        }
 
         if(itemsPlayQueue.isEmpty()) {
             itemsPlayQueue.add("");
@@ -321,6 +326,10 @@ public class UserPage  {
 
     public static void sendToLandingPage() {
 
+        if(isTimerRunning()) {
+            timerUpdate(false);
+        }
+
         UserInterface.loadLandingPage();
     }
 
@@ -328,5 +337,42 @@ public class UserPage  {
 
         if(user == null) return false;
         return true;
+    }
+
+    public static void timerUpdate(Boolean start) {
+
+        if (start) {
+            isTimerRunning = true;
+            timer = new Timer();
+
+            timer.schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+                    if(isTimerRunning == false) {
+                        return;
+                    }
+
+                    if(UserPage.isInitialized()) {
+                        UserPage.updateCurrentPlaying();
+                    }
+                }
+            }, 0, 1000);
+        } else {
+            timer.cancel();
+            timer.purge();
+            isTimerRunning = false;
+        }
+    }
+
+    public static boolean isTimerRunning() {
+        return isTimerRunning;
+    }
+
+    public static void checkEmpty() {
+
+        if(itemsPlayQueue.isEmpty()) {
+            itemsPlayQueue.add("");
+        }
     }
 }

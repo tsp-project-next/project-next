@@ -58,9 +58,6 @@ public class LandingPage {
         //Exit Button ----------------------------------------------------
         Button exit = new Button("X");
         exit.setOnAction(event -> {
-            if(UserInterface.isTimerRunning()) {
-                UserInterface.timerUpdate(false);
-            }
             Platform.exit();
         });
 
