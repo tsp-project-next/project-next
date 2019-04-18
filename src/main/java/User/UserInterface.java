@@ -21,6 +21,8 @@ public class UserInterface extends Application{
 
     public static Client client;
 
+    private static boolean debugBuild = false;
+
     public static Thread t;
 
     private static Timer timer;
@@ -34,6 +36,28 @@ public class UserInterface extends Application{
             System.out.println("Connection to server not found.");
             System.exit(0);
         }
+
+        // DEBUG TESTING
+
+        if (debugBuild) {
+
+            System.out.println("**** WARNING *****");
+            System.out.println("Debug Build");
+            System.out.println("**** WARNING *****");
+
+            Packet packet = new Packet(Utilities.generatePacketIdentifier(), 0);
+            packet.setPlaylistURI("this:is:a:playlist:uri");
+
+
+            client.sendPacketWaitResponse(packet);
+
+
+            client.closeStreams();
+            System.exit(0);
+        }
+
+
+        // END DEBUG TESTING
 
         //need to save the thread.
         t = Thread.currentThread();

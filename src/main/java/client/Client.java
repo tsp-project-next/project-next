@@ -18,6 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("Duplicates")
 public class Client {
 
+    private static boolean debugBuild = false;
+
     //Host name or ip address
     private String host = "localhost";
 
@@ -161,6 +163,18 @@ public class Client {
         switch(packet.getPacketType()) {
             //packet type 0 = lobby creation
             case 0:
+
+                // DEBUG PYTHON TESTING
+
+                if (debugBuild) {
+                    System.out.println("Packet type 0 response");
+                    responses.put(packet.getPacketIdentifier(), packet.getLobby());
+                    awaitingResponseList.remove(packet.getPacketIdentifier());
+                    return;
+                }
+
+                // END DEBUG PYTHON TESTING
+
                 System.out.println("Packet type: 0");
                 if(packet.getLobby() != null) {
                     System.out.println("Lobby code: " + packet.getLobby());
@@ -171,6 +185,15 @@ public class Client {
                 break;
             //packet type 1 = lobby join
             case 1:
+
+                // DEBUG PYTHON TESTING
+
+                if (debugBuild) {
+
+                }
+
+                // END DEBUG PYTHON TESTING
+
                 System.out.println("Packet type: 1");
                 if(packet.getPlaylistURI() == null) {
                     //have to use space instead of null because null isnt allowed
@@ -182,6 +205,15 @@ public class Client {
                 break;
             //packet type 2 = song update
             case 2:
+
+                // DEBUG PYTHON TESTING
+
+                if (debugBuild) {
+
+                }
+
+                // END DEBUG PYTHON TESTING
+
                 System.out.println("Packet type: 2");
 
 
@@ -198,16 +230,43 @@ public class Client {
 
                 break;
             case 3:
+
+                // DEBUG PYTHON TESTING
+
+                if (debugBuild) {
+
+                }
+
+                // END DEBUG PYTHON TESTING
+
                 System.out.println("Packet type: 3");
                 String[] sName = new String[] {packet.getSongURI()};
                 LobbyHost.addSong(sName);
                 break;
             //this just received a empty packet to verify that you were exited from the lobby
             case 4:
+
+                // DEBUG PYTHON TESTING
+
+                if (debugBuild) {
+
+                }
+
+                // END DEBUG PYTHON TESTING
+
                 System.out.println("Packet type: 4");
                 break;
             //userid list update
             case 5:
+
+                // DEBUG PYTHON TESTING
+
+                if (debugBuild) {
+
+                }
+
+                // END DEBUG PYTHON TESTING
+
                 System.out.println("Packet type: 5");
                 if( packet.getUserIds() != null) {
                     //commented out because it throws null errors currently
@@ -219,6 +278,15 @@ public class Client {
                 break;
 
             case 6:
+
+                // DEBUG PYTHON TESTING
+
+                if (debugBuild) {
+
+                }
+
+                // END DEBUG PYTHON TESTING
+
                 System.out.println("Packet type: 6");
                 Platform.runLater(() -> {
                     UserPage.sendToLandingPage();
@@ -226,6 +294,15 @@ public class Client {
                 break;
 
             case 7:
+
+                // DEBUG PYTHON TESTING
+
+                if (debugBuild) {
+
+                }
+
+                // END DEBUG PYTHON TESTING
+
                 System.out.println("Packet type: 7");
                 Platform.runLater(() -> {
                     UserInterface.inBlackList();
@@ -233,6 +310,15 @@ public class Client {
                 break;
 
             case 8:
+
+                // DEBUG PYTHON TESTING
+
+                if (debugBuild) {
+
+                }
+
+                // END DEBUG PYTHON TESTING
+
                 System.out.println("Packet type: 8");
                 Platform.runLater(() -> {
                     HostPage.addedToBlackList();
