@@ -40,7 +40,6 @@ public class HostPage {
     private static Text songTitle = new Text();
     private static Text artist = new Text();
     private static Text album = new Text();
-    private static boolean triggered = false;
     private static String currentSong = "";
 
     private static Timer timer;
@@ -56,6 +55,13 @@ public class HostPage {
 
         double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double screenHeight = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+
+        // Used to switch the play button to pause and vice versa
+        AtomicBoolean nowPlaying = new AtomicBoolean(false);
+        AtomicBoolean firstSong = new AtomicBoolean(true);
+        AtomicBoolean triggered = new AtomicBoolean(false);
+
+
 
         int fontSize = (int) screenHeight / 40;
         Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
@@ -113,6 +119,11 @@ public class HostPage {
             if(isTimerRunning()) {
                 timerUpdate(false);
             }
+
+            firstSong.set(true);
+            triggered.set(false);
+
+
             UserInterface.loadLandingPage();
         });
         root.add(endSession, 1, 2);
@@ -249,9 +260,6 @@ public class HostPage {
         album.setFill(Color.WHITE);
         album.setFont(standard);
 
-        // Used to switch the play button to pause and vice versa
-        AtomicBoolean nowPlaying = new AtomicBoolean(false);
-        AtomicBoolean firstSong = new AtomicBoolean(true);
         // Button that will resume or pause the user's playlist
         Button play = new Button("Play");
         play.setOnAction(event -> {
@@ -263,9 +271,9 @@ public class HostPage {
                 nowPlaying.set(true);
                 firstSong.set(false);
 
-                if (!triggered) {
+                if (!triggered.get()) {
 
-                    triggered = true;
+                    triggered.set(true);
 
                     //currentSong = host.getCurrentPlaying().getUri();
 
@@ -291,15 +299,22 @@ public class HostPage {
         // in the playlist
         Button next = new Button(">>");
         next.setOnAction(event -> {
-            String cSong = host.getCurrentPlaying().getUri();
 
-            JsonArray arrayedTracks = new JsonParser().parse("[{\"uri\":\"" + cSong + "\"}]").getAsJsonArray();
+            Paging<PlaylistTrack> tracks = host.getPlayListTracks();
 
-            host.deleteSongFromPlaylist(arrayedTracks);
+            if(tracks.getItems().length >= 1) {
+                String cSong = host.getCurrentPlaying().getUri();
 
-            host.startPlaylist();
+                JsonArray arrayedTracks = new JsonParser().parse("[{\"uri\":\"" + cSong + "\"}]").getAsJsonArray();
 
-            updateQueue();
+                host.deleteSongFromPlaylist(arrayedTracks);
+
+                host.startPlaylist();
+                play.setText("Pause");
+                nowPlaying.set(true);
+
+                updateQueue();
+            }
         });
 
         // Adds back, play and next to a HBox in order to have the controls in a row
@@ -461,6 +476,11 @@ public class HostPage {
                 itemsPlayQueue.add(song[i].getTrack().getName());
             }
         }
+
+        if(itemsPlayQueue.isEmpty()) {
+
+            itemsPlayQueue.add("");
+        }
     }
 
     public static void updateCurrentPlaying() {
@@ -475,42 +495,46 @@ public class HostPage {
             //System.out.println("We caught this null pointer exception");
         }
 
+
         if (tracks.getItems().length != 0) {
 
             PlaylistTrack[] current = tracks.getItems();
 
             currentSong = current[0].getTrack().getUri();
 
-            songTitle.setText("Song: "+ current[0].getTrack().getName());
+            songTitle.setText("Song: " + current[0].getTrack().getName());
 
             artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
 
             album.setText("Album: " + current[0].getTrack().getAlbum().getName());
         }
 
+        System.out.println(tracks.getItems().length);
 
-        if (!currentlyPlaying.equals(currentSong) && tracks != null && !currentlyPlaying.equals("")) {
-            // If the host has naturally moved to another song, store the title of the
-            // currenly playing song
-            currentSong = currentlyPlaying;
+        if(tracks.getItems().length > 0) {
+            if (!tracks.getItems()[0].getTrack().getUri().equals(currentSong) && !currentlyPlaying.equals("")) {
+                // If the host has naturally moved to another song, store the title of the
+                // currenly playing song
+                currentSong = currentlyPlaying;
 
-            JsonArray arrayedTracks = new JsonParser().parse("[{\"uri\":\"" + tracks.getItems()[0].getTrack().getUri() + "\"}]").getAsJsonArray();
+                JsonArray arrayedTracks = new JsonParser().parse("[{\"uri\":\"" + tracks.getItems()[0].getTrack().getUri() + "\"}]").getAsJsonArray();
 
-            host.deleteSongFromPlaylist(arrayedTracks);
+                host.deleteSongFromPlaylist(arrayedTracks);
 
-            host.startPlaylist();
+                host.startPlaylist();
 
-            updateQueue();
+                updateQueue();
+            }
         }
 
+
         if (currentlyPlaying.equals("")) {
-            String songName = "";
 
-            songTitle.setText(songName);
+            songTitle.setText("Song: No Song");
 
-            artist.setText("Artist: ");
+            artist.setText("Artist: No Song");
 
-            album.setText("Album: ");
+            album.setText("Album: No Song");
         }
     }
 
@@ -551,9 +575,11 @@ public class HostPage {
                         return;
                     }
 
-                    if(HostPage.isInitialized()) {
-                        HostPage.updateCurrentPlaying();
-                    }
+                    Platform.runLater(() -> {
+                        if (HostPage.isInitialized()) {
+                            HostPage.updateCurrentPlaying();
+                        }
+                    });
                 }
             }, 0, 1000);
         } else {

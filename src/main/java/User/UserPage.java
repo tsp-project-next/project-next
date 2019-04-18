@@ -312,6 +312,7 @@ public class UserPage  {
         }
 
         if(itemsPlayQueue.isEmpty()) {
+
             itemsPlayQueue.add("");
         }
     }
@@ -361,9 +362,11 @@ public class UserPage  {
                         return;
                     }
 
-                    if(UserPage.isInitialized()) {
-                        UserPage.updateCurrentPlaying();
-                    }
+                    Platform.runLater(() -> {
+                        if(UserPage.isInitialized()) {
+                            UserPage.updateCurrentPlaying();
+                        }
+                    });
                 }
             }, 0, 1000);
         } else {
