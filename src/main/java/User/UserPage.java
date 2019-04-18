@@ -176,6 +176,7 @@ public class UserPage  {
                     }
 
                     if (!(itemsPlayQueue.contains(listSearchResults.getSelectionModel().getSelectedItem().trim()))) {
+
                         Paging<Track> tracks = user.searchTracks(searchBar.getText().trim());
 
                         Track[] song;
@@ -184,10 +185,17 @@ public class UserPage  {
 
                         String[] sName = new String [] {song[itemsSearchResults.indexOf(listSearchResults.getSelectionModel().getSelectedItem())].getUri()};
 
+
                         Packet packet = new Packet(Utilities.generatePacketIdentifier(), 3);
                         packet.setSongURI(sName[0]);
                         packet.setLobby(Code);
                         UserInterface.client.sendPacket(packet);
+
+                        try {
+                            Thread.sleep(1500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

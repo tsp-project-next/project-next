@@ -196,7 +196,7 @@ public class Client {
 
                 System.out.println("Packet type: 1");
                 if(packet.getPlaylistURI() == null) {
-                    //have to use space instead of null because null isnt allowed
+                    //have to use space instead of null because null isn't allowed
                     responses.put(packet.getPacketIdentifier(), " ");
                 } else {
                     responses.put(packet.getPacketIdentifier(), packet.getPlaylistURI());
@@ -227,7 +227,6 @@ public class Client {
                         UserPage.updateQueue();
                     });
                 }
-
                 break;
             case 3:
 

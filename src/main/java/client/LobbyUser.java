@@ -113,5 +113,4 @@ public class LobbyUser {
     public static String getPlaylistId() {
         return playlistId;
     }
-
 }

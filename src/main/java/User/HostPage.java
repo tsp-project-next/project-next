@@ -417,6 +417,12 @@ public class HostPage {
                         packet.setSongURI(sName[0]);
                         packet.setLobby(code);
                         UserInterface.client.sendPacket(packet);
+
+                        try {
+                            Thread.sleep(1500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

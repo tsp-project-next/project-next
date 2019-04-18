@@ -212,13 +212,18 @@ public class LobbyHost {
     // Add songs to the stored playlist
     public static void addSong(String[] songUri) {
         try {
-            int total = spotifyApi.getPlaylistsTracks(playlistId).build().execute().getTotal();
 
-            spotifyApi.addTracksToPlaylist(playlistId, songUri).position(total).build().execute();
-            Packet packet = new Packet(Utilities.generatePacketIdentifier(), 2);
-            packet.setLobby(code);
-            packet.setSongURI(songUri[0]);
-            UserInterface.client.sendPacket(packet);
+            if(!spotifyApi.getPlaylistsTracks(playlistId).build().execute().getItems().toString().contains(songUri[0])) {
+
+                int total = spotifyApi.getPlaylistsTracks(playlistId).build().execute().getTotal();
+
+                spotifyApi.addTracksToPlaylist(playlistId, songUri).position(total).build().execute();
+                Packet packet = new Packet(Utilities.generatePacketIdentifier(), 2);
+                packet.setLobby(code);
+                packet.setSongURI(songUri[0]);
+                UserInterface.client.sendPacket(packet);
+            }
+
         } catch (IOException | SpotifyWebApiException e) {
             System.out.println("Error in addSong: " + e.getMessage());
         }
@@ -312,6 +317,7 @@ public class LobbyHost {
     }
 
     public static void addToBlackList(String songUri) {
+
         Packet blackListPacket = new Packet(Utilities.generatePacketIdentifier(), 8);
         blackListPacket.setLobby(code);
         blackListPacket.setBlackListURI(songUri);
