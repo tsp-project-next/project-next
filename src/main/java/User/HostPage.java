@@ -41,6 +41,9 @@ public class HostPage {
     private static Text artist = new Text();
     private static Text album = new Text();
     private static String currentSong = "";
+    private static int scrollSong = 9;
+    private static int scrollArtist = 9;
+    private static int scrollAlbum = 9;
 
     private static Timer timer;
     private static boolean isTimerRunning = false;
@@ -502,11 +505,38 @@ public class HostPage {
 
             currentSong = current[0].getTrack().getUri();
 
-            songTitle.setText("Song: " + current[0].getTrack().getName());
+            if (current[0].getTrack().getName().length() > 10) {
+                songTitle.setText("Song: " + current[0].getTrack().getName().substring(scrollSong - 9, scrollSong));
+                if (scrollSong == current[0].getTrack().getName().length()) {
+                    scrollSong = 9;
+                } else {
+                    scrollSong++;
+                }
+            } else {
+                songTitle.setText("Song: " + current[0].getTrack().getName());
+            }
 
-            artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
+            if (current[0].getTrack().getArtists()[0].getName().length() > 10) {
+                artist.setText(("Artist: " + current[0].getTrack().getArtists()[0].getName().substring(scrollArtist - 9, scrollArtist)));
+                if (scrollArtist == current[0].getTrack().getArtists()[0].getName().length()) {
+                    scrollArtist = 9;
+                } else {
+                    scrollArtist++;
+                }
+            } else {
+                artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
+            }
 
-            album.setText("Album: " + current[0].getTrack().getAlbum().getName());
+            if (current[0].getTrack().getAlbum().getName().length() > 10) {
+                album.setText("Album: " + current[0].getTrack().getAlbum().getName().substring(scrollAlbum - 9, scrollAlbum));
+                if (scrollAlbum == current[0].getTrack().getAlbum().getName().length()) {
+                    scrollAlbum = 9;
+                } else {
+                    scrollAlbum++;
+                }
+            } else {
+                album.setText("Album: " + current[0].getTrack().getAlbum().getName());
+            }
         }
 
         System.out.println(tracks.getItems().length);
@@ -516,6 +546,10 @@ public class HostPage {
                 // If the host has naturally moved to another song, store the title of the
                 // currenly playing song
                 currentSong = currentlyPlaying;
+
+                scrollSong = 9;
+                scrollArtist = 9;
+                scrollAlbum = 9;
 
                 JsonArray arrayedTracks = new JsonParser().parse("[{\"uri\":\"" + tracks.getItems()[0].getTrack().getUri() + "\"}]").getAsJsonArray();
 

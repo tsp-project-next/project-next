@@ -37,6 +37,10 @@ public class UserPage  {
     private static Text artist = new Text();
     private static Text album = new Text();
     private static LobbyUser user = null;
+    private static int scrollSong = 9;
+    private static int scrollArtist = 9;
+    private static int scrollAlbum = 9;
+    private static String currentSong = "";
 
     private static Timer timer;
     private static boolean isTimerRunning = false;
@@ -323,14 +327,52 @@ public class UserPage  {
 
         PlaylistTrack[] current = tracks.getItems();
 
+        if (current != null && !current[0].getTrack().getName().equals(currentSong)) {
+            scrollAlbum = 9;
+            scrollArtist = 9;
+            scrollSong = 9;
+            currentSong = current[0].getTrack().getName();
+        }
+
         if(current != null && current.length != 0) {
 
-            songTitle.setText("Song: " + current[0].getTrack().getName());
+            if (current[0].getTrack().getName().length() > 10) {
+                songTitle.setText("Song: " + current[0].getTrack().getName().substring(scrollSong - 9, scrollSong));
+                if (scrollSong == current[0].getTrack().getName().length()) {
+                    scrollSong = 9;
+                } else {
+                    scrollSong++;
+                }
+            } else {
+                songTitle.setText("Song: " + current[0].getTrack().getName());
+            }
 
-            artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
+            if (current[0].getTrack().getArtists()[0].getName().length() > 10) {
+                artist.setText(("Artist: " + current[0].getTrack().getArtists()[0].getName().substring(scrollArtist - 9, scrollArtist)));
+                if (scrollArtist == current[0].getTrack().getArtists()[0].getName().length()) {
+                    scrollArtist = 9;
+                } else {
+                    scrollArtist++;
+                }
+            } else {
+                artist.setText("Artist: " + current[0].getTrack().getArtists()[0].getName());
+            }
 
-            album.setText("Album: " + current[0].getTrack().getAlbum().getName());
+            if (current[0].getTrack().getAlbum().getName().length() > 10) {
+                album.setText("Album: " + current[0].getTrack().getAlbum().getName().substring(scrollAlbum - 9, scrollAlbum));
+                if (scrollAlbum == current[0].getTrack().getAlbum().getName().length()) {
+                    scrollAlbum = 9;
+                } else {
+                    scrollAlbum++;
+                }
+            } else {
+                album.setText("Album: " + current[0].getTrack().getAlbum().getName());
+            }
         }
+
+        scrollSong++;
+        scrollArtist++;
+        scrollAlbum++;
     }
 
     public static void sendToLandingPage() {
