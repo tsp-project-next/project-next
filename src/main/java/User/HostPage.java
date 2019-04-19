@@ -496,7 +496,7 @@ public class HostPage {
     public static void updateCurrentPlaying() {
 
         Paging<PlaylistTrack> tracks = host.getPlayListTracks();
-
+        
         String currentlyPlaying = "";
 
         try {

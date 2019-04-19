@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("Duplicates")
 public class Client {
 
-    private static boolean debugBuild = false;
+    private static boolean debugBuild = true;
 
     //Host name or ip address
     private String host = "localhost";
@@ -104,6 +104,7 @@ public class Client {
             while(awaitingResponse()) {
                 //wait for one second.
                 try {
+                    //System.out.println(awaitingResponseList.isEmpty());
                     System.out.println("awaiting server response");
                     UserInterface.t.sleep(1000);
                 } catch (InterruptedException ex) {
