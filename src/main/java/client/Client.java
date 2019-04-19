@@ -222,6 +222,7 @@ public class Client {
                         HostPage.updateQueue();
                     });
                 }
+
                 if(UserPage.isInitialized()) {
                     Platform.runLater(() -> {
                         UserPage.updateQueue();

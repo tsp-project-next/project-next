@@ -44,11 +44,17 @@ public class HostPage {
     private static int scrollSong = 9;
     private static int scrollArtist = 9;
     private static int scrollAlbum = 9;
+    private static AtomicBoolean nowPlaying = new AtomicBoolean(false);
+    private static AtomicBoolean firstSong = new AtomicBoolean(true);
+    private static AtomicBoolean triggered = new AtomicBoolean(false);
+    private static Button play;
+    private static String code = "";
 
     private static Timer timer;
     private static boolean isTimerRunning = false;
 
     public HostPage(String code, LobbyHost host) {
+        this.code = code;
         this.host = host;
 
         setup(code);
@@ -58,13 +64,6 @@ public class HostPage {
 
         double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double screenHeight = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-
-        // Used to switch the play button to pause and vice versa
-        AtomicBoolean nowPlaying = new AtomicBoolean(false);
-        AtomicBoolean firstSong = new AtomicBoolean(true);
-        AtomicBoolean triggered = new AtomicBoolean(false);
-
-
 
         int fontSize = (int) screenHeight / 40;
         Font standard = Font.font("times new roman", FontWeight.LIGHT, FontPosture.REGULAR, fontSize);
@@ -264,7 +263,7 @@ public class HostPage {
         album.setFont(standard);
 
         // Button that will resume or pause the user's playlist
-        Button play = new Button("Play");
+        play = new Button("Play");
         play.setOnAction(event -> {
 
             if (!nowPlaying.get() && firstSong.get()) {
@@ -315,6 +314,14 @@ public class HostPage {
                 host.startPlaylist();
                 play.setText("Pause");
                 nowPlaying.set(true);
+
+                scrollSong = 9;
+                scrollAlbum = 9;
+                scrollArtist = 9;
+
+                Packet updateAllUsersQueue = new Packet(null, 2);
+                updateAllUsersQueue.setLobby(code);
+                UserInterface.client.sendPacket(updateAllUsersQueue);
 
                 updateQueue();
             }
@@ -529,6 +536,7 @@ public class HostPage {
 
             if (current[0].getTrack().getAlbum().getName().length() > 10) {
                 album.setText("Album: " + current[0].getTrack().getAlbum().getName().substring(scrollAlbum - 9, scrollAlbum));
+                System.out.println("SCROLL: " + scrollAlbum);
                 if (scrollAlbum == current[0].getTrack().getAlbum().getName().length()) {
                     scrollAlbum = 9;
                 } else {
@@ -557,8 +565,14 @@ public class HostPage {
 
                 host.startPlaylist();
 
-                updateQueue();
+                Packet updateAllUsersQueue = new Packet(null, 2);
+                updateAllUsersQueue.setLobby(code);
+                UserInterface.client.sendPacket(updateAllUsersQueue);
             }
+        } else {
+            nowPlaying.set(false);
+            firstSong.set(true);
+            play.setText("Play");
         }
 
 

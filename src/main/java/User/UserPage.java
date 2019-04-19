@@ -27,6 +27,8 @@ import java.util.TimerTask;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollPane;
 
+import javax.jws.soap.SOAPBinding;
+
 @SuppressWarnings("Duplicates")
 public class UserPage  {
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
@@ -327,12 +329,14 @@ public class UserPage  {
 
         PlaylistTrack[] current = tracks.getItems();
 
-        if (current != null && !current[0].getTrack().getName().equals(currentSong)) {
+
+        if (tracks.getItems().length > 0 && !current[0].getTrack().getName().equals(currentSong)) {
             scrollAlbum = 9;
             scrollArtist = 9;
             scrollSong = 9;
             currentSong = current[0].getTrack().getName();
         }
+
 
         if(current != null && current.length != 0) {
 
@@ -370,9 +374,14 @@ public class UserPage  {
             }
         }
 
-        scrollSong++;
-        scrollArtist++;
-        scrollAlbum++;
+        if (tracks.getItems().length == 0) {
+
+            songTitle.setText("Song: No Song");
+
+            artist.setText("Artist: No Song");
+
+            album.setText("Album: No Song");
+        }
     }
 
     public static void sendToLandingPage() {
