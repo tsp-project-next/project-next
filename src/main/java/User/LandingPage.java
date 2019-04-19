@@ -36,6 +36,8 @@ public class LandingPage {
         GridPane root = new GridPane();
         root.getStylesheets().add("scene.css");
 
+        root.setMinSize(screenWidth, screenHeight);
+
         root.setPadding(new Insets(5));
 
         // Sizes rows adn columns to the size of the screen --------------
