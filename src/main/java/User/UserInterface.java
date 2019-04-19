@@ -77,7 +77,7 @@ public class UserInterface extends Application{
         GridPane root = new GridPane();
         mainStage.setScene(new Scene(root, Toolkit.getDefaultToolkit().getScreenSize().getWidth(),
                 Toolkit.getDefaultToolkit().getScreenSize().getHeight(), Color.rgb(26,83,46)));
-        mainStage.setFullScreen(false);
+        mainStage.setFullScreen(true);
         //first page on loading is always landing page
         loadLandingPage();
     }
@@ -86,7 +86,7 @@ public class UserInterface extends Application{
     //displays landing page on the window --------------------------------
     public static void loadLandingPage() {
 
-        getStage().setFullScreen(false);
+        getStage().setFullScreen(true);
         new LandingPage();
     }
     //--------------------------------------------------------------------
