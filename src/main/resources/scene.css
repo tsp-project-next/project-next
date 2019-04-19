@@ -1,5 +1,5 @@
 .root {
-    -fx-background: rgb(26, 83, 46);
+    -fx-background-image: url("Galaxy.jpg");
 }
 
 .button {
