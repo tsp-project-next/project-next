@@ -30,7 +30,7 @@ public class Client {
     //Object input stream from the server
     private ObjectInputStream fromServer;
 
-    private List<String> awaitingResponseList = Collections.synchronizedList(new ArrayList<>());
+    //private List<String> awaitingResponseList = Collections.synchronizedList(new ArrayList<>());
     private ConcurrentHashMap<String, String> responses = new ConcurrentHashMap<>();
 
     public Client() {
@@ -100,8 +100,7 @@ public class Client {
         try {
             toServer.writeObject(packet);
             System.out.println("Object sent to server...");
-            awaitingResponseList.add(packet.getPacketIdentifier());
-            while(awaitingResponse()) {
+            while(awaitingResponse(packet.getPacketIdentifier())) {
                 //wait for one second.
                 try {
                     //System.out.println(awaitingResponseList.isEmpty());
@@ -111,7 +110,9 @@ public class Client {
                     ex.printStackTrace();
                 }
             }
-            return responses.get(packet.getPacketIdentifier());
+            String response = responses.get(packet.getPacketIdentifier());
+            responses.remove(packet.getPacketIdentifier());
+            return response;
         } catch(IOException ex) {
             ex.printStackTrace();
         }
@@ -149,8 +150,8 @@ public class Client {
         return false;
     }
 
-    public boolean awaitingResponse() {
-        if(awaitingResponseList.isEmpty()) {
+    public boolean awaitingResponse(String packetIdentifier) {
+        if(responses.keySet().contains(packetIdentifier)) {
             return false;
         }
         return true;
@@ -170,7 +171,6 @@ public class Client {
                 if (debugBuild) {
                     System.out.println("Packet type 0 response");
                     responses.put(packet.getPacketIdentifier(), packet.getLobby());
-                    awaitingResponseList.remove(packet.getPacketIdentifier());
                     return;
                 }
 
@@ -181,7 +181,6 @@ public class Client {
                     System.out.println("Lobby code: " + packet.getLobby());
                     System.out.println("Playlist Uri " + packet.getPlaylistURI());
                     responses.put(packet.getPacketIdentifier(), packet.getLobby());
-                    awaitingResponseList.remove(packet.getPacketIdentifier());
                 }
                 break;
             //packet type 1 = lobby join
@@ -192,7 +191,6 @@ public class Client {
                 if (debugBuild) {
                     System.out.println("Packet type 1 response");
                     responses.put(packet.getPacketIdentifier(), packet.getPlaylistURI());
-                    awaitingResponseList.remove(packet.getPacketIdentifier());
                     return;
                 }
 
@@ -205,7 +203,6 @@ public class Client {
                 } else {
                     responses.put(packet.getPacketIdentifier(), packet.getPlaylistURI());
                 }
-                awaitingResponseList.remove(packet.getPacketIdentifier());
                 break;
             //packet type 2 = song update
             case 2:
@@ -214,7 +211,6 @@ public class Client {
 
                 if (debugBuild) {
                     System.out.println("Packet type 2 response");
-                    awaitingResponseList.remove(packet.getPacketIdentifier());
                     return;
                 }
 
@@ -241,7 +237,6 @@ public class Client {
 
                 if (debugBuild) {
                     System.out.println("Packet type 3 response");
-                    awaitingResponseList.remove(packet.getPacketIdentifier());
                     return;
                 }
 
@@ -258,7 +253,6 @@ public class Client {
 
                 if (debugBuild) {
                     System.out.println("Packet type 4 response");
-                    awaitingResponseList.remove(packet.getPacketIdentifier());
                 }
 
                 // END DEBUG PYTHON TESTING
@@ -272,7 +266,6 @@ public class Client {
 
                 if (debugBuild) {
                     System.out.println("Packet type 5 response");
-                    awaitingResponseList.remove(packet.getPacketIdentifier());
                     return;
                 }
 
@@ -294,7 +287,6 @@ public class Client {
 
                 if (debugBuild) {
                     System.out.println("Packet type 6 response");
-                    awaitingResponseList.remove(packet.getPacketIdentifier());
                     return;
                 }
 
@@ -312,7 +304,6 @@ public class Client {
 
                 if (debugBuild) {
                     System.out.println("Packet type 7 response");
-                    awaitingResponseList.remove(packet.getPacketIdentifier());
                     return;
                 }
 
@@ -330,7 +321,6 @@ public class Client {
 
                 if (debugBuild) {
                     System.out.println("Packet type 8 response");
-                    awaitingResponseList.remove(packet.getPacketIdentifier());
                     return;
                 }
 

@@ -28,6 +28,9 @@ public class UserInterface extends Application{
 
     // Main method -------------------------------------------------------
     public static void main(String[] args) {
+        //need to save the thread.
+        t = Thread.currentThread();
+
         //create a new client object
         client = new Client();
         if(!client.isConnectionEstablished()) {
