@@ -18,10 +18,10 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("Duplicates")
 public class Client {
 
-    private static boolean debugBuild = false;
+    private static boolean debugBuild = true;
 
     //Host name or ip address
-    private String host = "localhost";
+    private String host = "78.46.43.55";
 
     //Socket for establishing connection
     private Socket socket;
@@ -211,6 +211,7 @@ public class Client {
 
                 if (debugBuild) {
                     System.out.println("Packet type 2 response");
+                    responses.put(packet.getPacketIdentifier(), packet.getLobby());
                     return;
                 }
 
@@ -237,6 +238,7 @@ public class Client {
 
                 if (debugBuild) {
                     System.out.println("Packet type 3 response");
+                    responses.put(packet.getPacketIdentifier(), packet.getLobby());
                     return;
                 }
 
@@ -253,6 +255,8 @@ public class Client {
 
                 if (debugBuild) {
                     System.out.println("Packet type 4 response");
+                    responses.put(packet.getPacketIdentifier(), packet.getLobby());
+                    return;
                 }
 
                 // END DEBUG PYTHON TESTING
@@ -266,6 +270,7 @@ public class Client {
 
                 if (debugBuild) {
                     System.out.println("Packet type 5 response");
+                    responses.put(packet.getPacketIdentifier(), packet.getLobby());
                     return;
                 }
 
@@ -287,6 +292,7 @@ public class Client {
 
                 if (debugBuild) {
                     System.out.println("Packet type 6 response");
+                    responses.put(packet.getPacketIdentifier(), packet.getLobby());
                     return;
                 }
 
@@ -304,6 +310,7 @@ public class Client {
 
                 if (debugBuild) {
                     System.out.println("Packet type 7 response");
+                    responses.put(packet.getPacketIdentifier(), packet.getLobby());
                     return;
                 }
 
@@ -321,6 +328,7 @@ public class Client {
 
                 if (debugBuild) {
                     System.out.println("Packet type 8 response");
+                    responses.put(packet.getPacketIdentifier(), packet.getLobby());
                     return;
                 }
 

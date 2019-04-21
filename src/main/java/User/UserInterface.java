@@ -22,7 +22,7 @@ public class UserInterface extends Application{
 
     public static Client client;
 
-    private static boolean debugBuild = false;
+    private static boolean debugBuild = true;
 
     public static Thread t;
 
