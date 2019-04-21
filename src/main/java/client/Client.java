@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("Duplicates")
 public class Client {
 
-    private static boolean debugBuild = true;
+    private static boolean debugBuild = false;
 
     //Host name or ip address
     private String host = "localhost";
@@ -190,7 +190,10 @@ public class Client {
                 // DEBUG PYTHON TESTING
 
                 if (debugBuild) {
-
+                    System.out.println("Packet type 1 response");
+                    responses.put(packet.getPacketIdentifier(), packet.getPlaylistURI());
+                    awaitingResponseList.remove(packet.getPacketIdentifier());
+                    return;
                 }
 
                 // END DEBUG PYTHON TESTING
@@ -210,7 +213,9 @@ public class Client {
                 // DEBUG PYTHON TESTING
 
                 if (debugBuild) {
-
+                    System.out.println("Packet type 2 response");
+                    awaitingResponseList.remove(packet.getPacketIdentifier());
+                    return;
                 }
 
                 // END DEBUG PYTHON TESTING
@@ -235,7 +240,9 @@ public class Client {
                 // DEBUG PYTHON TESTING
 
                 if (debugBuild) {
-
+                    System.out.println("Packet type 3 response");
+                    awaitingResponseList.remove(packet.getPacketIdentifier());
+                    return;
                 }
 
                 // END DEBUG PYTHON TESTING
@@ -250,7 +257,8 @@ public class Client {
                 // DEBUG PYTHON TESTING
 
                 if (debugBuild) {
-
+                    System.out.println("Packet type 4 response");
+                    awaitingResponseList.remove(packet.getPacketIdentifier());
                 }
 
                 // END DEBUG PYTHON TESTING
@@ -263,7 +271,9 @@ public class Client {
                 // DEBUG PYTHON TESTING
 
                 if (debugBuild) {
-
+                    System.out.println("Packet type 5 response");
+                    awaitingResponseList.remove(packet.getPacketIdentifier());
+                    return;
                 }
 
                 // END DEBUG PYTHON TESTING
@@ -283,7 +293,9 @@ public class Client {
                 // DEBUG PYTHON TESTING
 
                 if (debugBuild) {
-
+                    System.out.println("Packet type 6 response");
+                    awaitingResponseList.remove(packet.getPacketIdentifier());
+                    return;
                 }
 
                 // END DEBUG PYTHON TESTING
@@ -299,7 +311,9 @@ public class Client {
                 // DEBUG PYTHON TESTING
 
                 if (debugBuild) {
-
+                    System.out.println("Packet type 7 response");
+                    awaitingResponseList.remove(packet.getPacketIdentifier());
+                    return;
                 }
 
                 // END DEBUG PYTHON TESTING
@@ -315,7 +329,9 @@ public class Client {
                 // DEBUG PYTHON TESTING
 
                 if (debugBuild) {
-
+                    System.out.println("Packet type 8 response");
+                    awaitingResponseList.remove(packet.getPacketIdentifier());
+                    return;
                 }
 
                 // END DEBUG PYTHON TESTING

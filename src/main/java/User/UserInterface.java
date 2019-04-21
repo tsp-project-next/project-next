@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class UserInterface extends Application{
 
@@ -34,6 +35,9 @@ public class UserInterface extends Application{
             System.exit(0);
         }
 
+        //need to save the thread.
+        t = Thread.currentThread();
+
         // DEBUG TESTING
 
         if (debugBuild) {
@@ -44,9 +48,73 @@ public class UserInterface extends Application{
 
             Packet packet = new Packet(Utilities.generatePacketIdentifier(), 0);
             packet.setPlaylistURI("this:is:a:playlist:uri");
+            packet.setLobby("aaaa");
+            packet.setSongURI("this:is:a:song:uri");
 
 
             client.sendPacketWaitResponse(packet);
+
+            packet = new Packet(Utilities.generatePacketIdentifier(), 1);
+            packet.setPlaylistURI("this:is:a:playlist:uri");
+            packet.setLobby("aaaa");
+            packet.setSongURI("this:is:a:song:uri");
+
+            client.sendPacketWaitResponse(packet);
+
+            packet = new Packet(Utilities.generatePacketIdentifier(), 2);
+            packet.setPlaylistURI("this:is:a:playlist:uri");
+            packet.setLobby("aaaa");
+            packet.setSongURI("this:is:a:song:uri");
+
+            client.sendPacketWaitResponse(packet);
+
+            packet = new Packet(Utilities.generatePacketIdentifier(), 3);
+            packet.setPlaylistURI("this:is:a:playlist:uri");
+            packet.setLobby("aaaa");
+            packet.setSongURI("this:is:a:song:uri");
+
+            client.sendPacketWaitResponse(packet);
+
+            packet = new Packet(Utilities.generatePacketIdentifier(), 4);
+            packet.setPlaylistURI("this:is:a:playlist:uri");
+            packet.setLobby("aaaa");
+            packet.setSongURI("this:is:a:song:uri");
+
+            client.sendPacketWaitResponse(packet);
+
+            packet = new Packet(Utilities.generatePacketIdentifier(), 5);
+            packet.setPlaylistURI("this:is:a:playlist:uri");
+            packet.setLobby("aaaa");
+            packet.setSongURI("this:is:a:song:uri");
+
+            client.sendPacketWaitResponse(packet);
+
+            packet = new Packet(Utilities.generatePacketIdentifier(), 6);
+            packet.setPlaylistURI("this:is:a:playlist:uri");
+            packet.setLobby("aaaa");
+            packet.setSongURI("this:is:a:song:uri");
+
+            client.sendPacketWaitResponse(packet);
+
+            packet = new Packet(Utilities.generatePacketIdentifier(), 7);
+            packet.setPlaylistURI("this:is:a:playlist:uri");
+            packet.setLobby("aaaa");
+            packet.setSongURI("this:is:a:song:uri");
+
+            client.sendPacketWaitResponse(packet);
+
+            packet = new Packet(Utilities.generatePacketIdentifier(), 8);
+            packet.setPlaylistURI("this:is:a:playlist:uri");
+            packet.setLobby("aaaa");
+            packet.setSongURI("this:is:a:song:uri");
+
+            client.sendPacketWaitResponse(packet);
+
+            /*try {
+                TimeUnit.SECONDS.sleep(30);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }*/
 
 
             client.closeStreams();
@@ -55,9 +123,6 @@ public class UserInterface extends Application{
 
 
         // END DEBUG TESTING
-
-        //need to save the thread.
-        t = Thread.currentThread();
 
         Application.launch(args);
 
