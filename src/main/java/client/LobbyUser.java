@@ -13,7 +13,6 @@ import com.wrapper.spotify.requests.data.search.simplified.SearchTracksRequest;
 
 import java.io.IOException;
 
-@SuppressWarnings("Duplicates")
 public class LobbyUser {
 
     // Initialize all this stuff to null because we'll pass it in the constructor

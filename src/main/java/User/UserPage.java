@@ -27,9 +27,6 @@ import java.util.TimerTask;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollPane;
 
-import javax.jws.soap.SOAPBinding;
-
-@SuppressWarnings("Duplicates")
 public class UserPage  {
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";

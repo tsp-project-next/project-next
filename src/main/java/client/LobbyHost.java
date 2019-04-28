@@ -19,7 +19,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 
-@SuppressWarnings("Duplicates")
 public class LobbyHost {
 
     private static SpotifyApi spotifyApi = null;

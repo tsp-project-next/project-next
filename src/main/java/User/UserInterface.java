@@ -12,9 +12,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.awt.*;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 public class UserInterface extends Application{
 
@@ -22,7 +19,7 @@ public class UserInterface extends Application{
 
     public static Client client;
 
-    private static boolean debugBuild = true;
+    private static boolean debugBuild = false;
 
     public static Thread t;
 
@@ -112,12 +109,6 @@ public class UserInterface extends Application{
             packet.setSongURI("this:is:a:song:uri");
 
             client.sendPacketWaitResponse(packet);
-
-            /*try {
-                TimeUnit.SECONDS.sleep(30);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
 
 
             client.closeStreams();

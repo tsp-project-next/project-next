@@ -31,7 +31,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@SuppressWarnings("Duplicates")
 public class HostPage {
     private static LobbyHost host = null;
     private static ObservableList<String> itemsPlayQueue;
@@ -536,7 +535,6 @@ public class HostPage {
 
             if (current[0].getTrack().getAlbum().getName().length() > 10) {
                 album.setText("Album: " + current[0].getTrack().getAlbum().getName().substring(scrollAlbum - 9, scrollAlbum));
-                System.out.println("SCROLL: " + scrollAlbum);
                 if (scrollAlbum == current[0].getTrack().getAlbum().getName().length()) {
                     scrollAlbum = 9;
                 } else {
@@ -547,7 +545,7 @@ public class HostPage {
             }
         }
 
-        System.out.println(tracks.getItems().length);
+//        System.out.println(tracks.getItems().length);
 
         if(tracks.getItems().length > 0) {
             if (!tracks.getItems()[0].getTrack().getUri().equals(currentSong) && !currentlyPlaying.equals("")) {

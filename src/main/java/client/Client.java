@@ -10,18 +10,15 @@ import java.net.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-@SuppressWarnings("Duplicates")
 public class Client {
 
-    private static boolean debugBuild = true;
+    private static boolean debugBuild = false;
 
     //Host name or ip address
-    private String host = "78.46.43.55";
+    private String host = "localhost";
+    // private String host = "78.46.43.55"; this was using an external server
 
     //Socket for establishing connection
     private Socket socket;

@@ -18,7 +18,6 @@ import java.awt.Toolkit;
 import java.net.URI;
 import java.util.Optional;
 
-@SuppressWarnings("Duplicates")
 public class LandingPage {
     private static final String clientId = "ef5f89735e4649929f4e9eb8fac2db06";
     private static final String clientSecret = "f32ba2821de9409785f1abb637707170";
